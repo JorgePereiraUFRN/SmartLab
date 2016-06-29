@@ -1,5 +1,6 @@
 package smartmetropolis.smartlab.managedBeans;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,8 +61,12 @@ public class SensorMBean {
 		}
 	}
 	
+	
+	
+	
 	public void listSensors(){
 		try {
+			System.out.println("listando sesnores");
 			sensors = sensorController.findSensors();
 		} catch (DAOException e) {
 			FacesContext.getCurrentInstance().addMessage(
