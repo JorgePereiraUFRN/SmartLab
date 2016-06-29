@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+
+</h:head>
+
+<h:body>
+
+	<p:growl id="mensagem" showDetail="true" autoUpdate="true"
+		closable="true" />
+
+	<h:form id="formSensor">
+		<p:panelGrid columns="2" style="horizontal-align:center">
+			<h:outputText value="Sensor Id:" />
+			<h:inputText id="sensorId" value="#{sensorB.sensor.id}" />
+
+			<h:outputLabel for="sesnorLocal" value="Local:" />
+			<h:inputText id="sensorLocal" value="#{sensorB.sensor.local}" />
+			<h:outputLabel for="sensorType" value="Sensor Type:" />
+			<p:selectOneMenu id="sensorType" value="#{sensorB.sensor.sensorType}"
+				effect="fold" editable="false">
+				<f:selectItem itemLabel="Select One" itemValue="" />
+				<f:selectItems value="#{sensorB.sensorsType}" />
+			</p:selectOneMenu>
+		</p:panelGrid>
+		<p:panelGrid columns="6">
+			<h:commandButton action="#{sensorB.saveSensor}" value="Save"
+				update="tabela" />
+		</p:panelGrid>
+	</h:form>
+
+	<p:dataTable id="tabela" var="item" value="#{sensorB.sensors}"
+		paginator="true" rows="50" emptyMessage="Não há registros na lista"
+		paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		rowsPerPageTemplate="10,15,25,50,100">
+		<f:facet name="header">List of Sensors</f:facet>
+		<p:column headerText="Id" style="width: 10%;">
+			<h:outputText value="#{item.id}" />
+		</p:column>
+		<p:column headerText="Local" style="width: 25%;">
+			<h:outputText value="#{item.local}" />
+		</p:column>
+		<p:column headerText="Sensor Type" style="width: 25%;"	>
+			<h:outputText value="#{item.sensorType}" />
+		</p:column>
+	</p:dataTable>
+
+</h:body>
+
+</html>
