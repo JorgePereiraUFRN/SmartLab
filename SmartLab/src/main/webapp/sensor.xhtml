@@ -36,6 +36,8 @@
 		</p:panelGrid>
 	</h:form>
 
+
+
 	<p:dataTable id="tabela" var="item" value="#{sensorB.sensors}"
 		paginator="true" rows="50" emptyMessage="Não há registros na lista"
 		paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -47,11 +49,37 @@
 		<p:column headerText="Local" style="width: 25%;">
 			<h:outputText value="#{item.local}" />
 		</p:column>
-		<p:column headerText="Sensor Type" style="width: 25%;"	>
+		<p:column headerText="Sensor Type" style="width: 25%;">
 			<h:outputText value="#{item.sensorType}" />
 		</p:column>
+		<p:column headerText="Measurements" style="width: 25%;">
+
+			<p:commandButton value="measurements" id="listmeasurements"
+				actionListener="#{sensorB.listMeassurements}" update="tableMeasurements" />
+				
+		</p:column>
 	</p:dataTable>
-	<p:commandButton value="List" id="listsensors" actionListener="#{sensorB.listSensors}" update="tabela"/>
+	<p:commandButton value="List" id="listsensors"
+		actionListener="#{sensorB.listSensors}" update="tabela" />
+
+
+	<p:dataTable id="tableMeasurements" var="item"
+		value="#{sensorB.sensorMeasurements}">
+		<f:facet name="header">
+			<h:outputText
+				value="Sensor local: #{item.sensor.local} Sensor Type #{item.sensor.sensorType}" />
+		</f:facet>
+		<p:column headerText="Value" style="width: 10%;">
+			<h:outputText value="#{item.value}" />
+		</p:column>
+		<p:column headerText="Data" style="width: 25%;">
+			<h:outputText value="#{item.timestamp}" />
+		</p:column>
+	</p:dataTable>
+
+
+
+
 
 </h:body>
 

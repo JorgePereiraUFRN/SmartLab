@@ -16,7 +16,7 @@ public class teste {
 		Measurement measurement = new Measurement();
 		
 		//sensor.setAtualMeasurement(measurement);
-		sensor.setId(1L);
+		sensor.setId(5L);
 		sensor.setLocal("A301");
 		sensor.setSensorType(SensorType.PRESENCE);
 		

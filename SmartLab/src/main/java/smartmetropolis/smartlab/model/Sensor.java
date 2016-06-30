@@ -19,8 +19,7 @@ public class Sensor {
 	private SensorType sensorType;
 	private String local;
 	
-	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.EAGER)
 	private List<Measurement> measurements = new ArrayList<Measurement>();
 
 	public Sensor() {

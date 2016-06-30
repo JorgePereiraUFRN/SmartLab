@@ -27,7 +27,7 @@ public class SensorResource {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_XML)
-	@Produces(MediaType.APPLICATION_XML)
+	//@Produces(MediaType.APPLICATION_XML)
 	public Response saveSensor(Sensor sensor) {
 
 		try {
