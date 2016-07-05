@@ -27,13 +27,12 @@ public class SensorResource {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_XML)
-	//@Produces(MediaType.APPLICATION_XML)
+	// @Produces(MediaType.APPLICATION_XML)
 	public Response saveSensor(Sensor sensor) {
 
 		try {
-			sensorController.saveSensor(sensor);
-			return Response.status(Response.Status.OK).entity("Sensor saved.")
-					.build();
+			sensor = sensorController.saveSensor(sensor);
+			return Response.ok(sensor, MediaType.APPLICATION_XML).build();
 
 		} catch (DAOException e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -54,10 +53,9 @@ public class SensorResource {
 
 		Sensor sensor = sensorController.findSensor(sensorId);
 
-		if (sensor != null){
+		if (sensor != null) {
 			return Response.ok(sensor, MediaType.APPLICATION_XML).build();
-		}
-		else{
+		} else {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
 					.entity("The sensor with id: " + sensorId
@@ -70,20 +68,11 @@ public class SensorResource {
 	// @Produces(MediaType.APPLICATION_XML)
 	public Response deleteSensor(@PathParam("sensorId") long sensorId) {
 
-		Sensor sensor;
 		try {
-			sensor = sensorController.findSensor(sensorId);
-			if (sensor == null) {
-				return Response
-						.status(Response.Status.BAD_REQUEST)
-						.entity("The sensor with id: " + sensorId
-								+ " doesn't exist").build();
 
-			} else {
-				sensorController.deleteSensor(sensor);
-				return Response.status(Response.Status.OK)
-						.entity("Sensor deleted.").build();
-			}
+			sensorController.deleteSensor(sensorId);
+			return Response.status(Response.Status.OK)
+					.entity("Sensor deleted.").build();
 
 		} catch (DAOException e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

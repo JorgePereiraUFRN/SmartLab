@@ -19,7 +19,7 @@
 	<h:form id="formSensor">
 		<p:panelGrid columns="2" style="horizontal-align:center">
 			<h:outputText value="Sensor Id:" />
-			<h:inputText id="sensorId" value="#{sensorB.sensor.id}" />
+			<h:inputText id="sensorId" value="#{sensorB.sensor.sensorId}" />
 
 			<h:outputLabel for="sensorLocal" value="Local:" />
 			<h:inputText id="sensorLocal" value="#{sensorB.sensor.local}" />
@@ -44,7 +44,7 @@
 		rowsPerPageTemplate="10,15,25,50,100">
 		<f:facet name="header">List of Sensors</f:facet>
 		<p:column headerText="Id" style="width: 10%;">
-			<h:outputText value="#{item.id}" />
+			<h:outputText value="#{item.sensorId}" />
 		</p:column>
 		<p:column headerText="Local" style="width: 25%;">
 			<h:outputText value="#{item.local}" />

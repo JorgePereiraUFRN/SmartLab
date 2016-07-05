@@ -4,34 +4,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @XmlRootElement
 @Entity
 public class Sensor {
 
 	@Id
-	private Long id;
+	@GeneratedValue
+	private Long sensorId;
 	private SensorType sensorType;
 	private String local;
-	
-	@OneToMany(fetch = FetchType.EAGER)
+	private String description;
+
+	@OneToMany
+	@Cascade(CascadeType.DELETE)
 	private List<Measurement> measurements = new ArrayList<Measurement>();
 
 	public Sensor() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Long getId() {
-		return id;
+	public Long getSensorId() {
+		return sensorId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setSensorId(Long id) {
+		this.sensorId = id;
 	}
 
 	public SensorType getSensorType() {
@@ -41,7 +46,6 @@ public class Sensor {
 	public void setSensorType(SensorType sensorType) {
 		this.sensorType = sensorType;
 	}
-
 
 	public List<Measurement> getMeasurements() {
 		return measurements;
@@ -57,6 +61,14 @@ public class Sensor {
 
 	public void setLocal(String local) {
 		this.local = local;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

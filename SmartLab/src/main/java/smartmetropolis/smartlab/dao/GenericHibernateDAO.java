@@ -56,6 +56,7 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 			getInstance().remove(entity);
 			getInstance().getTransaction().commit();
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new DAOException(e.getMessage());
 		}
 

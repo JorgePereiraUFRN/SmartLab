@@ -4,9 +4,11 @@ import java.util.List;
 
 import smartmetropolis.smartlab.dao.DAOFactory;
 import smartmetropolis.smartlab.dao.HibernateDAOFactory;
+import smartmetropolis.smartlab.dao.MeasurementDaoInterface;
 import smartmetropolis.smartlab.dao.SensorDaoInterface;
 import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.exceptions.validateDataException;
+import smartmetropolis.smartlab.model.Measurement;
 import smartmetropolis.smartlab.model.Sensor;
 
 public class SensorController {
@@ -48,8 +50,8 @@ public class SensorController {
 			DAOException {
 		validateData(sensor);
 
-		if (sensor.getId() == null || sensor.getId() < 0) {
-			throw new validateDataException("invalid Id: " + sensor.getId());
+		if (sensor.getSensorId() == null || sensor.getSensorId() < 0) {
+			throw new validateDataException("invalid Id: " + sensor.getSensorId());
 		}
 		return sensorDao.update(sensor);
 
@@ -63,10 +65,11 @@ public class SensorController {
 		return sensorDao.findAll(Sensor.class);
 	}
 
-	public void deleteSensor(Sensor sensor) throws DAOException, validateDataException {
-		if (sensor.getId() == null || sensor.getId() < 0) {
-			throw new validateDataException("invalid Id: " + sensor.getId());
-		}
+	public void deleteSensor(long sensorId) throws DAOException, validateDataException {
+		Sensor sensor = sensorDao.findById(Sensor.class, sensorId);
+		if (sensor == null ) {
+			throw new validateDataException("invalid Id");
+		}		
 		sensorDao.delete(sensor);
 	}
 

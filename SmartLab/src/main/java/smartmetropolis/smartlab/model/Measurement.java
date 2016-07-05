@@ -1,22 +1,27 @@
 package smartmetropolis.smartlab.model;
 
-import java.sql.Timestamp;
+
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 @Entity
 public class Measurement {
 
 	@Id
 	@GeneratedValue
-	private Long id;
+	private Long measurementId;
 	private String value;
-	private Timestamp timestamp;
+	private Date time;
 
-	@ManyToOne
+	@ManyToOne 
+	@Cascade(CascadeType.DELETE)
 	private Sensor sensor;
 
 	public Measurement() {
@@ -31,20 +36,12 @@ public class Measurement {
 		this.value = value;
 	}
 
-	public Timestamp getTimestamp() {
-		return timestamp;
+	public Long getMeasurementId() {
+		return measurementId;
 	}
 
-	public void setTimestamp(Timestamp timestamp) {
-		this.timestamp = timestamp;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
+	public void setMeasurmentId(Long id) {
+		this.measurementId = id;
 	}
 
 	public Sensor getSensor() {
@@ -55,4 +52,17 @@ public class Measurement {
 		this.sensor = sensor;
 	}
 
+	public Date getTime() {
+		return time;
+	}
+
+	public void setTime(Date time) {
+		this.time = time;
+	}
+
+	public void setMeasurementId(Long measurementId) {
+		this.measurementId = measurementId;
+	}
+
+	
 }
