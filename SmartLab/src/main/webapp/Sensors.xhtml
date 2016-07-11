@@ -6,31 +6,27 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-
-<h:head>
-
-</h:head>
-
-<h:body>
-
-	<p:growl id="mensagem" showDetail="true" autoUpdate="true"
+<ui:decorate template="Template.xhtml">
+	<ui:define name="centro">
+            
+            <p:growl id="mensagem" showDetail="true" autoUpdate="true"
 		closable="true" />
 
 	<h:form id="formSensor">
-		<p:panelGrid columns="2" style="horizontal-align:center">
-			<h:outputText value="Sensor Id:" />
-			<h:inputText id="sensorId" value="#{sensorB.sensor.sensorId}" />
-
+		<p:panelGrid columns="4" style="horizontal-align:">
+		
 			<h:outputLabel for="sensorLocal" value="Local:" />
 			<h:inputText id="sensorLocal" value="#{sensorB.sensor.local}" />
 			<h:outputLabel for="sensorType" value="Sensor Type:" />
 			<p:selectOneMenu id="sensorType" value="#{sensorB.sensor.sensorType}"
-				effect="fold" editable="false">
+				effect="fold" editable="false" update="">
 				<f:selectItem itemLabel="Select One" itemValue="" />
 				<f:selectItems value="#{sensorB.sensorsType}" />
 			</p:selectOneMenu>
+			<h:outputLabel for="sensorDescription" value="Description:" />
+			<h:inputText id="sensordescription" value="#{sensorB.sensor.description}" />
 		</p:panelGrid>
-		<p:panelGrid columns="6">
+		<p:panelGrid columns="1">
 			<h:commandButton action="#{sensorB.saveSensor}" value="Save"
 				update="tabela" />
 		</p:panelGrid>
@@ -44,7 +40,7 @@
 		rowsPerPageTemplate="10,15,25,50,100">
 		<f:facet name="header">List of Sensors</f:facet>
 		<p:column headerText="Id" style="width: 10%;">
-			<h:outputText value="#{item.sensorId}" />
+			<h:outputText value="#{item.id}" />
 		</p:column>
 		<p:column headerText="Local" style="width: 25%;">
 			<h:outputText value="#{item.local}" />
@@ -52,35 +48,13 @@
 		<p:column headerText="Sensor Type" style="width: 25%;">
 			<h:outputText value="#{item.sensorType}" />
 		</p:column>
-		<p:column headerText="Measurements" style="width: 25%;">
-
-			<p:commandButton value="measurements" id="listmeasurements"
-				actionListener="#{sensorB.listMeassurements}" update="tableMeasurements" />
-				
-		</p:column>
+		
 	</p:dataTable>
 	<p:commandButton value="List" id="listsensors"
 		actionListener="#{sensorB.listSensors}" update="tabela" />
-
-
-	<p:dataTable id="tableMeasurements" var="item"
-		value="#{sensorB.sensorMeasurements}">
-		<f:facet name="header">
-			<h:outputText
-				value="Sensor local: #{item.sensor.local} Sensor Type #{item.sensor.sensorType}" />
-		</f:facet>
-		<p:column headerText="Value" style="width: 10%;">
-			<h:outputText value="#{item.value}" />
-		</p:column>
-		<p:column headerText="Data" style="width: 25%;">
-			<h:outputText value="#{item.timestamp}" />
-		</p:column>
-	</p:dataTable>
-
-
-
-
-
-</h:body>
+            
+            
+        </ui:define>
+</ui:decorate>
 
 </html>

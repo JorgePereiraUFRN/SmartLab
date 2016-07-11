@@ -14,22 +14,50 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
+import smartmetropolis.smartlab.controller.LocalController;
+import smartmetropolis.smartlab.controller.RoomController;
+import smartmetropolis.smartlab.exceptions.DAOException;
+import smartmetropolis.smartlab.exceptions.validateDataException;
+import smartmetropolis.smartlab.model.Local;
+import smartmetropolis.smartlab.model.Room;
 import smartmetropolis.smartlab.model.Sensor;
 import smartmetropolis.smartlab.model.SensorType;
 
 public class SensorResourceTest {
 
-	public static Sensor sensor;
+	private static Sensor sensor;
+	private static Local local;
+	private static Room room;
 	private static Client webServiceClient;
 	private static String uri = "http://localhost:8080/SmartLab/ws/sensor/";
 	private static AtomicLong id;
 
+	private static LocalController localController;
+	private static RoomController roomController;
+
 	@BeforeClass
-	public static void init() {
+	public static void init() throws validateDataException, DAOException {
+		localController = LocalController.getInstance();
+		roomController = RoomController.getInstance();
+
 		sensor = new Sensor();
 
+		local = new Local();
+
+		local.setName("IMD");
+		local.setLatitude(40.5561462);
+		local.setLongitude(-5.672383);
+
+		local = localController.saveLocal(local);
+
+		room = new Room();
+		room.setLocal(local);
+		room.setName("B206");
+
+		room = roomController.saveRoom(room);
+
 		sensor.setDescription("descricao sensor");
-		sensor.setLocal("local sensor");
+		sensor.setRoom(room);
 		sensor.setSensorType(SensorType.HUMIDITY);
 
 		webServiceClient = Client.create();
@@ -38,10 +66,10 @@ public class SensorResourceTest {
 
 		ClientResponse response = resource.type(MediaType.APPLICATION_XML)
 				.post(ClientResponse.class, sensor);
-		
-		
+
+		System.out.println(response.toString());
 		sensor = response.getEntity(Sensor.class);
-		id = new AtomicLong(sensor.getSensorId());
+		id = new AtomicLong(sensor.getId());
 	}
 
 	@Test
@@ -50,7 +78,7 @@ public class SensorResourceTest {
 		sensor = new Sensor();
 
 		sensor.setDescription("descricao sensor");
-		sensor.setLocal("local sensor");
+		sensor.setRoom(room);
 
 		webServiceClient = Client.create();
 
@@ -83,8 +111,7 @@ public class SensorResourceTest {
 	@Test
 	public void getSensor() {
 
-		WebResource resource = webServiceClient.resource(uri
-				+ id.get());
+		WebResource resource = webServiceClient.resource(uri + id.get());
 
 		ClientResponse response = resource.type(MediaType.APPLICATION_XML).get(
 				ClientResponse.class);
@@ -97,27 +124,26 @@ public class SensorResourceTest {
 	public void updateSensor() {
 
 		sensor.setDescription("new description");
-		sensor.setLocal("new location");
-		sensor.setSensorId(id.get());
+		sensor.setRoom(room);
+		sensor.setId(id.get());
 
 		WebResource resource = webServiceClient.resource(uri);
 
 		ClientResponse response = resource.type(MediaType.APPLICATION_XML).put(
 				ClientResponse.class, sensor);
 
-		
-		
 		Assert.assertEquals(200, response.getStatus());
 
-		
 	}
 
 	@AfterClass
-	public static void after() {
-		WebResource resource = webServiceClient.resource(uri
-				+ id.get());
+	public static void after() throws DAOException {
+		WebResource resource = webServiceClient.resource(uri + id.get());
 
 		resource.delete();
+/*
+		roomController.deleteRoom(room.getId());
+		localController.deleteLocal(local.getId());*/
 
 	}
 

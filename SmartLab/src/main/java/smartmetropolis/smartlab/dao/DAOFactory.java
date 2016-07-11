@@ -30,4 +30,14 @@ public abstract class DAOFactory {
     public abstract SensorDaoInterface getSensorDao();
     
     public abstract MeasurementDaoInterface getMeasurementDao();
+    
+    public abstract RoomDaoInterface getRoomDao();
+    
+    public abstract AirConditionerDaoInterface getAirConditionerDao();
+    
+    public abstract LocalDaoInterface getLocalDao();
+    
+    public abstract SchedulingDaoInterface getsSchedulingDao();
+    
+    public abstract UserDaoInterface getUserDao();
 }

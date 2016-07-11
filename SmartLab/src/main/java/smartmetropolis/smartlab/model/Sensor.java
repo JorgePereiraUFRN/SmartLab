@@ -3,14 +3,16 @@ package smartmetropolis.smartlab.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+
 
 @XmlRootElement
 @Entity
@@ -18,25 +20,27 @@ public class Sensor {
 
 	@Id
 	@GeneratedValue
-	private Long sensorId;
+	private Long id;
 	private SensorType sensorType;
-	private String local;
+	
+	@ManyToOne
+	private Room room;
 	private String description;
 
-	@OneToMany
-	@Cascade(CascadeType.DELETE)
+	@OneToMany(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="sensor_id")
 	private List<Measurement> measurements = new ArrayList<Measurement>();
 
 	public Sensor() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Long getSensorId() {
-		return sensorId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setSensorId(Long id) {
-		this.sensorId = id;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public SensorType getSensorType() {
@@ -54,13 +58,14 @@ public class Sensor {
 	public void setMeasurements(List<Measurement> measurements) {
 		this.measurements = measurements;
 	}
+	
 
-	public String getLocal() {
-		return local;
+	public Room getRoom() {
+		return room;
 	}
 
-	public void setLocal(String local) {
-		this.local = local;
+	public void setRoom(Room room) {
+		this.room = room;
 	}
 
 	public String getDescription() {
@@ -70,5 +75,6 @@ public class Sensor {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 
 }

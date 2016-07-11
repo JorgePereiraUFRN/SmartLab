@@ -8,20 +8,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 @Entity
 public class Measurement {
 
 	@Id
 	@GeneratedValue
-	private Long measurementId;
+	private Long id;
 	private String value;
 	private Date time;
 
 	@ManyToOne 
-	@Cascade(CascadeType.DELETE)
 	private Sensor sensor;
 
 	public Measurement() {
@@ -36,13 +32,10 @@ public class Measurement {
 		this.value = value;
 	}
 
-	public Long getMeasurementId() {
-		return measurementId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setMeasurmentId(Long id) {
-		this.measurementId = id;
-	}
 
 	public Sensor getSensor() {
 		return sensor;
@@ -60,8 +53,8 @@ public class Measurement {
 		this.time = time;
 	}
 
-	public void setMeasurementId(Long measurementId) {
-		this.measurementId = measurementId;
+	public void setId(Long measurementId) {
+		this.id = measurementId;
 	}
 
 	

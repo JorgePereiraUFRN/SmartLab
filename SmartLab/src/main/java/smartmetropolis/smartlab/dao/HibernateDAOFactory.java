@@ -25,6 +25,32 @@ public class HibernateDAOFactory extends DAOFactory {
 		return (MeasurementDaoInterface) instantiateDAO(MeasurementDao.class);
 	}
 
+	@Override
+	public RoomDaoInterface getRoomDao() {
+		
+		return (RoomDaoInterface) instantiateDAO(RoomDao.class);
+	}
+
+	@Override
+	public AirConditionerDaoInterface getAirConditionerDao() {
+		return  (AirConditionerDaoInterface) instantiateDAO(AirConditionerDao.class);
+	}
+
+	@Override
+	public LocalDaoInterface getLocalDao() {
+		return  (LocalDaoInterface) instantiateDAO(LocalDao.class);
+	}
+
+	@Override
+	public SchedulingDaoInterface getsSchedulingDao() {
+		return  (SchedulingDaoInterface) instantiateDAO(SchedulingDao.class);
+	}
+
+	@Override
+	public UserDaoInterface getUserDao() {
+		return  (UserDaoInterface) instantiateDAO(UserDao.class);
+	}
+
 
 	
 	

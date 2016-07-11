@@ -41,7 +41,6 @@
 			<artifactId>hibernate-annotations</artifactId>
 			<version>3.5.0-Final</version>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
@@ -52,24 +51,22 @@
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>3.5.0-Final</version>
 		</dependency>
-
 		<dependency>
 			<groupId>javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>3.8.0.GA</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.5.10</version>
 		</dependency>
-
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.0.5</version>
 		</dependency>
+
 
 		<!-- Dependencias do jersey (nessessaria para implmenetar o serviço web) -->
 		<dependency>

@@ -35,6 +35,8 @@ public class SensorResource {
 			return Response.ok(sensor, MediaType.APPLICATION_XML).build();
 
 		} catch (DAOException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity("Database error: " + e.getMessage()).build();
 

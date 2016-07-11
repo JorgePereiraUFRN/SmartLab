@@ -1,17 +1,21 @@
 package smatmetropolis.smartLab.controllerTest;
 
-import java.sql.Timestamp;
+
 import java.util.Date;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import smartmetropolis.smartlab.controller.LocalController;
 import smartmetropolis.smartlab.controller.MeasurementController;
+import smartmetropolis.smartlab.controller.RoomController;
 import smartmetropolis.smartlab.controller.SensorController;
 import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.exceptions.validateDataException;
+import smartmetropolis.smartlab.model.Local;
 import smartmetropolis.smartlab.model.Measurement;
+import smartmetropolis.smartlab.model.Room;
 import smartmetropolis.smartlab.model.Sensor;
 import smartmetropolis.smartlab.model.SensorType;
 
@@ -20,17 +24,37 @@ public class MeasurementControllerTest {
 	private static Measurement measurement;
 	private static MeasurementController measurementController;
 	private static SensorController sensorController;
+	private static LocalController localController;
+	private static RoomController roomController;
 	private static Sensor sensor1;
+	private static Local local;
+	private static Room room;
 	
 	@BeforeClass
 	public static void init() throws DAOException, validateDataException{
 		
 		measurementController = MeasurementController.getInstance();
 		sensorController = SensorController.getInstance();
+		localController = LocalController.getInstance();
+		roomController = RoomController.getInstance();
+		
+		local =  new Local();
+		
+		local.setName("IMD");
+		local.setLatitude(40.5561462);
+		local.setLongitude(-5.672383);
+		
+		local = localController.saveLocal(local);
+		
+		room = new Room();
+		room.setLocal(local);
+		room.setName("B206");
+		
+		room = roomController.saveRoom(room);
 		
 		sensor1 = new Sensor();
 		sensor1.setDescription("descricao sensor");
-		sensor1.setLocal("local sensor");
+		sensor1.setRoom(room);
 		sensor1.setSensorType(SensorType.PRESENCE);
 		
 		sensor1 = sensorController.saveSensor(sensor1);
@@ -72,7 +96,9 @@ public class MeasurementControllerTest {
 	public static void after() throws DAOException, validateDataException{
 		//deleta o sensor e as medições associadas a ele
 		//measurementController.deleteMeasurement(measurement.getMeasurementId());
-		sensorController.deleteSensor(sensor1.getSensorId());
+		sensorController.deleteSensor(sensor1.getId());
+		roomController.deleteRoom(room.getId());
+		localController.deleteLocal(local.getId());
 	}
 	
 

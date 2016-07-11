@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
@@ -23,12 +25,17 @@ public class SensorMBean {
 	private Sensor sensor;
 	private List<Sensor> sensors = new ArrayList<Sensor>();
 	private Map<SensorType, String> sensorsType;
+	private Map<Sensor, String> sensorsMap;
 	private List<Measurement> sensorMeasurements = new ArrayList<Measurement>();
-	private long sensorId;
+	// private long sensorId;
 
 	private SensorController sensorController;
 
-	public SensorMBean() {
+	@ManagedProperty("#{themeService}")
+	private SensorService service;
+
+	@PostConstruct
+	public void init() {
 		sensor = new Sensor();
 		sensorController = SensorController.getInstance();
 
@@ -39,6 +46,21 @@ public class SensorMBean {
 		sensorsType.put(SensorType.PRESENCE, SensorType.PRESENCE.toString());
 		sensorsType.put(SensorType.TEMPERATURE,
 				SensorType.TEMPERATURE.toString());
+		
+		service = new SensorService();
+		sensors = service.getSensors();
+
+		/*sensorsMap = new HashMap<Sensor, String>();
+		try {
+			sensors = sensorController.findSensors();
+			for (Sensor s : sensors) {
+				sensorsMap.put(s, s.getSensorType() + " " + s.getLocal());
+			}
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+
 	}
 
 	public void saveSensor() {
@@ -64,20 +86,9 @@ public class SensorMBean {
 		}
 	}
 
-	public void listMeassurements() {
-		try {
-			
-			sensor = sensorController.findSensor(sensorId);
-			sensorMeasurements = sensor.getMeasurements();
-			System.out.println("measurements sensor: " + sensorId + " size: "
-					+ sensor.getMeasurements().size());
-		} catch (DAOException e) {
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR,
-							"List Sensor Measurements: ",
-							"Erro to list sensor measurements!"));
-		}
+	public void listMeassurements(ActionEvent e) {
+		//System.out.println(sensor.getId());
+		sensorMeasurements = sensor.getMeasurements();
 	}
 
 	public void listSensors() {
@@ -123,13 +134,25 @@ public class SensorMBean {
 		this.sensorMeasurements = sensorMeasurements;
 	}
 
-	public Long getSensorId() {
-		return sensorId;
+	/*
+	 * public Long getSensorId() { return sensorId; }
+	 * 
+	 * public void setSensorId(Long sensorId) { this.sensorId = sensorId; }
+	 */
+	public Map<Sensor, String> getSensorsMap() {
+		return sensorsMap;
 	}
 
-	public void setSensorId(Long sensorId) {
-		this.sensorId = sensorId;
+	public void setSensorsMap(Map<Sensor, String> sensorsMap) {
+		this.sensorsMap = sensorsMap;
 	}
-	
+
+	public SensorService getService() {
+		return service;
+	}
+
+	public void setService(SensorService service) {
+		this.service = service;
+	}
 
 }

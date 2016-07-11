@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:decorate template="Template.xhtml">
+	<ui:define name="centro">
+
+		<!--  
+		<p:outputLabel for="sensor" value="Sensor:" />
+		<p:selectOneMenu id="sensor" value="#{sensorB.sensor}" effect="fold"
+			editable="false">
+			<f:selectItem itemLabel="Select One" itemValue="sensor" />
+			<f:selectItems value="#{sensorB.sensors}" var="s"
+				itemLabel="#{s.local}  #{s.sensorType}" />
+		</p:selectOneMenu>
+		-->
+
+		<p:outputLabel for="sensor" value="Sensor" />
+		<p:selectOneMenu id="sensor" value="#{sensorB.sensor}"
+			converter="SensorConverter" panelStyle="width:180px" effect="fade"
+			var="s" style="width:160px" filter="true"
+			filterMatchMode="startsWith">
+			<f:selectItems value="#{sensorB.sensors}" var="sensor"
+				itemLabel="" itemValue="#{sensor}" />
+
+			<p:column style="width:10%">
+				<h:outputText styleClass="ui-theme ui-theme-#{s.sensorType}" />
+			</p:column>
+
+			<p:column>
+				<h:outputText value="#{s.sensorType} #{s.local}" />
+			</p:column>
+		</p:selectOneMenu>
+
+
+		<p:commandButton actionListener="#{sensorB.listMeassurements}"
+			value="List Measurements" update="tabela" />
+
+		<p:dataTable id="tabela" var="item"
+			value="#{sensorB.sensorMeasurements}" paginator="true" rows="50"
+			emptyMessage="Não há registros na lista"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="10,15,25,50,100">
+			<f:facet name="header">List of Measurements</f:facet>
+			<p:column headerText="Value" style="width: 10%;">
+				<h:outputText value="#{item.value}" />
+			</p:column>
+			<p:column headerText="Time" style="width: 25%;">
+				<h:outputText value="#{item.time}" />
+			</p:column>
+
+		</p:dataTable>
+
+
+	</ui:define>
+</ui:decorate>
+
+</html>

@@ -34,8 +34,8 @@ public class MeasurementController {
 					"Measurement value is null or empity");
 		}
 		else if (measurement.getSensor() == null
-				|| measurement.getSensor().getSensorId() == null
-				|| measurement.getSensor().getSensorId() < 0) {
+				|| measurement.getSensor().getId() == null
+				|| measurement.getSensor().getId() < 0) {
 			throw new validateDataException("Measurement sensorId is invalidy");
 		}
 

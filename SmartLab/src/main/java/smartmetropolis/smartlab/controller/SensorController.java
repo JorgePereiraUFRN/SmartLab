@@ -30,9 +30,8 @@ public class SensorController {
 		if (sensor == null) {
 			throw new validateDataException("Sensor is null");
 
-		} else if (sensor.getLocal() == null || sensor.getLocal().equals("")) {
-			throw new validateDataException("invalid local: "
-					+ sensor.getLocal());
+		} else if (sensor.getRoom()== null || sensor.getRoom().getId() == null) {
+			throw new validateDataException("invalid room");
 		} else if (sensor.getSensorType() == null) {
 			throw new validateDataException("Sensor Type is null");
 		}
@@ -50,8 +49,8 @@ public class SensorController {
 			DAOException {
 		validateData(sensor);
 
-		if (sensor.getSensorId() == null || sensor.getSensorId() < 0) {
-			throw new validateDataException("invalid Id: " + sensor.getSensorId());
+		if (sensor.getId() == null || sensor.getId() < 0) {
+			throw new validateDataException("invalid Id: " + sensor.getId());
 		}
 		return sensorDao.update(sensor);
 
