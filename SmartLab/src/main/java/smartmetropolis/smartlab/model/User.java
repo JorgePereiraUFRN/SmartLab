@@ -17,7 +17,7 @@ public class User {
 	private Float preferenceTemperature;
 
 	@OneToMany(cascade=CascadeType.REMOVE)
-	@JoinColumn(name="user_id")
+	@JoinColumn(name="user_login")
 	private List<Scheduling> schedulings = new ArrayList<Scheduling>();
 
 	public User() {

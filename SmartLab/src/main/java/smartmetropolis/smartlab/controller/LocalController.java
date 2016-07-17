@@ -29,7 +29,7 @@ public class LocalController {
 
 		if (local == null) {
 			throw new validateDataException("Local null");
-		} else if (local.getName() == null || local.getName().equals("")) {
+		} else if (local.getLocaName() == null || local.getLocaName().equals("")) {
 			throw new validateDataException("Local name is null");
 		}
 	}
@@ -44,10 +44,6 @@ public class LocalController {
 			DAOException {
 		validateLocal(local);
 
-		if (local.getId() == null || local.getId() < 0) {
-			throw new validateDataException("Invalid local id");
-		}
-
 		return localDao.update(local);
 	}
 
@@ -55,14 +51,14 @@ public class LocalController {
 		return localDao.findAll(Local.class);
 	}
 
-	public Local findLocal(Long localId) throws DAOException {
+	public Local findLocal(String localName) throws DAOException {
 
-		return localDao.findById(Local.class, localId);
+		return localDao.findById(Local.class, localName);
 	}
 
-	public void deleteLocal(Long localId) throws DAOException {
+	public void deleteLocal(String locaName) throws DAOException {
 
-		Local l = findLocal(localId);
+		Local l = findLocal(locaName);
 
 		if (l != null) {
 			localDao.delete(l);

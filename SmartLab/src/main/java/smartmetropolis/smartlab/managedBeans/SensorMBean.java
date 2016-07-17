@@ -12,10 +12,14 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import smartmetropolis.smartlab.controller.LocalController;
+import smartmetropolis.smartlab.controller.RoomController;
 import smartmetropolis.smartlab.controller.SensorController;
 import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.exceptions.validateDataException;
+import smartmetropolis.smartlab.model.Local;
 import smartmetropolis.smartlab.model.Measurement;
+import smartmetropolis.smartlab.model.Room;
 import smartmetropolis.smartlab.model.Sensor;
 import smartmetropolis.smartlab.model.SensorType;
 
@@ -25,42 +29,71 @@ public class SensorMBean {
 	private Sensor sensor;
 	private List<Sensor> sensors = new ArrayList<Sensor>();
 	private Map<SensorType, String> sensorsType;
-	private Map<Sensor, String> sensorsMap;
-	private List<Measurement> sensorMeasurements = new ArrayList<Measurement>();
-	// private long sensorId;
+	private String localName;
+	private Map<String, String> localsMap;
+	private Map<String, String> roomsMap;
+	
+	private LocalController localController;
+	//private RoomController roomController;
 
 	private SensorController sensorController;
-
-	@ManagedProperty("#{themeService}")
-	private SensorService service;
 
 	@PostConstruct
 	public void init() {
 		sensor = new Sensor();
-		sensorController = SensorController.getInstance();
 
+		sensorController = SensorController.getInstance();
+		localController = LocalController.getInstance();
+		//roomController = RoomController.getInstance();
+		
+		initSensorsTypeMap();
+		initLocalsMap();
+
+	}
+
+	private void initSensorsTypeMap() {
 		sensorsType = new HashMap<SensorType, String>();
 
-		sensorsType.put(SensorType.HUMIDITY, SensorType.HUMIDITY.toString());
+		sensorsType.put(SensorType.HUMIDITY, SensorType.OTHER.toString());
 		sensorsType.put(SensorType.OTHER, SensorType.OTHER.toString());
 		sensorsType.put(SensorType.PRESENCE, SensorType.PRESENCE.toString());
 		sensorsType.put(SensorType.TEMPERATURE,
 				SensorType.TEMPERATURE.toString());
+	}
+	
+	
+	private void initLocalsMap(){
 		
-		service = new SensorService();
-		sensors = service.getSensors();
-
-		/*sensorsMap = new HashMap<Sensor, String>();
 		try {
-			sensors = sensorController.findSensors();
-			for (Sensor s : sensors) {
-				sensorsMap.put(s, s.getSensorType() + " " + s.getLocal());
+			List<Local> locals = localController.findAllLocals();
+			localsMap = new HashMap<String, String>();
+			
+			for(Local l : locals){
+				localsMap.put(l.getLocaName(), l.getLocaName());
 			}
 		} catch (DAOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
-
+		}
+		
+	}
+	
+	public void initRoomsMap(){
+		
+		roomsMap  = new HashMap<String, String>();
+		
+		try {
+			Local l = localController.findLocal(localName);
+			
+			for(Room r : l.getRooms()){
+				roomsMap.put(r.getRoomName(), r.getRoomName());
+			}
+			
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void saveSensor() {
@@ -84,11 +117,6 @@ public class SensorMBean {
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
 							"Save Sensor: ", e.getMessage()));
 		}
-	}
-
-	public void listMeassurements(ActionEvent e) {
-		//System.out.println(sensor.getId());
-		sensorMeasurements = sensor.getMeasurements();
 	}
 
 	public void listSensors() {
@@ -124,35 +152,6 @@ public class SensorMBean {
 
 	public void setSensorsType(Map<SensorType, String> sensorsType) {
 		this.sensorsType = sensorsType;
-	}
-
-	public List<Measurement> getSensorMeasurements() {
-		return sensorMeasurements;
-	}
-
-	public void setSensorMeasurements(List<Measurement> sensorMeasurements) {
-		this.sensorMeasurements = sensorMeasurements;
-	}
-
-	/*
-	 * public Long getSensorId() { return sensorId; }
-	 * 
-	 * public void setSensorId(Long sensorId) { this.sensorId = sensorId; }
-	 */
-	public Map<Sensor, String> getSensorsMap() {
-		return sensorsMap;
-	}
-
-	public void setSensorsMap(Map<Sensor, String> sensorsMap) {
-		this.sensorsMap = sensorsMap;
-	}
-
-	public SensorService getService() {
-		return service;
-	}
-
-	public void setService(SensorService service) {
-		this.service = service;
 	}
 
 }

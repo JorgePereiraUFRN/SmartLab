@@ -30,7 +30,10 @@ public class SensorController {
 		if (sensor == null) {
 			throw new validateDataException("Sensor is null");
 
-		} else if (sensor.getRoom()== null || sensor.getRoom().getId() == null) {
+		} else if (sensor.getRoom() == null
+				|| sensor.getRoom().getRoomName() == null
+				|| sensor.getRoom().getLocal() == null
+				|| sensor.getRoom().getLocal().getLocaName() == null) {
 			throw new validateDataException("invalid room");
 		} else if (sensor.getSensorType() == null) {
 			throw new validateDataException("Sensor Type is null");
@@ -64,11 +67,12 @@ public class SensorController {
 		return sensorDao.findAll(Sensor.class);
 	}
 
-	public void deleteSensor(long sensorId) throws DAOException, validateDataException {
+	public void deleteSensor(long sensorId) throws DAOException,
+			validateDataException {
 		Sensor sensor = sensorDao.findById(Sensor.class, sensorId);
-		if (sensor == null ) {
+		if (sensor == null) {
 			throw new validateDataException("invalid Id");
-		}		
+		}
 		sensorDao.delete(sensor);
 	}
 

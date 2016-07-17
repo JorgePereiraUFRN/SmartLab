@@ -3,42 +3,26 @@ package smartmetropolis.smartlab.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 
 @Entity
 public class Scheduling {
-	
+
 	@Id
-	@GeneratedValue
 	private Long id;
+
 	@ManyToOne
-	private Room  room;
+	@JoinColumns({ @JoinColumn(name = "roomName"),
+			@JoinColumn(name = "localName") })
+	private Room room;
+
 	@ManyToOne
 	private User user;
 	private Date date;
 	private String description;
-
-	public Scheduling() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Room getRoom() {
-		return room;
-	}
-
-	public void setRoom(Room room) {
-		this.room = room;
-	}
 
 	public User getUser() {
 		return user;
@@ -64,5 +48,24 @@ public class Scheduling {
 		this.description = description;
 	}
 
-	
+	public Scheduling() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Room getRoom() {
+		return room;
+	}
+
+	public void setRoom(Room room) {
+		this.room = room;
+	}
+
 }

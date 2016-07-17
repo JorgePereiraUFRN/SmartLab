@@ -44,7 +44,7 @@ public class SensorResourceTest {
 
 		local = new Local();
 
-		local.setName("IMD");
+		local.setLocaName("IMD");
 		local.setLatitude(40.5561462);
 		local.setLongitude(-5.672383);
 
@@ -52,12 +52,18 @@ public class SensorResourceTest {
 
 		room = new Room();
 		room.setLocal(local);
-		room.setName("B206");
+		room.setRoomName("B206");
 
 		room = roomController.saveRoom(room);
 
 		sensor.setDescription("descricao sensor");
-		sensor.setRoom(room);
+		
+		Local l = new Local();
+		l.setLocaName(local.getLocaName());
+		Room r = new Room();
+		r.setRoomName(room.getRoomName());
+		r.setLocal(l);
+		sensor.setRoom(r);
 		sensor.setSensorType(SensorType.HUMIDITY);
 
 		webServiceClient = Client.create();
@@ -67,7 +73,6 @@ public class SensorResourceTest {
 		ClientResponse response = resource.type(MediaType.APPLICATION_XML)
 				.post(ClientResponse.class, sensor);
 
-		System.out.println(response.toString());
 		sensor = response.getEntity(Sensor.class);
 		id = new AtomicLong(sensor.getId());
 	}
@@ -136,14 +141,15 @@ public class SensorResourceTest {
 
 	}
 
-	@AfterClass
+	//@AfterClass
 	public static void after() throws DAOException {
 		WebResource resource = webServiceClient.resource(uri + id.get());
 
 		resource.delete();
-/*
-		roomController.deleteRoom(room.getId());
-		localController.deleteLocal(local.getId());*/
+		/*
+		 * roomController.deleteRoom(room.getId());
+		 * localController.deleteLocal(local.getId());
+		 */
 
 	}
 

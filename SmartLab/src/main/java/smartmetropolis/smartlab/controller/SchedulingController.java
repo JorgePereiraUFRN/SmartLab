@@ -5,6 +5,7 @@ import smartmetropolis.smartlab.dao.HibernateDAOFactory;
 import smartmetropolis.smartlab.dao.SchedulingDaoInterface;
 import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.exceptions.validateDataException;
+import smartmetropolis.smartlab.model.Room;
 import smartmetropolis.smartlab.model.Scheduling;
 
 public class SchedulingController {
@@ -16,9 +17,8 @@ public class SchedulingController {
 	private SchedulingController() {
 		schedulingDao = factory.getsSchedulingDao();
 	}
-	
-	
-	public static synchronized SchedulingController getInstance(){
+
+	public static synchronized SchedulingController getInstance() {
 		return schedulingController;
 	}
 
@@ -30,7 +30,9 @@ public class SchedulingController {
 		} else if (scheduling.getDate() == null) {
 			throw new validateDataException("Invalid Date");
 		} else if (scheduling.getRoom() == null
-				|| scheduling.getRoom().getId() == null) {
+				|| scheduling.getRoom().getRoomName() == null
+				|| scheduling.getRoom().getLocal() == null
+				|| scheduling.getRoom().getLocal().getLocaName() == null) {
 			throw new validateDataException("Invalid scheduling room");
 		} else if (scheduling.getUser() == null
 				|| scheduling.getUser().getLogin() == null) {

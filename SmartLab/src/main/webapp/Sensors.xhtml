@@ -15,14 +15,26 @@
 	<h:form id="formSensor">
 		<p:panelGrid columns="4" style="horizontal-align:">
 		
-			<h:outputLabel for="sensorLocal" value="Local:" />
-			<h:inputText id="sensorLocal" value="#{sensorB.sensor.local}" />
+			
 			<h:outputLabel for="sensorType" value="Sensor Type:" />
 			<p:selectOneMenu id="sensorType" value="#{sensorB.sensor.sensorType}"
 				effect="fold" editable="false" update="">
 				<f:selectItem itemLabel="Select One" itemValue="" />
 				<f:selectItems value="#{sensorB.sensorsType}" />
 			</p:selectOneMenu>
+			
+			<p:selectOneMenu id="local" value="#{sensorB.sensor.sensorType}"
+				effect="fold" editable="false" update="">
+				<f:selectItem itemLabel="Select One" itemValue="" />
+				<f:selectItems value="#{sensorB.sensorsType}" />
+			</p:selectOneMenu>
+			
+			<p:selectOneMenu id="local" value="#{sensorB.}"
+				effect="fold" editable="false" update="">
+				<f:selectItem itemLabel="Select One" itemValue="" />
+				<f:selectItems value="#{sensorB.sensorsType}" />
+			</p:selectOneMenu>
+			
 			<h:outputLabel for="sensorDescription" value="Description:" />
 			<h:inputText id="sensordescription" value="#{sensorB.sensor.description}" />
 		</p:panelGrid>
@@ -43,7 +55,7 @@
 			<h:outputText value="#{item.id}" />
 		</p:column>
 		<p:column headerText="Local" style="width: 25%;">
-			<h:outputText value="#{item.local}" />
+			<h:outputText value="#{item.room.name}" />
 		</p:column>
 		<p:column headerText="Sensor Type" style="width: 25%;">
 			<h:outputText value="#{item.sensorType}" />

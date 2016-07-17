@@ -29,7 +29,9 @@ public class AirConditionerController {
 		if (airC == null) {
 			throw new validateDataException("Invalide Values: null");
 		}
-		if (airC.getRoom() == null || airC.getRoom().getId() == null) {
+		if (airC.getRoom() == null || airC.getRoom().getRoomName() == null
+				|| airC.getRoom().getLocal() == null
+				|| airC.getRoom().getLocal().getLocaName() == null) {
 			throw new validateDataException("Invalide Room");
 		}
 	}
