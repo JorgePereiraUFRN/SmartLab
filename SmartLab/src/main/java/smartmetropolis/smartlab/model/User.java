@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 public class User {	
@@ -15,6 +16,7 @@ public class User {
 	private String login;
 	private String password;
 	private Float preferenceTemperature;
+	private String name;
 
 	@OneToMany(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="user_login")
@@ -22,6 +24,14 @@ public class User {
 
 	public User() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Float getPreferenceTemperature() {
@@ -48,6 +58,7 @@ public class User {
 		this.password = password;
 	}
 
+	@XmlTransient
 	public List<Scheduling> getSchedulings() {
 		return schedulings;
 	}

@@ -36,7 +36,7 @@ public class MeasurementController {
 		} else if (measurement.getValue() == null
 				|| measurement.getValue().equals("")) {
 			throw new validateDataException(
-					"Measurement value is null or empity");
+					"Measurement value is null or empty");
 		} else if (measurement.getSensor() == null
 				|| measurement.getSensor().getId() == null
 				|| measurement.getSensor().getId() < 0) {

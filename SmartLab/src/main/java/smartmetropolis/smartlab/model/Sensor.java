@@ -12,6 +12,8 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 
 @XmlRootElement
 @Entity
@@ -21,6 +23,7 @@ public class Sensor {
 	@GeneratedValue
 	private Long id;
 	private SensorType sensorType;
+
 
 	@ManyToOne
 	@JoinColumns({
@@ -53,6 +56,7 @@ public class Sensor {
 		this.sensorType = sensorType;
 	}
 
+	@XmlTransient
 	public List<Measurement> getMeasurements() {
 		return measurements;
 	}

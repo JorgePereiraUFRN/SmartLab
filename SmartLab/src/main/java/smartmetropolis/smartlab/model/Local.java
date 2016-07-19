@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlTransient;
 
 
 @Entity
@@ -48,6 +49,7 @@ public class Local {
 		this.longitude = longitude;
 	}
 
+	@XmlTransient
 	public List<Room> getRooms() {
 		return rooms;
 	}

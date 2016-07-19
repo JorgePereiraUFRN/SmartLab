@@ -13,6 +13,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @IdClass(value = RoomKey.class)
@@ -61,6 +62,7 @@ public class Room {
 	 * }
 	 */
 
+	@XmlTransient
 	public List<Scheduling> getSchedulings() {
 		return schedulings;
 	}
@@ -69,6 +71,7 @@ public class Room {
 		this.schedulings = schedulings;
 	}
 
+	@XmlTransient
 	public List<Sensor> getSensors() {
 		return sensors;
 	}

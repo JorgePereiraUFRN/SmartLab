@@ -95,6 +95,7 @@ public class MeasurementResource {
 						.entity("Invalid value: null ").build();
 			}
 
+			
 			return Response.status(Response.Status.OK)
 					.entity("Measurement saved.").build();
 
