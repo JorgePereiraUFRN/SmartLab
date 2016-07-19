@@ -17,6 +17,7 @@ import smartmetropolis.smartlab.model.Room;
 public class RoomMBean {
 
 	private Room room;
+	private Local local;
 	private RoomController roomController;
 	private LocalController localController;
 	private List<Room> rooms;
@@ -27,7 +28,7 @@ public class RoomMBean {
 		room = new Room();
 		roomController = RoomController.getInstance();
 		localController = LocalController.getInstance();
-		room.setLocal(new Local());
+		local = new Local();
 
 		initMap();
 	}
@@ -39,7 +40,7 @@ public class RoomMBean {
 			List<Local> locals = localController.findAllLocals();
 
 			for (Local l : locals) {
-				localsMap.put(l.getLocaName(), l.getLocaName());
+				localsMap.put(l.getLocalName(), l.getLocalName());
 			}
 
 		} catch (DAOException e) {
@@ -54,10 +55,10 @@ public class RoomMBean {
 		try {
 
 			// Local local = localController.findLocal(localId);
-			// room.setLocal(local);
+			room.setLocal(local);
 			roomController.saveRoom(room);
 			room = new Room();
-			room.setLocal(new Local());
+			local = new Local();
 
 			listRoons();
 
@@ -102,6 +103,14 @@ public class RoomMBean {
 
 	public void setLocalsMap(Map<String, String> localsMap) {
 		this.localsMap = localsMap;
+	}
+
+	public Local getLocal() {
+		return local;
+	}
+
+	public void setLocal(Local local) {
+		this.local = local;
 	}
 
 }

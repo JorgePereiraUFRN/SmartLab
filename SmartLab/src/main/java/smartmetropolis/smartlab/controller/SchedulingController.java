@@ -32,7 +32,7 @@ public class SchedulingController {
 		} else if (scheduling.getRoom() == null
 				|| scheduling.getRoom().getRoomName() == null
 				|| scheduling.getRoom().getLocal() == null
-				|| scheduling.getRoom().getLocal().getLocaName() == null) {
+				|| scheduling.getRoom().getLocal().getLocalName() == null) {
 			throw new validateDataException("Invalid scheduling room");
 		} else if (scheduling.getUser() == null
 				|| scheduling.getUser().getLogin() == null) {

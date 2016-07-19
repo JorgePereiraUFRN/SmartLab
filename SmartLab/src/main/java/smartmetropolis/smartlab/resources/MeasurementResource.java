@@ -1,14 +1,15 @@
 package smartmetropolis.smartlab.resources;
 
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import smartmetropolis.smartlab.controller.MeasurementController;
@@ -49,9 +50,9 @@ public class MeasurementResource {
 				Date time;
 				if (datetime == null || datetime.equals("")) {
 					time = new Date(System.currentTimeMillis());
-				} else {			
+				} else {
 					DateFormat df = new SimpleDateFormat("dd-MM-yy*HH:mm:ss");
-					time = df.parse(datetime);		
+					time = df.parse(datetime);
 				}
 
 				measurement.setTime(time);
@@ -75,7 +76,35 @@ public class MeasurementResource {
 		}
 
 	}
-	
-	
+
+	@POST
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	public Response saveMeasurement(Measurement measurement) {
+		try {
+
+			if (measurement != null) {
+
+				if (measurement.getTime() == null) {
+					Date time = new Date(System.currentTimeMillis());
+					measurement.setTime(time);
+				}
+
+				measurementController.saveMeasurement(measurement);
+			} else {
+				return Response.status(Response.Status.BAD_REQUEST)
+						.entity("Invalid value: null ").build();
+			}
+
+			return Response.status(Response.Status.OK)
+					.entity("Measurement saved.").build();
+
+		} catch (DAOException e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity("Database error: " + e.getMessage()).build();
+		} catch (validateDataException e) {
+			return Response.status(Response.Status.BAD_REQUEST)
+					.entity("Invalid value: " + e.getMessage()).build();
+		}
+	}
 
 }

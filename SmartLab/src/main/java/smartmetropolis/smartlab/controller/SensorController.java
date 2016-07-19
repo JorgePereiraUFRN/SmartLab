@@ -33,7 +33,7 @@ public class SensorController {
 		} else if (sensor.getRoom() == null
 				|| sensor.getRoom().getRoomName() == null
 				|| sensor.getRoom().getLocal() == null
-				|| sensor.getRoom().getLocal().getLocaName() == null) {
+				|| sensor.getRoom().getLocal().getLocalName() == null) {
 			throw new validateDataException("invalid room");
 		} else if (sensor.getSensorType() == null) {
 			throw new validateDataException("Sensor Type is null");

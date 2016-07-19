@@ -34,7 +34,7 @@ public class SensorControllerTest {
 
 		local = new Local();
 
-		local.setLocaName("IMD");
+		local.setLocalName("IMD");
 		local.setLatitude(40.5561462);
 		local.setLongitude(-5.672383);
 
@@ -89,8 +89,8 @@ public class SensorControllerTest {
 	public static void after() throws DAOException, validateDataException {
 
 		sensorController.deleteSensor(sensor.getId());
-		roomController.deleteRoom(room.getRoomName(), local.getLocaName());
-		localController.deleteLocal(local.getLocaName());
+		roomController.deleteRoom(room.getRoomName(), local.getLocalName());
+		localController.deleteLocal(local.getLocalName());
 	}
 
 }

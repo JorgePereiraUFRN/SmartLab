@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 @Entity
 public class Local {
 	@Id
-	private String locaName;
+	private String localName;
 	
 	private double latitude;
 	private double longitude;
@@ -24,12 +24,12 @@ public class Local {
 	private List<Room> rooms = new ArrayList<Room>();
 	
 
-	public String getLocaName() {
-		return locaName;
+	public String getLocalName() {
+		return localName;
 	}
 
-	public void setLocaName(String locaName) {
-		this.locaName = locaName;
+	public void setLocalName(String localName) {
+		this.localName = localName;
 	}
 
 	public double getLatitude() {

@@ -48,7 +48,7 @@ public class MeasurementResourceTest {
 
 		local = new Local();
 
-		local.setLocaName("IMD");
+		local.setLocalName("IMD");
 		local.setLatitude(40.5561462);
 		local.setLongitude(-5.672383);
 

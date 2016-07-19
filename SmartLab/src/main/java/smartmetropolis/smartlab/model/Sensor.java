@@ -8,11 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
-
-
 
 @XmlRootElement
 @Entity
@@ -22,13 +21,16 @@ public class Sensor {
 	@GeneratedValue
 	private Long id;
 	private SensorType sensorType;
-	
+
 	@ManyToOne
+	@JoinColumns({
+			@JoinColumn(name = "room_roomName"),
+			@JoinColumn(name = "room_localName") })
 	private Room room;
 	private String description;
 
-	@OneToMany(cascade=CascadeType.REMOVE)
-	@JoinColumn(name="sensor_id")
+	@OneToMany(cascade = CascadeType.REMOVE)
+	@JoinColumn(name = "sensor_id")
 	private List<Measurement> measurements = new ArrayList<Measurement>();
 
 	public Sensor() {
@@ -58,7 +60,6 @@ public class Sensor {
 	public void setMeasurements(List<Measurement> measurements) {
 		this.measurements = measurements;
 	}
-	
 
 	public Room getRoom() {
 		return room;
@@ -75,6 +76,5 @@ public class Sensor {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
 
 }

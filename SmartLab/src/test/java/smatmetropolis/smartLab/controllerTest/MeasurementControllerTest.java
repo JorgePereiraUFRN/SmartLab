@@ -40,7 +40,7 @@ public class MeasurementControllerTest {
 		
 		local =  new Local();
 		
-		local.setLocaName("IMD");
+		local.setLocalName("IMD");
 		local.setLatitude(40.5561462);
 		local.setLongitude(-5.672383);
 		
@@ -97,8 +97,8 @@ public class MeasurementControllerTest {
 		//deleta o sensor e as medições associadas a ele
 		measurementController.deleteMeasurement(measurement.getId());
 		sensorController.deleteSensor(sensor1.getId());
-		roomController.deleteRoom(room.getRoomName(), local.getLocaName());
-		localController.deleteLocal(local.getLocaName());
+		roomController.deleteRoom(room.getRoomName(), local.getLocalName());
+		localController.deleteLocal(local.getLocalName());
 	}
 	
 

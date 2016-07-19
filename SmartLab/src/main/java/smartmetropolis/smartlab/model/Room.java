@@ -14,8 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 
-
-
 @Entity
 @IdClass(value = RoomKey.class)
 public class Room {
@@ -29,9 +27,14 @@ public class Room {
 	@ManyToOne
 	@JoinColumn(name = "localName", insertable = false, updatable = false)
 	private Local local;
-	
-	@OneToMany(cascade=CascadeType.REMOVE)
+
+	@OneToMany(cascade = CascadeType.REMOVE)
 	private List<Scheduling> schedulings = new ArrayList<Scheduling>();
+
+	@OneToMany(cascade = CascadeType.REMOVE)
+	@JoinColumns({ @JoinColumn(name = "room_roomName"),
+			@JoinColumn(name = "room_localName") })
+	private List<Sensor> sensors = new ArrayList<Sensor>();
 
 	public Local getLocal() {
 		return local;
@@ -39,7 +42,8 @@ public class Room {
 
 	public void setLocal(Local local) {
 		this.local = local;
-		localName = local.getLocaName();
+		if (local.getLocalName() != null)
+			localName = local.getLocalName();
 	}
 
 	public String getRoomName() {
@@ -50,13 +54,12 @@ public class Room {
 		this.roomName = roomName;
 	}
 
-	/*public String getLocalName() {
-		return localName;
-	}
-
-	public void setLocalName(String localName) {
-		this.localName = localName;
-	}*/
+	/*
+	 * public String getLocalName() { return localName; }
+	 * 
+	 * public void setLocalName(String localName) { this.localName = localName;
+	 * }
+	 */
 
 	public List<Scheduling> getSchedulings() {
 		return schedulings;
@@ -65,8 +68,13 @@ public class Room {
 	public void setSchedulings(List<Scheduling> schedulings) {
 		this.schedulings = schedulings;
 	}
-	
-	
 
-	
+	public List<Sensor> getSensors() {
+		return sensors;
+	}
+
+	public void setSensors(List<Sensor> sensors) {
+		this.sensors = sensors;
+	}
+
 }

@@ -44,7 +44,7 @@ public class SensorResourceTest {
 
 		local = new Local();
 
-		local.setLocaName("IMD");
+		local.setLocalName("IMD");
 		local.setLatitude(40.5561462);
 		local.setLongitude(-5.672383);
 
@@ -59,7 +59,7 @@ public class SensorResourceTest {
 		sensor.setDescription("descricao sensor");
 		
 		Local l = new Local();
-		l.setLocaName(local.getLocaName());
+		l.setLocalName(local.getLocalName());
 		Room r = new Room();
 		r.setRoomName(room.getRoomName());
 		r.setLocal(l);

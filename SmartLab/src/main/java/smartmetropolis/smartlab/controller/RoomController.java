@@ -33,8 +33,8 @@ public class RoomController {
 			throw new validateDataException("The room is null");
 		} else if (room.getRoomName() == null || room.getRoomName().equals("")) {
 			throw new validateDataException("The room name is null");
-		} else if (room.getLocal() == null || room.getLocal().getLocaName() == null
-				|| room.getLocal().getLocaName().equals("")) {
+		} else if (room.getLocal() == null || room.getLocal().getLocalName() == null
+				|| room.getLocal().getLocalName().equals("")) {
 			throw new validateDataException("The room local is null");
 		}
 	}

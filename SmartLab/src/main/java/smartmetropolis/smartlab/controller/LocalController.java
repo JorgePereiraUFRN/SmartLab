@@ -29,7 +29,7 @@ public class LocalController {
 
 		if (local == null) {
 			throw new validateDataException("Local null");
-		} else if (local.getLocaName() == null || local.getLocaName().equals("")) {
+		} else if (local.getLocalName() == null || local.getLocalName().equals("")) {
 			throw new validateDataException("Local name is null");
 		}
 	}

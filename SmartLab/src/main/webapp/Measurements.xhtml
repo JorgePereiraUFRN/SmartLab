@@ -9,39 +9,39 @@
 <ui:decorate template="Template.xhtml">
 	<ui:define name="centro">
 
-		<!--  
-		<p:outputLabel for="sensor" value="Sensor:" />
-		<p:selectOneMenu id="sensor" value="#{sensorB.sensor}" effect="fold"
-			editable="false">
-			<f:selectItem itemLabel="Select One" itemValue="sensor" />
-			<f:selectItems value="#{sensorB.sensors}" var="s"
-				itemLabel="#{s.local}  #{s.sensorType}" />
-		</p:selectOneMenu>
-		-->
+		<h:form id="formMeasurements">
+			<p:panelGrid columns="2" style="horizontal-align:">
 
-		<p:outputLabel for="sensor" value="Sensor" />
-		<p:selectOneMenu id="sensor" value="#{sensorB.sensor}"
-			converter="SensorConverter" panelStyle="width:180px" effect="fade"
-			var="s" style="width:160px" filter="true"
-			filterMatchMode="startsWith">
-			<f:selectItems value="#{sensorB.sensors}" var="sensor"
-				itemLabel="" itemValue="#{sensor}" />
+				<h:outputLabel for="local" value="Predio:" />
+				<p:selectOneMenu id="local" value="#{measurementB.localName}"
+					effect="fold" editable="false" update="">
+					<p:ajax update="room" listener="#{measurementB.initRoomsMap}" />
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems value="#{measurementB.localsMap}" />
+				</p:selectOneMenu>
 
-			<p:column style="width:10%">
-				<h:outputText styleClass="ui-theme ui-theme-#{s.sensorType}" />
-			</p:column>
+				<h:outputLabel for="room" value="Sala:" />
+				<p:selectOneMenu id="room" value="#{measurementB.roomName}"
+					effect="fold" editable="false" update="">
+					<p:ajax update="sensor" listener="#{measurementB.initSensorsMap}" />
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems value="#{measurementB.roomsMap}" />
+				</p:selectOneMenu>
 
-			<p:column>
-				<h:outputText value="#{s.sensorType} #{s.local}" />
-			</p:column>
-		</p:selectOneMenu>
+				<h:outputLabel for="sensor" value="Sala:" />
+				<p:selectOneMenu id="sensor" value="#{measurementB.sensorId}"
+					effect="fold" editable="false" update="">
+					<p:ajax update="tabela" listener="#{measurementB.listMeasurements}" />
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems value="#{measurementB.sensorsMap}" />
+				</p:selectOneMenu>
 
-
-		<p:commandButton actionListener="#{sensorB.listMeassurements}"
-			value="List Measurements" update="tabela" />
+			</p:panelGrid>
+		</h:form>
+	
 
 		<p:dataTable id="tabela" var="item"
-			value="#{sensorB.sensorMeasurements}" paginator="true" rows="50"
+			value="#{measurementB.measurements}" paginator="true" rows="50"
 			emptyMessage="Não há registros na lista"
 			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 			rowsPerPageTemplate="10,15,25,50,100">
