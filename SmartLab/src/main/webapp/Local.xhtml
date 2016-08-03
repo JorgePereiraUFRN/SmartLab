@@ -8,52 +8,58 @@
 
 <ui:decorate template="Template.xhtml">
 	<ui:define name="centro">
-            
-            <p:growl id="mensagem" showDetail="true" autoUpdate="true"
-		closable="true" />
 
-	<h:form id="formLocal">
-		<p:panelGrid columns="4" style="horizontal-align:">
-		
-			
-			<h:outputLabel for="localName" value="Nome do Setor ou Predio:" />
-			<h:inputText id="localN" value="#{localB.local.localName}" />
-			
-			<h:outputLabel for="LocalLatituide" value="Latitude:" />
-			<h:inputText id="localLat" value="#{localB.local.latitude}" />
-			
-			<h:outputLabel for="LocalLongotude" value="Longitude:" />
-			<h:inputText id="localLong" value="#{localB.local.longitude}" />
-		</p:panelGrid>
-		<p:panelGrid columns="1">
-			<h:commandButton action="#{localB.saveLocal}" value="Save"
-				update="tabela" />
-		</p:panelGrid>
-	</h:form>
+		<p:growl id="mensagem" showDetail="true" autoUpdate="true"
+			closable="true" />
+
+		<h:form id="formLocal">
+			<p:panelGrid columns="4" style="horizontal-align:">
 
 
+				<h:outputLabel for="localName" value="Nome do Setor ou Predio:" />
+				<h:inputText id="localN" value="#{localB.local.localName}" />
 
-	<p:dataTable id="tabela" var="item" value="#{localB.locals}"
-		paginator="true" rows="50" emptyMessage="Não há registros na lista"
-		paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-		rowsPerPageTemplate="10,15,25,50,100">
-		<f:facet name="header">Lista de Setores de Aulas e Predios</f:facet>
-		<p:column headerText="Nome" style="width: 10%;">
-			<h:outputText value="#{item.localName}" />
-		</p:column>
-		<p:column headerText="Latitude" style="width: 25%;">
-			<h:outputText value="#{item.latitude}" />
-		</p:column>
-		<p:column headerText="Longitude" style="width: 25%;">
-			<h:outputText value="#{item.longitude}" />
-		</p:column>
-		
-	</p:dataTable>
-	<p:commandButton value="List" id="listLocals"
-		actionListener="#{localB.listAllLocals}" update="tabela" />
-            
-            
-        </ui:define>
+				<h:outputLabel for="LocalLatituide" value="Latitude:" />
+				<h:inputText id="localLat" value="#{localB.local.latitude}" />
+
+				<h:outputLabel for="LocalLongotude" value="Longitude:" />
+				<h:inputText id="localLong" value="#{localB.local.longitude}" />
+			</p:panelGrid>
+
+			<center> <h:commandButton action="#{localB.saveLocal}"
+				style="width: 10%;" value="Salvar" update="tabela" /> </center>
+		</h:form>
+
+
+		<p:dataTable id="tabela" var="item" value="#{localB.locals}"
+			paginator="true" rows="50" emptyMessage="Não há registros na lista"
+			paginatorTemplate="{CurrentPageReport}   {PreviousPageLink} {PageLinks} {NextPageLink}  {RowsPerPageDropdown}">
+			<p:column headerText="Nome" style="width: 20%;">
+				<h:outputText value="#{item.localName}" />
+			</p:column>
+			<p:column headerText="Latitude" style="width: 20%;">
+				<h:outputText value="#{item.latitude}" />
+			</p:column>
+			<p:column headerText="Longitude" style="width: 20%;">
+				<h:outputText value="#{item.longitude}" />
+			</p:column>
+			<p:column headerText="Editar" style="width: 10%;">
+				<div align="center">
+					<h:commandButton image="/images/application_form_edit.png" />
+				</div>
+			</p:column>
+			<p:column headerText="Deletar" style="width: 10%;">
+				<div align="center">
+					<h:commandButton image="/images/delete.png" />
+				</div>
+			</p:column>
+
+		</p:dataTable>
+		<center> <p:commandButton value="Listar" id="listLocals"
+			style="width: 10%;" actionListener="#{localB.listAllLocals}"
+			update="tabela" /> </center>
+
+	</ui:define>
 </ui:decorate>
 
 </html>

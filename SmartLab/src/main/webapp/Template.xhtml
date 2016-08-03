@@ -1,50 +1,135 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>SmartLab</title>
-	<style type="text/css">
-body {
-	background-color: #eeeeee;
-	font-size: 12px
-}
-</style>
-</h:head>
-<h:body>
-	<div align="center">
-		<p:layout style="min-width:1020px;max-width:1020px;min-height:600px">
-			<p:layoutUnit position="north" size="70">
-				<ui:insert name="topo">
-                        SmartLab
-                    </ui:insert>
-			</p:layoutUnit>
+	<title>SmartRoom - <ui:insert name="title">Template</ui:insert></title>
 
-			<p:layoutUnit position="west" size="220">
-				<ui:insert name="menu">
-					<h:form>
-						<p:menu style="width: 200px">
-							<p:submenu label="Menu">
-								<p:menuitem value="Sensor" />
-								<p:menuitem value="Measurements" />
-							</p:submenu>
-						</p:menu>
-					</h:form>
-				</ui:insert>
-			</p:layoutUnit>
-			<p:layoutUnit position="center">
-				<ui:insert name="centro">
-                        O que estiver aqui ser√° substituido!
-                    </ui:insert>
-			</p:layoutUnit>
-		</p:layout>
+	<ui:insert name="headoptions" />
+
+	<!-- layout style -->
+	<link href="#{request.contextPath}/css/reset.css" rel="stylesheet"
+		type="text/css" media="screen" />
+	<link href="#{request.contextPath}/css/typography.css" rel="stylesheet"
+		type="text/css" media="screen" />
+	<link href="#{request.contextPath}/css/style.css" rel="stylesheet"
+		type="text/css" media="screen" />
+	<link href="#{request.contextPath}/css/slider.css" rel="stylesheet"
+		type="text/css" media="screen" />
+
+	<!-- jquery -->
+	<h:outputScript name="jquery/jquery.js" library="primefaces" />
+
+
+	<!-- superfish -->
+	<link rel="stylesheet" type="text/css"
+		href="#{request.contextPath}/css/superfish.css" media="screen" />
+	<script type="text/javascript"
+		src="#{request.contextPath}/scripts/hoverIntent.js"></script>
+	<script type="text/javascript"
+		src="#{request.contextPath}/scripts/superfish.js"></script>
+
+	<!-- slider -->
+	<script type="text/javascript"
+		src="#{request.contextPath}/scripts/easySlider1.5.js"></script>
+
+	<!-- initialize jquery plugins -->
+	<script type="text/javascript"
+		src="#{request.contextPath}/scripts/init.js"></script>
+	<link rel="shortcut icon" type="image/x-icon"
+		href="#{request.contextPath}/images/favicon.ico" />
+</h:head>
+
+<h:body>
+	<div id="wrapper">
+		<div id="top">
+			<div id="top-items">
+				<!-- BEGIN LOGO -->
+				<div id="logo">
+					 <img src="#{request.contextPath}/images/smart_place_icon.gif" width="380" height="310" alt="" />
+				</div>
+				<!-- END OF LOGO -->
+
+				<div id="top-right">
+					<div id="loginTop">
+						<!-- Usu·rio anÙnimo -->
+						<h:form id="formLogin">
+							<p:message id="messagelogin" for="formLogin" />
+							<h:commandLink action="reguser" value="Cadastre-se" />
+							<table>
+								<tr>
+									<td><h:inputText id="strlogin" /></td>
+									<td><h:inputSecret type="password" /></td>
+									<td><h:commandButton value="Login" /></td>
+								</tr>
+							</table>
+						</h:form>
+
+						<!-- Usu·rio Logado -->
+						<h:form>
+							<h:outputText value="Usu·rio " />
+							<strong><h:outputText /></strong>
+							<h:outputText value=" | " />
+							<h:commandLink value="Logout" />
+						</h:form>
+					</div>
+				</div>
+			</div>
+
+			<div id="navmenu-container">
+				<div id="nav-menu">
+					<!-- BEGIN TAB NAVIGATION -->
+					<ul class="sf-menu">
+						<h:form>
+							<li class="first"><h:commandLink action="home" value="HOME" /></li>
+							<li><h:commandLink value="Locais" />
+								<ul>
+									<li><h:commandLink action="Local.xhtml" value="PrÈdios" /></li>
+
+
+									<li><h:commandLink action="Room.xhtml" value="Salas" /></li>
+								</ul></li>
+
+							<li><h:commandLink action="Sensors.xhtml" value="Sensores" /></li>
+							<li><h:commandLink value="MediÁıes" />
+								<ul>
+									<li><h:commandLink action="Measurements.xhtml"
+											value="Consultar mediÁıes" /></li>
+								</ul></li>
+						</h:form>
+					</ul>
+
+					<!-- END OF  TAB NAVIGATION -->
+				</div>
+			</div>
+		</div>
+
+		<div id="middle">
+			<div id="content-bg">
+				<div id="content">
+					<div id="main">
+						<ui:insert name="centro">Corpo</ui:insert>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="footer">
+			<div id="footer-content">
+
+				<div class="float-right">
+					<p>
+						<h:outputText value="Vers„o" />
+						1.0.0
+					</p>
+				</div>
+			</div>
+			<div id="footer-bottom"></div>
+		</div>
 	</div>
 </h:body>
-
 </html>
