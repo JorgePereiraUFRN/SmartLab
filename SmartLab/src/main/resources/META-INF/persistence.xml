@@ -11,9 +11,9 @@
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.show_sql" value="true" />
-			<property name="hibernate.connection.username" value="postgres" />
+			<property name="hibernate.connection.username" value="smartplace" />
 			<property name="hibernate.connection.password" value="1234" />
-			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/smartroom" />
+			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/smartlab" />
 		</properties>
 	</persistence-unit>
 

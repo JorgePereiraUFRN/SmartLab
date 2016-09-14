@@ -59,6 +59,22 @@
 			style="width: 10%;" actionListener="#{localB.listAllLocals}"
 			update="tabela" /> </center>
 
+
+		<script type="text/javascript">
+    function hideOrShow(show) {
+        // Get the panel using its ID
+        var obj = document.getElementById("myForm:myPanel");
+        if (show) {
+            obj.style.display = "block";
+        } else {
+            obj.style.display = "none";
+        }
+    }
+    
+</script>
+
+		
+
 	</ui:define>
 </ui:decorate>
 

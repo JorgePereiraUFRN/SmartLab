@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,21 +15,19 @@ import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-
 @XmlRootElement
 @Entity
 public class Sensor {
 
 	@Id
 	@GeneratedValue
+
 	private Long id;
 	private SensorType sensorType;
 
-
 	@ManyToOne
-	@JoinColumns({
-			@JoinColumn(name = "room_roomName"),
-			@JoinColumn(name = "room_localName") })
+	@JoinColumns({ @JoinColumn(name = "room_localName"),
+			@JoinColumn(name = "room_roomName") })
 	private Room room;
 	private String description;
 
@@ -80,5 +79,13 @@ public class Sensor {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	@Override
+	public String toString() {
+		return "Sensor [id=" + id + ", sensorType=" + sensorType + ", room="
+				+ room.getRoomName() + ", description=" + description +"]";
+	}
+	
+	
 
 }

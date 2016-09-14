@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -19,7 +20,7 @@ public class Measurement {
 	private String value;
 	private Date time;
 
-	@ManyToOne 
+	@ManyToOne
 	private Sensor sensor;
 
 	public Measurement() {
@@ -59,5 +60,12 @@ public class Measurement {
 		this.id = measurementId;
 	}
 
+	@Override
+	public String toString() {
+		return "Measurement [id=" + id + ", value=" + value + ", time=" + time
+				+ ", sensor=" + sensor + "]";
+	}
+
+	
 	
 }
