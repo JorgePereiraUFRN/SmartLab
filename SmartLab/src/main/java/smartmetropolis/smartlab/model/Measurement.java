@@ -3,6 +3,7 @@ package smartmetropolis.smartlab.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -20,7 +21,7 @@ public class Measurement {
 	private String value;
 	private Date time;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	private Sensor sensor;
 
 	public Measurement() {

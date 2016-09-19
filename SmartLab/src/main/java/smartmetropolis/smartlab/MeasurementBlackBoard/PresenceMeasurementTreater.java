@@ -24,8 +24,7 @@ public class PresenceMeasurementTreater extends MeasurementTreater {
 				boolean hasPeople = Boolean
 						.parseBoolean(measurement.getValue());
 				if (hasPeople) {
-					System.out.println("existem pessoas na sala");
-					turOnAirConditioner();
+					AIR_CONTROL_UTIL.turOnAirConditioner();
 				} else {
 
 					RoomKey roomKey = new RoomKey();
@@ -38,7 +37,7 @@ public class PresenceMeasurementTreater extends MeasurementTreater {
 					if (!AIR_CONTROL_UTIL.hasPeopleInTheRoom(roomKey, 1)) {
 						// caso nao tenha sido registrada nenhuma presença nos
 						// ultimos 15 min o ar sera desligado
-						turOffAirConditioner();
+						AIR_CONTROL_UTIL.turOffAirConditioner();
 					}
 
 				}
@@ -58,14 +57,5 @@ public class PresenceMeasurementTreater extends MeasurementTreater {
 
 	}
 
-	private void turOnAirConditioner() {
-		System.out.println("ligando ar condicionado");
-		AIR_CONTROL_UTIL.registerAirChange();
-	}
-
-	private void turOffAirConditioner() {
-		System.out.println("desligando ar condicionado");
-		AIR_CONTROL_UTIL.registerAirChange();
-	}
 
 }

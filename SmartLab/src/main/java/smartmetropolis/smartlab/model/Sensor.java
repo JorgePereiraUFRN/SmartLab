@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -21,13 +22,10 @@ public class Sensor {
 
 	@Id
 	@GeneratedValue
-
 	private Long id;
 	private SensorType sensorType;
 
 	@ManyToOne
-	@JoinColumns({ @JoinColumn(name = "room_localName"),
-			@JoinColumn(name = "room_roomName") })
 	private Room room;
 	private String description;
 
@@ -83,9 +81,7 @@ public class Sensor {
 	@Override
 	public String toString() {
 		return "Sensor [id=" + id + ", sensorType=" + sensorType + ", room="
-				+ room.getRoomName() + ", description=" + description +"]";
+				+ room.getRoomName() + ", description=" + description + "]";
 	}
-	
-	
 
 }

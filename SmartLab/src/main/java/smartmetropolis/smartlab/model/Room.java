@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -21,7 +22,6 @@ public class Room {
 
 	@Id
 	private String roomName;
-
 	@Id
 	private String localName;
 
@@ -29,13 +29,14 @@ public class Room {
 	@JoinColumn(name = "localName", insertable = false, updatable = false)
 	private Local local;
 
-	@OneToMany(cascade = CascadeType.REMOVE)
+	@OneToMany(cascade = CascadeType.REMOVE, mappedBy = "room")
 	private List<Scheduling> schedulings = new ArrayList<Scheduling>();
 
-	@OneToMany(cascade = CascadeType.REMOVE)
-	@JoinColumns({ @JoinColumn(name = "room_roomName"),
-			@JoinColumn(name = "room_localName") })
+	@OneToMany(cascade = CascadeType.REMOVE, mappedBy = "room")	
 	private List<Sensor> sensors = new ArrayList<Sensor>();
+
+	@OneToMany(cascade = CascadeType.REMOVE, mappedBy = "room")
+	private List<AirConditioner> airConditioners = new ArrayList<AirConditioner>();
 
 	public Local getLocal() {
 		return local;

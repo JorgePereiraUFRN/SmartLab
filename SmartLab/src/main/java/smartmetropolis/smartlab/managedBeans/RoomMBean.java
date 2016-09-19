@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 import smartmetropolis.smartlab.controller.LocalController;
 import smartmetropolis.smartlab.controller.RoomController;

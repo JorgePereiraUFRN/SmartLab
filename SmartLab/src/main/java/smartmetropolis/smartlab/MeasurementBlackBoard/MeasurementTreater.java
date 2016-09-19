@@ -11,7 +11,7 @@ public abstract class MeasurementTreater{
 	public void setNext(MeasurementTreater measurementTreater){
 		if(this.next == null){
 			this.next = measurementTreater;
-			System.out.println("setando next");
+
 		}else{
 			this.next.setNext(measurementTreater);
 		}

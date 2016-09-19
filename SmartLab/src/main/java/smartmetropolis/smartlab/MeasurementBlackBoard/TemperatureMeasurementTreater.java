@@ -41,13 +41,13 @@ public class TemperatureMeasurementTreater extends MeasurementTreater {
 							int diference = 20 - (int) temperature;
 
 							for (int i = 0; i < diference; i++) {
-								increaseTemperature();
+								AIR_CONTROL_UTIL.increaseTemperature();
 							}
 						} else if (temperature > 23.0) {
 							int diference = (int) temperature - 23;
 
 							for (int i = 0; i < diference; i++) {
-								decreaseTemperature();
+								AIR_CONTROL_UTIL.decreaseTemperature();
 							}
 							
 						}
@@ -60,7 +60,7 @@ public class TemperatureMeasurementTreater extends MeasurementTreater {
 			} else {
 				// caso natenha sido registrada nenhuma presença nos ultimos 15
 				// min o ar sera desligado
-				turOffAirConditioner();
+				AIR_CONTROL_UTIL.turOffAirConditioner();
 			}
 
 		} else {
@@ -75,19 +75,7 @@ public class TemperatureMeasurementTreater extends MeasurementTreater {
 
 	}
 
-	private void turOffAirConditioner() {
-		System.out.println("desligando ar condicionado");
-		AIR_CONTROL_UTIL.registerAirChange();
-	}
-
-	private void increaseTemperature() {
-		System.out.println("aumentando temp do ar condicionado");
-		AIR_CONTROL_UTIL.registerAirChange();
-	}
-
-	private void decreaseTemperature() {
-		System.out.println("diminuindo temp do ar condicionado");
-		AIR_CONTROL_UTIL.registerAirChange();
-	}
+	
+	
 
 }

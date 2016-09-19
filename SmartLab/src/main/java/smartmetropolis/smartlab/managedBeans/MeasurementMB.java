@@ -61,6 +61,7 @@ public class MeasurementMB {
 
 	public void initRoomsMap() {
 
+		System.out.println("romm map");
 		roomsMap = new HashMap<String, String>();
 
 		try {
@@ -82,15 +83,19 @@ public class MeasurementMB {
 
 		sensorsMap = new HashMap<String, String>();
 
+		System.out.println("sensors map "+roomName+localName);
 		try {
 			Room r = roomController.findRoom(roomName, localName);
 			if (r != null) {
+				System.out.println(r.getSensors().size());
 				for (Sensor s : r.getSensors()) {
 					sensorsMap.put(
 							"sensor id: " + s.getId() + " tipo: "
 									+ s.getSensorType(), s.getId().toString());
 
 				}
+			}else{
+				System.out.println("sensor nulo");
 			}
 
 		} catch (DAOException e) {

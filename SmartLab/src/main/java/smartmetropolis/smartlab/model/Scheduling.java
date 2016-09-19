@@ -2,6 +2,7 @@ package smartmetropolis.smartlab.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -14,12 +15,10 @@ public class Scheduling {
 	@Id
 	private Long id;
 
-	@ManyToOne
-	@JoinColumns({ @JoinColumn(name = "roomName"),
-			@JoinColumn(name = "localName") })
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	private Room room;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	private User user;
 	private Date date;
 	private String description;
