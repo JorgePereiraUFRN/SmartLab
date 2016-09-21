@@ -1,7 +1,10 @@
 package smartmetropolis.smartlab.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.sun.org.apache.bcel.internal.generic.FNEG;
 
 import smartmetropolis.smartlab.dao.AirConditionerStateDao;
 import smartmetropolis.smartlab.dao.AirConditionerStateDaoInterface;
@@ -11,14 +14,14 @@ import smartmetropolis.smartlab.model.AirConditionerState;
 
 public class AirConditionerStateController {
 
-	private static final AirConditionerController AIR_CONDITIONER_CONTROLLER = new AirConditionerController();
+	private static final AirConditionerStateController AIR_CONDITIONER_CONTROLLER = new AirConditionerStateController();
 	private static final AirConditionerStateDaoInterface airStateDao = new AirConditionerStateDao();
 
 	private AirConditionerStateController() {
 
 	}
 
-	public static AirConditionerController getInstance() {
+	public static AirConditionerStateController getInstance() {
 		return AIR_CONDITIONER_CONTROLLER;
 	}
 
@@ -65,6 +68,26 @@ public class AirConditionerStateController {
 		return airStateDao.findAll(AirConditionerState.class);
 	}
 
+	
+	public List<AirConditionerState> listByRoomAndDate(String roomName, String localName, Date initialDate, Date finalDate) throws DAOException, validateDataException{
+		
+		if(initialDate == null || finalDate == null){
+			throw new validateDataException("invalid date: null");
+		}
+		
+		List<AirConditionerState> states = airStateDao.listByDate(initialDate, finalDate);
+		List<AirConditionerState> aux = new ArrayList<AirConditionerState>();
+		
+		for(AirConditionerState as : states){
+
+			if(as.getAirConditioner().getRoom().getLocalName().equals(localName) && as.getAirConditioner().getRoom().getRoomName().equals(roomName)){
+				aux.add(as);
+			}
+		}
+		
+		return aux;
+		
+	}
 	
 	
 	public AirConditionerState findById(Long id) throws DAOException {

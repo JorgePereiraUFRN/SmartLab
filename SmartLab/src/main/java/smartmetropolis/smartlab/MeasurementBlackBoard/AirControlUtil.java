@@ -2,40 +2,55 @@ package smartmetropolis.smartlab.MeasurementBlackBoard;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.core.Response;
+
+import org.apache.log4j.Logger;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
+import smartmetropolis.smartlab.controller.AirConditionerStateController;
 import smartmetropolis.smartlab.controller.MeasurementController;
 import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.exceptions.TreaterException;
+import smartmetropolis.smartlab.exceptions.validateDataException;
+import smartmetropolis.smartlab.model.AirConditioner;
+import smartmetropolis.smartlab.model.AirConditionerAction;
+import smartmetropolis.smartlab.model.AirConditionerState;
 import smartmetropolis.smartlab.model.Measurement;
+import smartmetropolis.smartlab.model.Room;
 import smartmetropolis.smartlab.model.RoomKey;
 import smartmetropolis.smartlab.model.SensorType;
 
-public class AirControlUtil {
+public class AirControlUtil implements AirControl {
 
-	private static final AirControlUtil AIR_CONTROL_UTIL =  new AirControlUtil();
+	private static final AirControlUtil AIR_CONTROL_UTIL = new AirControlUtil();
 	private static final Calendar calendar = Calendar.getInstance();
-
+	private static final AirConditionerStateController AIR_STATE_CONTROLLER = AirConditionerStateController.getInstance();
+	private Map<Room, Date> lastAirChange = new HashMap<Room, Date>();
+	
+	private Logger logger = Logger.getLogger(AirControlUtil.class);
+	
 	private static Client webServiceClient;
-	private static String uri = "http://10.7.172.254:8080/WS-AirConditioner/air-conditioner/";
 
-	private static volatile Date lastAirChange = null;
 
 	private AirControlUtil() {
-		
+
 	}
 
 	public static synchronized AirControlUtil getInstance() {
 		return AIR_CONTROL_UTIL;
 	}
 
+	/* (non-Javadoc)
+	 * @see smartmetropolis.smartlab.MeasurementBlackBoard.AirControl#hasPeopleInTheRoom(smartmetropolis.smartlab.model.RoomKey, int)
+	 */
 	public boolean hasPeopleInTheRoom(RoomKey roomKey, int minutes)
 			throws TreaterException {
 		try {
@@ -51,7 +66,7 @@ public class AirControlUtil {
 							calendar.getTime(), roomKey, SensorType.PRESENCE);
 
 			for (Measurement m : measurements) {
-				
+
 				try {
 					boolean b = Boolean.parseBoolean(m.getValue());
 					// caso alguma das medições indique q existe pessoa na sala
@@ -78,11 +93,17 @@ public class AirControlUtil {
 
 	}
 
-	public Long timeFromLastAirChange() {
+	/* (non-Javadoc)
+	 * @see smartmetropolis.smartlab.MeasurementBlackBoard.AirControl#timeFromLastAirChange(smartmetropolis.smartlab.model.Room)
+	 */
+	public Long timeFromLastAirChange(Room room) {
 
-		if (lastAirChange == null) {
+		
+		if (lastAirChange.get(room) == null) {
+			
 			calendar.setTimeInMillis(System.currentTimeMillis());
-			lastAirChange = calendar.getTime();
+			Date dt = calendar.getTime();
+			lastAirChange.put(room, dt);
 
 			// na primeira vez q esse metodo for chamado o tempo retornado será
 			// de 100 min
@@ -92,7 +113,7 @@ public class AirControlUtil {
 			// tempo em minutos
 			calendar.setTimeInMillis(System.currentTimeMillis());
 			long duration = calendar.getTime().getTime()
-					- lastAirChange.getTime();
+					- lastAirChange.get(room).getTime();
 
 			long result = TimeUnit.MILLISECONDS.toSeconds(duration);
 			return result;
@@ -101,69 +122,139 @@ public class AirControlUtil {
 
 	}
 
-	public void turOnAirConditioner() {
-		try {
-			webServiceClient = Client.create();
-			WebResource resource = webServiceClient.resource(uri + "tur-on");
-
-			resource.put();
-
-			System.out.println("ligando ar");
-			lastAirChange = calendar.getTime();
-		} catch (Exception e) {
-			System.out
-					.println("erro ao enviar requisição (ligar) para o controlador do condicionado: "
-							+ e.getMessage());
-		}
+	private void turOnAirConditioner(AirConditioner airConditioner) throws DAOException, validateDataException {
+		
+		logger.info("acionando aparelho de ar-condicionado: "+airConditioner);
+		
+		sendCommandToAirConditionerControl(airConditioner, "tur-on");
+		
+		AirConditionerState airState = new AirConditionerState();
+		airState.setAction(AirConditionerAction.ligar);
+		airState.setAirConditioner(airConditioner);
+		airState.setTimestamp(new Date(System.currentTimeMillis()));
+		
+		AIR_STATE_CONTROLLER.save(airState);
 	}
 
-	public void turOffAirConditioner() {
-		try {
-			webServiceClient = Client.create();
-			WebResource resource = webServiceClient.resource(uri + "tur-off");
+	private void turOffAirConditioner(AirConditioner airConditioner) throws DAOException, validateDataException {
+		
+		logger.info("desligando aparelho de ar-condicionado: "+airConditioner);
+		sendCommandToAirConditionerControl(airConditioner, "tur-off");
+		
+		AirConditionerState airState = new AirConditionerState();
+		airState.setAction(AirConditionerAction.desligar);
+		airState.setAirConditioner(airConditioner);
+		airState.setTimestamp(new Date(System.currentTimeMillis()));
+		
+		AIR_STATE_CONTROLLER.save(airState);
 
-			resource.put();
-
-			System.out.println("desligando ar");
-			lastAirChange = calendar.getTime();
-		} catch (Exception e) {
-			System.out
-					.println("erro ao enviar requisição  (desligar) para o controlador do condicionado: "
-							+ e.getMessage());
-		}
 	}
 
-	public void increaseTemperature() {
-		try {
-			webServiceClient = Client.create();
-			WebResource resource = webServiceClient.resource(uri
-					+ "increase-temp");
-
-			resource.put();
-
-			System.out.println("aumentando temperatura");
-			lastAirChange = calendar.getTime();
-		} catch (Exception e) {
-			System.out
-					.println("erro ao enviar requisição (aumentar temp) para o controlador do condicionado: "
-							+ e.getMessage());
-		}
+	private void increaseTemperature(AirConditioner airConditioner)
+			throws DAOException, validateDataException {
+		logger.info("aumentando temperatura: "+airConditioner);
+		
+		sendCommandToAirConditionerControl(airConditioner, "increase-temp");
+		
+		AirConditionerState airState = new AirConditionerState();
+		airState.setAction(AirConditionerAction.aumentar_temperatura);
+		airState.setAirConditioner(airConditioner);
+		airState.setTimestamp(new Date(System.currentTimeMillis()));
+		
+		AIR_STATE_CONTROLLER.save(airState);
+		
 	}
 
-	public void decreaseTemperature() {
+	private void decreaseTemperature(AirConditioner airConditioner) throws DAOException, validateDataException {
+		logger.info("diminuindo temperatura: "+airConditioner);
+		sendCommandToAirConditionerControl(airConditioner, "decrease-temp");
+		
+		AirConditionerState airState = new AirConditionerState();
+		airState.setAction(AirConditionerAction.diminuir_temperatura);
+		airState.setAirConditioner(airConditioner);
+		airState.setTimestamp(new Date(System.currentTimeMillis()));
+		
+		AIR_STATE_CONTROLLER.save(airState);
+	}
+	
+	
+	private void updateTimeFromLastAirChange(Room room){
+		lastAirChange.remove(room);
+		calendar.setTimeInMillis(System.currentTimeMillis());
+		Date dt = calendar.getTime();
+		lastAirChange.put(room, dt);
+	}
+	
+
+	/* (non-Javadoc)
+	 * @see smartmetropolis.smartlab.MeasurementBlackBoard.AirControl#turOffAllAirCofRomm(smartmetropolis.smartlab.model.Room)
+	 */
+	public void turOffAllAirCofRomm(Room room) throws DAOException, validateDataException {
+		logger.info("desligando todos os aprelhos da sala: "
+				+ room);
+		for (AirConditioner airC : room.getAirConditioners()) {
+			turOffAirConditioner(airC);
+		}
+	
+		updateTimeFromLastAirChange(room);
+		
+
+	}
+
+	/* (non-Javadoc)
+	 * @see smartmetropolis.smartlab.MeasurementBlackBoard.AirControl#increaseTemperatureAllAirCofRoom(smartmetropolis.smartlab.model.Room)
+	 */
+	public void increaseTemperatureAllAirCofRoom(Room room) throws DAOException, validateDataException {
+		logger.info("aumentando temperatura de todos os aprelhos da sala: "
+						+ room);
+		for (AirConditioner airC : room.getAirConditioners()) {
+			increaseTemperature(airC);
+		}
+
+		updateTimeFromLastAirChange(room);
+	}
+
+	/* (non-Javadoc)
+	 * @see smartmetropolis.smartlab.MeasurementBlackBoard.AirControl#turOnAllAirCofRoomr(smartmetropolis.smartlab.model.Room)
+	 */
+	public void turOnAllAirCofRoomr(Room room) throws DAOException, validateDataException {
+
+		logger.info("ligando todos os aprelhos da sala: "
+				+ room);
+
+		for (AirConditioner airC : room.getAirConditioners()) {
+			turOnAirConditioner(airC);
+		}
+
+		updateTimeFromLastAirChange(room);
+	}
+
+	/* (non-Javadoc)
+	 * @see smartmetropolis.smartlab.MeasurementBlackBoard.AirControl#decreaseTemperatureAllAirCofRoom(smartmetropolis.smartlab.model.Room)
+	 */
+	public void decreaseTemperatureAllAirCofRoom(Room room) throws DAOException, validateDataException {
+		logger.info("diminuindo temperatura de todos os aprelhos da sala: "
+						+ room);
+		for (AirConditioner airC : room.getAirConditioners()) {
+			decreaseTemperature(airC);
+		}
+		
+		updateTimeFromLastAirChange(room);
+
+	}
+
+	private void sendCommandToAirConditionerControl(
+			AirConditioner airConditioner, String command) {
 		try {
-			webServiceClient = Client.create();
+			/*webServiceClient = Client.create();
 
-			WebResource resource = webServiceClient.resource(uri
-					+ "decrease-temp");
+			String uri = "http://" + airConditioner.getIpaddressAirControl()
+					+ ":8080/WS-AirConditioner/air-conditioner/";
+			WebResource resource = webServiceClient.resource(uri + command);
 
-			resource.put();
-
-			System.out.println("diminuindo temperatura");
-			lastAirChange = calendar.getTime();
+			resource.put();*/
 		} catch (Exception e) {
-			System.out
-					.println("erro ao enviar requisição (diminuir temp) para o controlador do condicionado: "
+			logger.error("erro ao enviar requisição para o controlador do condicionado: "
 							+ e.getMessage());
 		}
 	}

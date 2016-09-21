@@ -56,10 +56,10 @@ public class SensorMBean {
 		sensorsType = new HashMap<SensorType, String>();
 
 		sensorsType.put(SensorType.HUMIDITY, SensorType.HUMIDITY.toString());
-		sensorsType.put(SensorType.OTHER, SensorType.OTHER.toString());
 		sensorsType.put(SensorType.PRESENCE, SensorType.PRESENCE.toString());
 		sensorsType.put(SensorType.TEMPERATURE,
 				SensorType.TEMPERATURE.toString());
+		sensorsType.put(SensorType.OTHER, SensorType.OTHER.toString());
 	}
 
 	private void initLocalsMap() {

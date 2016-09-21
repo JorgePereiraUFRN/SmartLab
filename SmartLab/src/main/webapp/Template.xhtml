@@ -95,11 +95,20 @@
 									<li><h:commandLink action="Room.xhtml" value="Salas" /></li>
 								</ul></li>
 
-							<li><h:commandLink action="Sensors.xhtml" value="Sensores" /></li>
+							
+							
+							<li><h:commandLink value="Dispositivos" />
+								<ul>
+									<li><h:commandLink action="Sensors.xhtml" value="Sensores" /></li>
+									<li><h:commandLink action="AirConditioner.xhtml" value="Aparelhos de ar-condicionado" /></li>
+								</ul></li>
+								
 							<li><h:commandLink value="Medições" />
 								<ul>
 									<li><h:commandLink action="Measurements.xhtml"
 											value="Consultar medições" /></li>
+									<li><h:commandLink action="AirConditionerHistorical.xhtml"
+											value="Histórico do ar-condicionado" /></li>
 								</ul></li>
 						</h:form>
 					</ul>

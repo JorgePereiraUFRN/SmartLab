@@ -56,4 +56,13 @@ public class AirConditionerState {
 		this.timestamp = timestamp;
 	}
 
+	@Override
+	public String toString() {
+		return "AirConditionerState [id=" + id + ", action=" + action
+				+ ", timestamp=" + timestamp + ", airConditioner="
+				+ airConditioner + "]";
+	}
+	
+	
+
 }

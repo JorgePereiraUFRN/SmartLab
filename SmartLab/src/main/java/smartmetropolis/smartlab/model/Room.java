@@ -81,4 +81,27 @@ public class Room {
 		this.sensors = sensors;
 	}
 
+	public String getLocalName() {
+		return localName;
+	}
+
+	public void setLocalName(String localName) {
+		this.localName = localName;
+	}
+
+	public List<AirConditioner> getAirConditioners() {
+		return airConditioners;
+	}
+
+	public void setAirConditioners(List<AirConditioner> airConditioners) {
+		this.airConditioners = airConditioners;
+	}
+
+	@Override
+	public String toString() {
+		return "Room [roomName=" + roomName + ", localName=" + localName + "]";
+	}
+	
+	
+
 }

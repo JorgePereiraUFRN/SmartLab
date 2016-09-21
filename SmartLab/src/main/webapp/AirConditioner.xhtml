@@ -12,45 +12,36 @@
 		<p:growl id="mensagem" showDetail="true" autoUpdate="true"
 			closable="true" />
 
-		<h:form id="formSensor">
+		<h:form id="formAirC">
 			<p:panelGrid columns="4" style="horizontal-align:">
 
 
-				<h:outputLabel for="sensorType" value="Tipo do Sensor:" />
-
-				<p:selectOneMenu id="sensorType"
-					value="#{sensorB.sensor.sensorType}" effect="fold" editable="false"
-					update="">
-					<f:selectItem itemLabel="Select One" itemValue="" />
-					<f:selectItems value="#{sensorB.sensorsType}" />
-				</p:selectOneMenu>
-
 				<h:outputLabel for="LocalS" value="Prédio:" />
-				<p:selectOneMenu id="LocalS" value="#{sensorB.local.localName}"
+				<p:selectOneMenu id="LocalS" value="#{airConditionerB.localName}"
 					effect="fold" editable="false" update="">
-					<p:ajax update="RoomS" listener="#{sensorB.initRoomsMap}" />
+					<p:ajax update="RoomS" listener="#{airConditionerB.initRoomsMap}" />
 					<f:selectItem itemLabel="Select One" itemValue="" />
-					<f:selectItems value="#{sensorB.localsMap}" />
+					<f:selectItems value="#{airConditionerB.localsMap}" />
 				</p:selectOneMenu>
 
 				<h:outputLabel for="RoomS" value="Sala:" />
-				<p:selectOneMenu id="RoomS" value="#{sensorB.room.roomName}"
+				<p:selectOneMenu id="RoomS" value="#{airConditionerB.roomName}"
 					effect="fold" editable="false" update="">
 					<f:selectItem itemLabel="Select One" itemValue="" />
-					<f:selectItems value="#{sensorB.roomsMap}" />
+					<f:selectItems value="#{airConditionerB.roomsMap}" />
 				</p:selectOneMenu>
 
-				<h:outputLabel for="sensorDescription" value="Descrição:" />
+				<h:outputLabel for="AirIp" value="Endereço IP do Controlador:" />
 				<h:inputText id="sensorDescription"
-					value="#{sensorB.sensor.description}" />
+					value="#{airConditionerB.airConditioner.ipaddressAirControl}" />
 			</p:panelGrid>
-			<center> <h:commandButton action="#{sensorB.saveSensor}"
+			<center> <h:commandButton action="#{airConditionerB.saveAirconditioner}"
 				value="Save" style="width: 10%;" update="tabela" /> </center>
 		</h:form>
 
 
 
-		<p:dataTable id="tabela" var="item" value="#{sensorB.sensors}"
+		<p:dataTable id="tabela" var="item" value="#{airConditionerB.airConditioners}"
 			paginator="true" rows="50" emptyMessage="Não há registros na lista"
 			paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {PageLinks} {NextPageLink}  {RowsPerPageDropdown}">
 			<f:facet name="header">List of Sensors</f:facet>
@@ -58,10 +49,16 @@
 				<h:outputText value="#{item.id}" />
 			</p:column>
 			<p:column headerText="Prédio" style="width: 25%;">
+				<h:outputText value="#{item.room.localName}" />
+			</p:column>
+			<p:column headerText="Sala" style="width: 25%;">
 				<h:outputText value="#{item.room.roomName}" />
 			</p:column>
-			<p:column headerText="Tipo do Sensor" style="width: 25%;">
-				<h:outputText value="#{item.sensorType.toString()}" />
+			<p:column headerText="Ip Controlador" style="width: 25%;">
+				<h:outputText value="#{item.ipaddressAirControl}" />
+			</p:column>
+			<p:column headerText="Ligado" style="width: 25%;">
+				<h:outputText value="#{item.itsOn}" />
 			</p:column>
 			<p:column headerText="Editar" style="width: 10%;">
 				<div align="center">
@@ -75,8 +72,8 @@
 			</p:column>
 
 		</p:dataTable>
-		<center> <p:commandButton value="List" id="listsensors"
-			style="width: 10%;" actionListener="#{sensorB.listSensors}"
+		<center> <p:commandButton value="List" id="listAirC"
+			style="width: 10%;" actionListener="#{airConditionerB.listAirConditioners}"
 			update="tabela" /> </center>
 
 	</ui:define>

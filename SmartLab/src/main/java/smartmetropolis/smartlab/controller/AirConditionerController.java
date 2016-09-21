@@ -15,11 +15,11 @@ public class AirConditionerController {
 	private static final AirConditionerController AIR_CONDITIONER_CONTROLLER = new AirConditionerController();
 	private final AirConditionerDaoInterface airConditionerDao;
 
-	public AirConditionerController() {
+	private AirConditionerController() {
 		airConditionerDao = factory.getAirConditionerDao();
 	}
 
-	private static synchronized AirConditionerController getInstance() {
+	public static synchronized AirConditionerController getInstance() {
 		return AIR_CONDITIONER_CONTROLLER;
 	}
 
@@ -27,12 +27,15 @@ public class AirConditionerController {
 			throws validateDataException {
 
 		if (airC == null) {
-			throw new validateDataException("Invalide Values: null");
+			throw new validateDataException("Invalid Values: null");
 		}
 		if (airC.getRoom() == null || airC.getRoom().getRoomName() == null
 				|| airC.getRoom().getLocal() == null
 				|| airC.getRoom().getLocal().getLocalName() == null) {
-			throw new validateDataException("Invalide Room");
+			throw new validateDataException("Invalid Room");
+		}
+		if(airC.getIpaddressAirControl() == null || airC.getIpaddressAirControl().equals("")){
+			throw new validateDataException("Invalid IP Adddres of air control");
 		}
 	}
 
@@ -72,7 +75,7 @@ public class AirConditionerController {
 		return airConditionerDao.findById(AirConditioner.class, airId);
 	}
 
-	public List<AirConditioner> getAllAircAirConditioners() throws DAOException {
+	public List<AirConditioner> listAllAircAirConditioners() throws DAOException {
 		return airConditionerDao.findAll(AirConditioner.class);
 	}
 }

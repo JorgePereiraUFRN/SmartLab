@@ -21,6 +21,7 @@ public class AirConditioner {
 	private Long id;
 	@ManyToOne
 	private Room room;	
+	private String ipaddressAirControl;
 	@OneToMany(cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "airConditioner_id")
 	private List<AirConditionerState> historical = new ArrayList<AirConditionerState>();
@@ -63,7 +64,20 @@ public class AirConditioner {
 		this.historical = historical;
 	}
 
-	
+	public String getIpaddressAirControl() {
+		return ipaddressAirControl;
+	}
+
+	public void setIpaddressAirControl(String ipaddressAirControl) {
+		this.ipaddressAirControl = ipaddressAirControl;
+	}
+
+	@Override
+	public String toString() {
+		return "AirConditioner [id=" + id + ", room=" + room
+				+ ", ipaddressAirControl=" + ipaddressAirControl + "]";
+	}
+
 	
 
 }
