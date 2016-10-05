@@ -6,8 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import jdk.internal.org.objectweb.asm.tree.IntInsnNode;
 import smartmetropolis.smartlab.controller.AirConditionerStateController;
@@ -52,8 +54,10 @@ public class AirConditionerStateMBean {
 				localsMap.put(l.getLocalName(), l.getLocalName());
 			}
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Erro ao recuperar dados: ", e.getMessage()));
 		}
 
 	}
@@ -72,8 +76,10 @@ public class AirConditionerStateMBean {
 			}
 
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Erro ao recuperar dados: ", e.getMessage()));
 		}
 	}
 
@@ -86,18 +92,19 @@ public class AirConditionerStateMBean {
 						localName, initialDate, finalDate);
 			}
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Erro ao recuperar dados: ", e.getMessage()));
 		} catch (validateDataException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Dado inválido: ", e.getMessage()));
 		}
 	}
 
-	public void method() {
-		System.out.println("dt inicio" + initialDate);
-	}
-
+	
 	public String getLocalName() {
 		return localName;
 	}

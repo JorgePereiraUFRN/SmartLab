@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import smartmetropolis.smartlab.controller.AirConditionerController;
 import smartmetropolis.smartlab.controller.LocalController;
@@ -51,8 +53,10 @@ public class AirConditionerMBean {
 				localsMap.put(l.getLocalName(), l.getLocalName());
 			}
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Erro ao recuperar dados: ", e.getMessage()));
 		}
 
 	}
@@ -72,8 +76,10 @@ public class AirConditionerMBean {
 			}
 
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Erro ao recuperar dados: ", e.getMessage()));
 		}
 
 	}
@@ -95,11 +101,15 @@ public class AirConditionerMBean {
 			}
 			
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Erro ao persistir dados: ", e.getMessage()));
 		} catch (validateDataException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Dado inválido: ", e.getMessage()));
 		}
 		
 	}
@@ -109,8 +119,10 @@ public class AirConditionerMBean {
 		try {
 			airConditioners = airController.listAllAircAirConditioners();
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Erro ao recuperar dados: ", e.getMessage()));
 		}
 	}
 

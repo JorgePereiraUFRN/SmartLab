@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import smartmetropolis.smartlab.controller.LocalController;
 import smartmetropolis.smartlab.controller.RoomController;
@@ -45,8 +47,10 @@ public class RoomMBean {
 			}
 
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Erro ao recuperar dados: ", e.getMessage()));
 		}
 
 	}
@@ -64,11 +68,15 @@ public class RoomMBean {
 			listRoons();
 
 		} catch (validateDataException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Dados inválidos! ", e.getMessage()));
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Erro ao salvar: ", e.getMessage()));
 		}
 	}
 
@@ -77,8 +85,10 @@ public class RoomMBean {
 		try {
 			rooms = roomController.findAllRooms();
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Erro ao listar salas.", e.getMessage()));
 		}
 	}
 

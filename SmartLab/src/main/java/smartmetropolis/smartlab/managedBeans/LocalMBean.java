@@ -2,7 +2,9 @@ package smartmetropolis.smartlab.managedBeans;
 
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 
 import smartmetropolis.smartlab.controller.LocalController;
 import smartmetropolis.smartlab.exceptions.DAOException;
@@ -33,11 +35,15 @@ public class LocalMBean {
 			local = new Local();
 			
 		} catch (validateDataException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Dado inválido: ", e.getMessage()));
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Erro persistir dados: ", e.getMessage()));
 		}
 		
 	}
@@ -48,8 +54,10 @@ public class LocalMBean {
 		try {
 			locals = localController.findAllLocals();
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Erro ao recuperar dados: ", e.getMessage()));
 		}
 	}
 

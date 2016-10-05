@@ -26,14 +26,13 @@ public class MeasurementController {
 	private final MeasurementDaoInterface measurementDao;
 	private final SensorDaoInterface sensorDao;
 	private static final MeasurementController MEASURAMENT_CONTROLLER = new MeasurementController();
-	
+
 	private MeasurementTreater measurementTreater;
 
-	
 	private MeasurementController() {
 		measurementDao = factory.getMeasurementDao();
 		sensorDao = factory.getSensorDao();
-		
+
 		measurementTreater = new TemperatureMeasurementTreater();
 		PresenceMeasurementTreater presenTreater = new PresenceMeasurementTreater();
 		measurementTreater.setNext(presenTreater);
@@ -73,13 +72,14 @@ public class MeasurementController {
 		validateData(measurement);
 
 		Measurement m = measurementDao.save(measurement);
-		
+
 		try {
 			measurementTreater.treaterMeasurement(m);
 		} catch (TreaterException e) {
-			System.out.println("nao foi possivel tratar a medicao: "+e.getMessage());
+			System.out.println("nao foi possivel tratar a medicao: "
+					+ e.getMessage());
 		}
-		
+
 		return m;
 
 	}
@@ -120,8 +120,26 @@ public class MeasurementController {
 				aux.add(m);
 			}
 		}
-	
+
 		return aux;
 	}
 
+	public List<Measurement> listMeasurementsBySensorAndDate(Date initialDate,
+			Date finalDate, Long sensorId) throws DAOException {
+
+		List<Measurement> measurements = measurementDao
+				.listMeasurementsBetweendDate(initialDate, finalDate);
+
+		List<Measurement> aux = new ArrayList<Measurement>();
+
+		for (Measurement m : measurements) {
+			//a operação m.getSensor().getId() == sensorId não esta funcionando :/
+			if (m.getSensor().getId() - sensorId == 0) {
+				aux.add(m);
+			}
+		}
+
+		
+		return aux;
+	}
 }

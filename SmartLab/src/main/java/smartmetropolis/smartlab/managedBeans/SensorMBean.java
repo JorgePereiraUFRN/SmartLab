@@ -28,12 +28,11 @@ public class SensorMBean {
 	private Room room;
 	private Local local;
 	private List<Sensor> sensors = new ArrayList<Sensor>();
-	private Map<SensorType, String> sensorsType;
+	private Map<SensorType, SensorType> sensorsType;
 	private Map<String, String> localsMap;
 	private Map<String, String> roomsMap;
 
 	private LocalController localController;
-	// private RoomController roomController;
 
 	private SensorController sensorController;
 
@@ -53,13 +52,13 @@ public class SensorMBean {
 	}
 
 	private void initSensorsTypeMap() {
-		sensorsType = new HashMap<SensorType, String>();
+		sensorsType = new HashMap<SensorType, SensorType>();
 
-		sensorsType.put(SensorType.HUMIDITY, SensorType.HUMIDITY.toString());
-		sensorsType.put(SensorType.PRESENCE, SensorType.PRESENCE.toString());
+		sensorsType.put(SensorType.HUMIDITY, SensorType.HUMIDITY);
+		sensorsType.put(SensorType.PRESENCE, SensorType.PRESENCE);
 		sensorsType.put(SensorType.TEMPERATURE,
-				SensorType.TEMPERATURE.toString());
-		sensorsType.put(SensorType.OTHER, SensorType.OTHER.toString());
+				SensorType.TEMPERATURE);
+		sensorsType.put(SensorType.OTHER, SensorType.OTHER);
 	}
 
 	private void initLocalsMap() {
@@ -72,8 +71,10 @@ public class SensorMBean {
 				localsMap.put(l.getLocalName(), l.getLocalName());
 			}
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Erro ao recuperar dados: ", e.getMessage()));
 		}
 
 	}
@@ -93,8 +94,10 @@ public class SensorMBean {
 			}
 
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Erro ao recuperar dados: ", e.getMessage()));
 		}
 
 	}
@@ -157,11 +160,12 @@ public class SensorMBean {
 		this.sensors = sensors;
 	}
 
-	public Map<SensorType, String> getSensorsType() {
+	
+	public Map<SensorType, SensorType> getSensorsType() {
 		return sensorsType;
 	}
 
-	public void setSensorsType(Map<SensorType, String> sensorsType) {
+	public void setSensorsType(Map<SensorType, SensorType> sensorsType) {
 		this.sensorsType = sensorsType;
 	}
 

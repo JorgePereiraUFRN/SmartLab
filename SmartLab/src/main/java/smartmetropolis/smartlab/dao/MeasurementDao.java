@@ -34,23 +34,41 @@ public class MeasurementDao extends GenericHibernateDAO<Measurement, Long>
 		return list;
 	}
 
-	/*public static void main(String ags[]) throws DAOException {
-
-		MeasurementDaoInterface measurementDao = new MeasurementDao();
-
-		Measurement m = measurementDao.findById(Measurement.class, 2l);
-
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(System.currentTimeMillis());
-		calendar.add(Calendar.MINUTE, -500);
-
-
-		List<Measurement> list = measurementDao.listMeasurementsByDate(
-				calendar.getTime());
-
-		for (Measurement me : list) {
-			System.out.println(me);
+	public List<Measurement> listMeasurementsBetweendDate(Date initialDate,
+			Date finalDate) throws DAOException {
+		List<Measurement> list = null;
+		try {
+			list = getInstance()
+					.createQuery(
+							"select m from "
+									+ Measurement.class.getSimpleName()
+									+ " m, "
+									+ Sensor.class.getSimpleName()
+									+ " s "
+									+ "where m.time between :initialDate AND :finalDate")
+					.setParameter("initialDate", initialDate)
+					.setParameter("finalDate", finalDate).getResultList();
+		} catch (Exception e) {
+			throw new DAOException(e.getMessage());
 		}
+		return list;
 	}
-*/
+
+	/*
+	 * public static void main(String ags[]) throws DAOException {
+	 * 
+	 * MeasurementDaoInterface measurementDao = new MeasurementDao();
+	 * 
+	 * Measurement m = measurementDao.findById(Measurement.class, 2l);
+	 * 
+	 * Calendar calendar = Calendar.getInstance();
+	 * calendar.setTimeInMillis(System.currentTimeMillis());
+	 * calendar.add(Calendar.MINUTE, -500);
+	 * 
+	 * 
+	 * List<Measurement> list = measurementDao.listMeasurementsByDate(
+	 * calendar.getTime());
+	 * 
+	 * for (Measurement me : list) { System.out.println(me); } }
+	 */
 }

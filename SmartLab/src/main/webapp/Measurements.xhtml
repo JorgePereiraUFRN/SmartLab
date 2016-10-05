@@ -36,6 +36,18 @@
 						style="width: 30%;" />
 					<f:selectItems value="#{measurementB.sensorsMap}" />
 				</p:selectOneMenu>
+				
+				<p:outputLabel for="datetimeInitial" value="Data Inicial:" />
+				<p:calendar id="datetimeInitial" value="#{measurementB.initialDate}"
+					pattern="dd/MM/yyyy HH:mm:ss">
+					<p:ajax update="tabela" listener="#{measurementB.listMeasurements}" />
+				</p:calendar>
+
+				<p:outputLabel for="datetimeFinal" value="Data Final:" />
+				<p:calendar id="datetimeFinal" value="#{measurementB.finalDate}"
+					pattern="dd/MM/yyyy HH:mm:ss">
+					<p:ajax update="tabela" listener="#{measurementB.listMeasurements}" />
+				</p:calendar>
 
 			</p:panelGrid>
 		</h:form>
@@ -46,14 +58,16 @@
 			emptyMessage="Não há registros na lista"
 			paginatorTemplate="{CurrentPageReport}  {PreviousPageLink} {PageLinks} {NextPageLink}  {RowsPerPageDropdown}">
 
-			<p:column headerText="Value" style="width: 10%;">
+			<p:column headerText="Valor da medição" style="width: 10%;">
 				<div align="center">
 					<h:outputText value="#{item.value}" />
 				</div>
 			</p:column>
-			<p:column headerText="Time" style="width: 25%;">
+			<p:column headerText="Data" style="width: 25%;">
 				<div align="center">
-					<h:outputText value="#{item.time}" />
+					<h:outputText value="#{item.time}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+					</h:outputText>
 				</div>
 			</p:column>
 

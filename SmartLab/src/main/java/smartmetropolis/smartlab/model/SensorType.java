@@ -2,7 +2,7 @@ package smartmetropolis.smartlab.model;
 
 public enum SensorType {
 	
-	TEMPERATURE("Sensor de Temperatura"), HUMIDITY ("Sesnor de Umidade"), PRESENCE ("Sensor de Presença"), OTHER ("Outro"); 
+	TEMPERATURE("Sensor de Temperatura"), HUMIDITY ("Sensor de Umidade"), PRESENCE ("Sensor de Presença"), OTHER ("Outro"); 
 
 	private final String value;
 
