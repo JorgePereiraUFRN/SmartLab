@@ -7,7 +7,6 @@ public abstract class MeasurementTreater{
 
 	protected MeasurementTreater next = null;
 	
-	
 	public void setNext(MeasurementTreater measurementTreater){
 		if(this.next == null){
 			this.next = measurementTreater;

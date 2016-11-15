@@ -48,18 +48,17 @@
 			<p:column headerText="Id" style="width: 10%;">
 				<h:outputText value="#{item.id}" />
 			</p:column>
-			<p:column headerText="Prédio" style="width: 25%;">
-				<h:outputText value="#{item.room.localName}" />
-			</p:column>
 			<p:column headerText="Sala" style="width: 25%;">
 				<h:outputText value="#{item.room.roomName}" />
 			</p:column>
 			<p:column headerText="Ip Controlador" style="width: 25%;">
 				<h:outputText value="#{item.ipaddressAirControl}" />
 			</p:column>
+			
 			<p:column headerText="Ligado" style="width: 25%;">
 				<h:outputText value="#{item.itsOn}" />
 			</p:column>
+			
 			<p:column headerText="Editar" style="width: 10%;">
 				<div align="center">
 					<h:commandButton image="/images/application_form_edit.png" />

@@ -1,17 +1,20 @@
 package smartmetropolis.smartlab.MeasurementBlackBoard;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import smartmetropolis.smartlab.exceptions.TreaterException;
 import smartmetropolis.smartlab.model.AirConditioner;
 import smartmetropolis.smartlab.model.Measurement;
+import smartmetropolis.smartlab.model.Room;
 import smartmetropolis.smartlab.model.RoomKey;
 import smartmetropolis.smartlab.model.SensorType;
 
 public class PresenceMeasurementTreater extends MeasurementTreater {
 
-	private AirControl AIR_CONTROL_UTIL = AirControlUtil.getInstance();
-	
+	private AirControlInterface AIR_CONTROL = AirControl.getInstance();
+
 	private Logger logger = Logger.getLogger(PresenceMeasurementTreater.class);
 
 	public PresenceMeasurementTreater() {
@@ -22,41 +25,37 @@ public class PresenceMeasurementTreater extends MeasurementTreater {
 	public void treaterMeasurement(Measurement measurement)
 			throws TreaterException {
 
-		
-		
 		if (measurement.getSensor().getSensorType() == SensorType.PRESENCE) {
 
-			logger.debug("processando dados da medição: "+measurement);
-			
+			logger.debug("processando dados da medição: " + measurement);
+
 			try {
 				boolean hasPeople = Boolean
 						.parseBoolean(measurement.getValue());
-				if (hasPeople) {
-					// ligar todos os aparelhos de ar condicionado da sala
 
-					AIR_CONTROL_UTIL.turOnAllAirCofRoomr(measurement
+				Room room = measurement.getSensor().getRoom();
+				float temperatureRoom = AIR_CONTROL.getAtualTemperature(room);
+
+				boolean airconditionersAreOn = airConditionersAreOn(measurement
+						.getSensor().getRoom().getAirConditioners());
+
+				if (hasPeople
+						&& !airconditionersAreOn
+						&& (temperatureRoom > (AIR_CONTROL.targetTemperature - 3))) {
+					// ligar todos os aparelhos de ar condicionado da sala tem > 20
+
+					AIR_CONTROL.turOnAllAirCoditionerOfRoom(measurement
 							.getSensor().getRoom());
 
-				} else {
-
-					RoomKey roomKey = new RoomKey();
-
-					roomKey.setLocalName(measurement.getSensor().getRoom()
-							.getLocal().getLocalName());
-					roomKey.setRoomName(measurement.getSensor().getRoom()
-							.getRoomName());
-
-					if (!AIR_CONTROL_UTIL.hasPeopleInTheRoom(roomKey, 1)) {
-						// caso nao tenha sido registrada nenhuma presença nos
-						// ultimos 15 min o ar sera desligado
-						AIR_CONTROL_UTIL.turOffAllAirCofRomm(measurement.getSensor().getRoom());
-					}
-
+				} else if (!AIR_CONTROL.hasPeopleInTheRoom(room, 15)
+						&& airConditionersAreOn(room.getAirConditioners())) {
+					// caso nao tenha sido registrada nenhuma presença nos
+					// ultimos 15 min o ar sera desligado
+					AIR_CONTROL.turOffAllAirConditionersOfRom(room);
 				}
 
 			} catch (Exception e) {
-				throw new TreaterException(
-						"Erro: "+e.getMessage());
+				throw new TreaterException("Erro: " + e.getMessage());
 			}
 
 		} else {
@@ -68,6 +67,17 @@ public class PresenceMeasurementTreater extends MeasurementTreater {
 			}
 		}
 
+	}
+
+	private boolean airConditionersAreOn(List<AirConditioner> airConditioners) {
+
+		for (AirConditioner a : airConditioners) {
+			if (a.getItsOn()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }

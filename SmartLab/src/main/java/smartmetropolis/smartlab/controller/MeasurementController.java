@@ -65,6 +65,27 @@ public class MeasurementController {
 			throw new validateDataException("Measurement sensorId is invalidy");
 		}
 
+		if (s.getSensorType() == SensorType.TEMPERATURE) {
+			try {
+				Float.parseFloat(measurement.getValue());
+			} catch (Exception e) {
+				throw new validateDataException("Invalid data: deve ser float");
+
+			}
+		}
+
+		else if (s.getSensorType() == SensorType.PRESENCE) {
+
+			if (!measurement.getValue().equals("true")
+					&& !measurement.getValue().equals("TRUE")
+					&& !measurement.getValue().equals("false")
+					&& !measurement.getValue().equals("FALSE")) {
+				throw new validateDataException(
+						"Invalid data: deve ser booleano (true or false)");
+
+			}
+		}
+
 	}
 
 	public Measurement saveMeasurement(Measurement measurement)
@@ -128,18 +149,16 @@ public class MeasurementController {
 			Date finalDate, Long sensorId) throws DAOException {
 
 		List<Measurement> measurements = measurementDao
-				.listMeasurementsBetweendDate(initialDate, finalDate);
+				.listMeasurementsBetweendDate(initialDate, finalDate, sensorId);
 
 		List<Measurement> aux = new ArrayList<Measurement>();
-
 		for (Measurement m : measurements) {
-			//a operação m.getSensor().getId() == sensorId não esta funcionando :/
+			// a operação m.getSensor().getId() == sensorId não esta funcionando
 			if (m.getSensor().getId() - sensorId == 0) {
 				aux.add(m);
 			}
 		}
 
-		
 		return aux;
 	}
 }

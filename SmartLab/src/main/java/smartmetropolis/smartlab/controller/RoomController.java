@@ -6,6 +6,7 @@ import smartmetropolis.smartlab.dao.DAOFactory;
 import smartmetropolis.smartlab.dao.HibernateDAOFactory;
 import smartmetropolis.smartlab.dao.RoomDaoInterface;
 import smartmetropolis.smartlab.exceptions.DAOException;
+import smartmetropolis.smartlab.exceptions.TreaterException;
 import smartmetropolis.smartlab.exceptions.validateDataException;
 import smartmetropolis.smartlab.model.Local;
 import smartmetropolis.smartlab.model.Room;
@@ -82,5 +83,7 @@ public class RoomController {
 	public List<Room> findAllRooms() throws DAOException {
 		return roomDao.findAll(Room.class);
 	}
+	
+	
 
 }

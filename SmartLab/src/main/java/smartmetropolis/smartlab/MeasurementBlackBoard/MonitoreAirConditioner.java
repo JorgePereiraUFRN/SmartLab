@@ -13,7 +13,7 @@ import smartmetropolis.smartlab.model.RoomKey;
 
 public class MonitoreAirConditioner extends Thread {
 
-	private static volatile AirControlUtil airControlUtil;
+	private static volatile AirControl airControlUtil;
 	private static final RoomController ROOM_CONTROLLER = RoomController
 			.getInstance();
 
@@ -29,12 +29,14 @@ public class MonitoreAirConditioner extends Thread {
 		logger.debug("iniciando thread que monitora o estado dos aparelhos de ar condicionado.");
 
 		for (;;) {
+
 			try {
-				// dormir por 15 min
-				Thread.sleep(15 * 60 * 1000);
+				// dormir por 10 min
+				Thread.sleep(10 * 60 * 1000);
 			} catch (InterruptedException e1) {
 				logger.error(e1.getMessage());
 			}
+			logger.debug("verificando status do ar-condicionado.");
 
 			try {
 				List<Room> rooms = ROOM_CONTROLLER.findAllRooms();
@@ -42,12 +44,8 @@ public class MonitoreAirConditioner extends Thread {
 				for (Room r : rooms) {
 					try {
 
-						RoomKey roomKey = new RoomKey();
-						roomKey.setLocalName(r.getLocalName());
-						roomKey.setRoomName(r.getRoomName());
-
 						boolean hasPeople = airControlUtil.hasPeopleInTheRoom(
-								roomKey, 15);
+								r, 15);
 
 						if (!hasPeople) {
 
@@ -58,7 +56,8 @@ public class MonitoreAirConditioner extends Thread {
 								logger.info("desativando aparelhos de ar condicionado da sala: "
 										+ room
 										+ "\nmotivo: ausencia de pessoas na sala");
-								airControlUtil.turOffAllAirCofRomm(room);
+								airControlUtil
+										.turOffAllAirConditionersOfRom(room);
 							} else {
 								logger.error("sala " + room + " não encontrada");
 							}

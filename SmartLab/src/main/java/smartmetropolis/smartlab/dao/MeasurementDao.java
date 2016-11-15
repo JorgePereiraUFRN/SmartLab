@@ -35,17 +35,17 @@ public class MeasurementDao extends GenericHibernateDAO<Measurement, Long>
 	}
 
 	public List<Measurement> listMeasurementsBetweendDate(Date initialDate,
-			Date finalDate) throws DAOException {
+			Date finalDate, Long sensorId) throws DAOException {
 		List<Measurement> list = null;
 		try {
 			list = getInstance()
 					.createQuery(
 							"select m from "
 									+ Measurement.class.getSimpleName()
-									+ " m, "
+									/*+ " as m Inner Join "
 									+ Sensor.class.getSimpleName()
-									+ " s "
-									+ "where m.time between :initialDate AND :finalDate")
+									+ " as s "*/
+									+ " m where m.time between :initialDate AND :finalDate")
 					.setParameter("initialDate", initialDate)
 					.setParameter("finalDate", finalDate).getResultList();
 		} catch (Exception e) {
