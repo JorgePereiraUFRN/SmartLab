@@ -36,7 +36,7 @@
 						style="width: 30%;" />
 					<f:selectItems value="#{measurementB.sensorsMap}" />
 				</p:selectOneMenu>
-				
+
 				<p:outputLabel for="datetimeInitial" value="Data Inicial:" />
 				<p:calendar id="datetimeInitial" value="#{measurementB.initialDate}"
 					pattern="dd/MM/yyyy HH:mm:ss">
@@ -49,9 +49,27 @@
 					pattern="dd/MM/yyyy HH:mm:ss">
 					<p:ajax update="tabela" listener="#{measurementB.listMeasurements}" />
 				</p:calendar>
+				
+				<p:outputLabel for="graphlabel" value="Gráfico:" />
+				<h:commandButton id="graphlabel" 
+					action="graph.xhtml" style="width: 60%;"
+					value="Gerar Gráfico" >
+					<p:ajax update="graph" listener="#{measurementB.generateGraph}" />
+				</h:commandButton>
 
 			</p:panelGrid>
 		</h:form>
+
+
+
+		<p:dialog header="Modal Dialog" widgetVar="dlg2" modal="true"
+			height="350px" width="1000px">
+			<p:chart id="graph" type="line" model="#{measurementB.lineModel}"
+				style="height:300px;" />
+		</p:dialog>
+
+
+
 
 
 		<p:dataTable id="tabela" var="item"
@@ -74,6 +92,7 @@
 
 
 		</p:dataTable>
+
 
 
 	</ui:define>

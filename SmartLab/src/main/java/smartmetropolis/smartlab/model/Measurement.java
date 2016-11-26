@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @XmlRootElement
-public class Measurement {
+public class Measurement implements Comparable<Measurement>{
 
 	@Id
 	@GeneratedValue
@@ -65,6 +65,10 @@ public class Measurement {
 	public String toString() {
 		return "Measurement [id=" + id + ", value=" + value + ", time=" + time
 				+ ", sensor=" + sensor + "]";
+	}
+
+	public int compareTo(Measurement o) {
+		return this.getTime().compareTo(o.getTime());
 	}
 
 	

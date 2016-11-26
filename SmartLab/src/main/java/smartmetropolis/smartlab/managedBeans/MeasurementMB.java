@@ -1,6 +1,10 @@
 package smartmetropolis.smartlab.managedBeans;
 
+import java.nio.channels.UnsupportedAddressTypeException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +14,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.CategoryAxis;
+import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.LineChartModel;
+import org.primefaces.model.chart.LineChartSeries;
 
 import smartmetropolis.smartlab.controller.LocalController;
 import smartmetropolis.smartlab.controller.MeasurementController;
@@ -21,6 +32,7 @@ import smartmetropolis.smartlab.model.Local;
 import smartmetropolis.smartlab.model.Measurement;
 import smartmetropolis.smartlab.model.Room;
 import smartmetropolis.smartlab.model.Sensor;
+import smartmetropolis.smartlab.model.SensorType;
 
 @ManagedBean(name = "measurementB")
 @SessionScoped
@@ -35,6 +47,8 @@ public class MeasurementMB {
 	private LocalController localController;
 	private List<Measurement> measurements;
 
+	private LineChartModel lineModel;
+
 	private SensorController sensorController;
 	private RoomController roomController;
 	private MeasurementController measurementController;
@@ -48,6 +62,7 @@ public class MeasurementMB {
 		roomController = RoomController.getInstance();
 		measurementController = MeasurementController.getInstance();
 		measurements = new ArrayList<Measurement>();
+		lineModel = new LineChartModel();
 
 		initLocalsMap();
 	}
@@ -95,16 +110,15 @@ public class MeasurementMB {
 
 		sensorsMap = new HashMap<String, String>();
 
-		
 		try {
 			Room r = roomController.findRoom(roomName, localName);
 			if (r != null) {
-				
+
 				for (Sensor s : r.getSensors()) {
 					sensorsMap.put(s.getSensorType() + " - Id: " + s.getId(), s
 							.getId().toString());
 				}
-			} 
+			}
 
 		} catch (DAOException e) {
 			FacesContext.getCurrentInstance().addMessage(
@@ -121,6 +135,7 @@ public class MeasurementMB {
 
 	public void listMeasurements() {
 
+		measurements = null;
 		try {
 
 			if ((sensorId != null || !sensorId.equals(""))
@@ -130,6 +145,7 @@ public class MeasurementMB {
 				measurements = measurementController
 						.listMeasurementsBySensorAndDate(initialDate,
 								finalDate, id);
+
 			}
 		} catch (DAOException e) {
 			FacesContext.getCurrentInstance().addMessage(
@@ -138,6 +154,102 @@ public class MeasurementMB {
 							"Erro ao recuperar dados: ", e.getMessage()));
 		}
 
+	}
+
+	public void generateGraph() throws NumberFormatException, DAOException {
+
+		try {
+			lineModel = new LineChartModel();
+
+			if (measurements == null || measurements.size() == 0) {
+				throw new validateDataException(
+						"Especifique os critérios de busca!");
+
+			}
+
+			lineModel.setShowPointLabels(true);
+			lineModel.getAxes().put(AxisType.X, new CategoryAxis("data"));
+
+			Axis yAxis = lineModel.getAxis(AxisType.Y);
+			yAxis.setLabel("valores");
+
+			Sensor s = sensorController.findSensor(Long.parseLong(sensorId));
+
+			if (s.getSensorType().ordinal() == SensorType.OTHER.ordinal()) {
+
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR,
+								"Erro ao gerar grafico ",
+								"imposivel gerar graficos para esse sensor."));
+				return;
+			}
+
+			if (s.getSensorType().ordinal() == SensorType.HUMIDITY.ordinal()) {
+				lineModel.setTitle(SensorType.HUMIDITY.toString());
+				yAxis.setMin(0);
+				yAxis.setMax(100);
+			} else if (s.getSensorType().ordinal() == SensorType.TEMPERATURE
+					.ordinal()) {
+				lineModel.setTitle(SensorType.TEMPERATURE.toString());
+				yAxis.setMin(0);
+				yAxis.setMax(30);
+			}
+			else if (s.getSensorType().ordinal() == SensorType.PRESENCE
+					.ordinal()) {
+				lineModel.setTitle(SensorType.PRESENCE.toString());
+				yAxis.setMin(0);
+				yAxis.setMax(2);
+			}
+
+			ChartSeries series = new ChartSeries();
+
+			Measurement[] measurementsArray = measurements
+					.toArray(new Measurement[measurements.size()]);
+
+			Arrays.sort(measurementsArray);
+
+			int day = 0;
+			for (int i = 0; i < measurementsArray.length; i++) {
+
+				Float value = null;
+				Measurement m = measurementsArray[i];
+
+				if(s.getSensorType().ordinal() == s.getSensorType().PRESENCE.ordinal()){
+					
+					if(Boolean.parseBoolean(m.getValue())){
+						value = 1F;
+					}else{
+						value = 0F;
+					}
+					
+				}else{
+				 value = Float.parseFloat(m.getValue());
+				}
+
+				SimpleDateFormat df1 = new SimpleDateFormat("[dd-MM] hh:mm");
+				SimpleDateFormat df2 = new SimpleDateFormat("HH:mm");
+
+				if (day != m.getTime().getDay()) {
+					series.set(df1.format(m.getTime()), value);
+					day = m.getTime().getDay();
+				} else {
+
+					series.set(df2.format(m.getTime()), value);
+				}
+
+			}
+
+			lineModel.addSeries(series);
+
+			// lineModel.setExtender("extender");
+
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", e
+							.getMessage()));
+		}
 	}
 
 	public String getLocalName() {
@@ -210,6 +322,14 @@ public class MeasurementMB {
 
 	public void setFinalDate(Date finalDate) {
 		this.finalDate = finalDate;
+	}
+
+	public LineChartModel getLineModel() {
+		return lineModel;
+	}
+
+	public void setLineModel(LineChartModel lineModel) {
+		this.lineModel = lineModel;
 	}
 
 }
