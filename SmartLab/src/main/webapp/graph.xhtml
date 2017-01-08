@@ -9,10 +9,11 @@
 
 <ui:decorate template="Template.xhtml">
 	<ui:define name="centro">
+		<p:scrollPanel mode="native" style="width:920px;height:450px">
 
-		<p:chart id="graph" type="line" model="#{measurementB.lineModel}"
-			style="width:900px;" />
-
+			<p:chart id="graph" type="line" model="#{measurementB.lineModel}"
+				style="#{measurementB.ghrapStyle}" responsive="true" />
+		</p:scrollPanel>
 		<script type="text/javascript">
 function extender(){
 	   this.cfg=$.jqplot(this.cfg.id, this.cfg.data, {sortData:false});

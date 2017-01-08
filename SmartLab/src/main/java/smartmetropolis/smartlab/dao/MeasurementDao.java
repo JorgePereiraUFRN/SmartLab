@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.Calendar;
 import java.util.List;
 
-import javafx.scene.chart.PieChart.Data;
 import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.model.Measurement;
 import smartmetropolis.smartlab.model.Room;

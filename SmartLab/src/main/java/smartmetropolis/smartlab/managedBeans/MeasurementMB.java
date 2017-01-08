@@ -55,6 +55,8 @@ public class MeasurementMB {
 
 	private Date initialDate;
 	private Date finalDate;
+	
+	private String ghrapStyle = "width:900px;";
 
 	public MeasurementMB() {
 		sensorController = SensorController.getInstance();
@@ -167,10 +169,13 @@ public class MeasurementMB {
 
 			}
 
-			lineModel.setShowPointLabels(true);
+			//lineModel.setShowPointLabels(true);
 			lineModel.getAxes().put(AxisType.X, new CategoryAxis("data"));
 
 			Axis yAxis = lineModel.getAxis(AxisType.Y);
+			Axis xAxis = lineModel.getAxis(AxisType.X);
+			xAxis.setTickAngle(45);
+			
 			yAxis.setLabel("valores");
 
 			Sensor s = sensorController.findSensor(Long.parseLong(sensorId));
@@ -193,7 +198,7 @@ public class MeasurementMB {
 					.ordinal()) {
 				lineModel.setTitle(SensorType.TEMPERATURE.toString());
 				yAxis.setMin(0);
-				yAxis.setMax(30);
+				yAxis.setMax(35);
 			}
 			else if (s.getSensorType().ordinal() == SensorType.PRESENCE
 					.ordinal()) {
@@ -227,7 +232,7 @@ public class MeasurementMB {
 				 value = Float.parseFloat(m.getValue());
 				}
 
-				SimpleDateFormat df1 = new SimpleDateFormat("[dd-MM] hh:mm");
+				SimpleDateFormat df1 = new SimpleDateFormat("[dd-MM] HH:mm");
 				SimpleDateFormat df2 = new SimpleDateFormat("HH:mm");
 
 				if (day != m.getTime().getDay()) {
@@ -240,6 +245,7 @@ public class MeasurementMB {
 
 			}
 
+			setGhrapStyle("width:"+measurementsArray.length * 20 +"px;height:400px");
 			lineModel.addSeries(series);
 
 			// lineModel.setExtender("extender");
@@ -332,4 +338,13 @@ public class MeasurementMB {
 		this.lineModel = lineModel;
 	}
 
+	public String getGhrapStyle() {
+		return ghrapStyle;
+	}
+
+	public void setGhrapStyle(String ghrapStyle) {
+		this.ghrapStyle = ghrapStyle;
+	}
+	
+	
 }

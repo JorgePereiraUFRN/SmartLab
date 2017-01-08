@@ -11,7 +11,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import jdk.internal.org.objectweb.asm.tree.IntInsnNode;
 import smartmetropolis.smartlab.controller.AirConditionerStateController;
 import smartmetropolis.smartlab.controller.LocalController;
 import smartmetropolis.smartlab.exceptions.DAOException;
