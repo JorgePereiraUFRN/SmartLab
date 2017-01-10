@@ -41,9 +41,6 @@ public class MeasurementDao extends GenericHibernateDAO<Measurement, Long>
 					.createQuery(
 							"select m from "
 									+ Measurement.class.getSimpleName()
-									/*+ " as m Inner Join "
-									+ Sensor.class.getSimpleName()
-									+ " as s "*/
 									+ " m where m.time between :initialDate AND :finalDate")
 					.setParameter("initialDate", initialDate)
 					.setParameter("finalDate", finalDate).getResultList();
