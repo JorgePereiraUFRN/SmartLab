@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -48,7 +49,7 @@ public class GraphMB {
 	private String ghrapStyle = "width:900px;";
 	private LineChartModel lineModel;
 	private Date initialDate;
-	private Date finalDate;
+	private Date grahfinalDate, graphInitDate;
 	SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
 
 	private Map<String, String> localsMap;
@@ -65,12 +66,14 @@ public class GraphMB {
 		roomController = RoomController.getInstance();
 		measurementController = MeasurementController.getInstance();
 
-		lineModel = new LineChartModel();
-
 		initLocalsMap();
 
 		graphTypes = new HashMap<String, String>();
 		graphTypes.put(GraphType.hora.toString(), GraphType.hora.toString());
+		graphTypes.put(GraphType.tres_horas.toString(),
+				GraphType.tres_horas.toString());
+		graphTypes.put(GraphType.seis_horas.toString(),
+				GraphType.seis_horas.toString());
 		graphTypes.put(GraphType.dia.toString(), GraphType.dia.toString());
 		graphTypes
 				.put(GraphType.semana.toString(), GraphType.semana.toString());
@@ -132,6 +135,131 @@ public class GraphMB {
 				+ presenca + ", umidade: " + umidade);
 	}
 
+	private List<Measurement> avgTempHumidMeasurements(
+			List<Measurement> measurements, int time) {
+
+		List<Measurement> processedMeasurements = new ArrayList<Measurement>();
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		calendar.add(Calendar.YEAR, -100);
+		Date oldDateAdded = calendar.getTime();
+
+		int cont = 0;
+		int sum = 0;
+
+		for (Measurement m : measurements) {
+
+			if (m.getSensor().getSensorType().ordinal() == SensorType.TEMPERATURE
+					.ordinal()
+					|| m.getSensor().getSensorType().ordinal() == SensorType.HUMIDITY
+							.ordinal()) {
+
+				long diferrence = m.getTime().getTime()
+						- oldDateAdded.getTime();
+
+				long seconds = TimeUnit.MILLISECONDS.toSeconds(diferrence);
+
+				int value = Integer.parseInt(m.getValue());
+
+				sum += value;
+				cont++;
+
+				if (seconds > time) {
+
+					Measurement me = new Measurement();
+
+					int avg = sum / cont;
+
+					me.setValue(String.valueOf(avg));
+					me.setTime(m.getTime());
+
+					processedMeasurements.add(me);
+					
+
+					cont = 0;
+					sum = 0;
+
+					oldDateAdded = m.getTime();
+				}
+
+			}
+		}
+
+		return processedMeasurements;
+
+	}
+
+	private List<Measurement> avgPresenceMeasurements(
+			List<Measurement> measurements, int time) {
+
+		List<Measurement> processedMeasurements = new ArrayList<Measurement>();
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		calendar.add(Calendar.YEAR, -100);
+		Date oldDateAdded = calendar.getTime();
+
+		Measurement lastAddedMeasurement = null;
+
+		Measurement previus = null;
+
+		for (Measurement m : measurements) {
+
+			if (m.getSensor().getSensorType().ordinal() == SensorType.PRESENCE
+					.ordinal()) {
+
+				if (previus != null) {
+
+					long diferrence = m.getTime().getTime()
+							- previus.getTime().getTime();
+					long seconds = TimeUnit.MILLISECONDS.toSeconds(diferrence);
+
+					if (seconds > time) {
+
+						Measurement m1 = new Measurement();
+						m1.setValue("false");
+						m1.setTime(new Date(m.getTime().getTime()
+								- (5 * 1000 * 60)));
+						processedMeasurements.add(m1);
+
+						Measurement m2 = new Measurement();
+						m2.setValue("false");
+						m2.setTime(new Date(previus.getTime().getTime()
+								+ (1000 * 60)));
+						processedMeasurements.add(m2);
+
+					}
+				}
+
+				long diferrence = m.getTime().getTime()
+						- oldDateAdded.getTime();
+
+				long seconds = TimeUnit.MILLISECONDS.toSeconds(diferrence);
+
+				if (seconds > time) {
+					lastAddedMeasurement = m;
+					processedMeasurements.add(lastAddedMeasurement);
+					oldDateAdded = m.getTime();
+				} else {
+
+					boolean last = lastAddedMeasurement.getValue()
+							.equalsIgnoreCase("true");
+					boolean atual = m.getValue().equalsIgnoreCase("true");
+
+					if (!last && atual) {
+						lastAddedMeasurement = m;
+					}
+				}
+
+			}
+
+			previus = m;
+		}
+
+		return processedMeasurements;
+	}
+
 	private ChartSeries getMeasurements(String roomName, SensorType sensorType)
 			throws Exception {
 		try {
@@ -155,8 +283,8 @@ public class GraphMB {
 						+ " inexistente");
 			}
 
+			Date finalDate = null;
 
-			
 			Calendar c = Calendar.getInstance();
 
 			if (initialDate == null) {
@@ -167,6 +295,12 @@ public class GraphMB {
 
 			if (graphType.equalsIgnoreCase(GraphType.hora.toString())) {
 				c.add(Calendar.HOUR, 1);
+			} else if (graphType.equalsIgnoreCase(GraphType.tres_horas
+					.toString())) {
+				c.add(Calendar.HOUR, 3);
+			} else if (graphType.equalsIgnoreCase(GraphType.seis_horas
+					.toString())) {
+				c.add(Calendar.HOUR, 6);
 			} else if (graphType.equalsIgnoreCase(GraphType.dia.toString())) {
 				c.add(Calendar.DAY_OF_MONTH, 1);
 			} else if (graphType.equalsIgnoreCase(GraphType.semana.toString())) {
@@ -174,11 +308,30 @@ public class GraphMB {
 			}
 
 			finalDate = c.getTime();
-		
 
 			List<Measurement> measurements = measurementController
 					.listMeasurementsBySensorAndDate(initialDate, finalDate,
 							sensor.getId());
+
+			if (measurements == null || measurements.size() == 0) {
+				return null;
+			}
+
+			if (graphType.equalsIgnoreCase(GraphType.semana.toString())) {
+
+				if (sensorType.ordinal() == SensorType.PRESENCE.ordinal()) {
+					measurements = avgPresenceMeasurements(measurements,
+							20 * 60);
+				} else {
+					measurements = avgTempHumidMeasurements(measurements,
+							20 * 60);
+				}
+
+			} else {
+				if (sensorType.ordinal() == SensorType.PRESENCE.ordinal()) {
+					measurements = avgPresenceMeasurements(measurements, 5 * 60);
+				}
+			}
 
 			ChartSeries series = new ChartSeries();
 			series.setLabel(sensorType.toString());
@@ -188,7 +341,6 @@ public class GraphMB {
 
 			Arrays.sort(measurementsArray);
 
-			int day = 0;
 			for (int i = 0; i < measurementsArray.length; i++) {
 
 				Float value = null;
@@ -206,28 +358,25 @@ public class GraphMB {
 					value = Float.parseFloat(m.getValue());
 				}
 
-				
-				SimpleDateFormat df2 = new SimpleDateFormat("HH:mm:ss");
+				if (graphInitDate == null
+						|| m.getTime().getTime() < graphInitDate.getTime()) {
+					graphInitDate = m.getTime();
+				}
 
-				// System.out.println(df2.format(m.getTime()));
-				// if (day != m.getTime().getDay()) {
+				if (grahfinalDate == null
+						|| m.getTime().getTime() > grahfinalDate.getTime()) {
+					grahfinalDate = m.getTime();
+				}
+
 				series.set(df.format(m.getTime()), value);
-				day = m.getTime().getDay();
-				// } else {
-
-				// series.set(df2.format(m.getTime()), value);
-				// }
-
 			}
 
 			if (measurements.size() * 20 > graphSize) {
 				graphSize = measurements.size() * 20;
 			}
 
-			System.out.println(initialDate + " " + finalDate + "  "
-					+ measurements.size());
+			
 
-			series.setLabel(sensorType.toString());
 			return series;
 
 		} catch (Exception e) {
@@ -239,27 +388,51 @@ public class GraphMB {
 
 	public void generateGraph() throws NumberFormatException, DAOException {
 
+		graphSize = 900;
+		grahfinalDate = null;
+		graphInitDate = null;
+
 		try {
+
 			lineModel = new LineChartModel();
 
 			lineModel.getAxes().put(AxisType.X, new CategoryAxis("data"));
 
 			Axis yAxis = lineModel.getAxis(AxisType.Y);
-			Axis xAxis = lineModel.getAxis(AxisType.X);
-			xAxis.setTickAngle(45);
 
 			yAxis.setLabel("valores");
 
 			yAxis.setMin(0);
 			yAxis.setMax(35);
 
+			List<ChartSeries> series = new ArrayList<ChartSeries>();
+
+			if (presenca) {
+				ChartSeries serie = getMeasurements(roomName, SensorType.PRESENCE);
+				if (serie != null) {
+					series.add(serie);
+				}
+			}
+			if (temperatura) {
+				ChartSeries serie = getMeasurements(roomName, SensorType.TEMPERATURE);
+				if (serie != null) {
+					series.add(serie);
+				}
+			}
+			if (umidade) {
+				ChartSeries serie = getMeasurements(roomName, SensorType.HUMIDITY);
+				if (serie != null) {
+					series.add(serie);
+				}
+			}
+
 			DateAxis axis = new DateAxis("Dates");
 			axis.setTickAngle(-50);
 
-			//axis.setMin(df.format(initialDate));
-			axis.setMax("2017-01-06");
-			axis.setTickFormat("%b %#d, %y %H:%#M:%S");
+			axis.setMin(df.format(graphInitDate));
+			axis.setMax(df.format(grahfinalDate));
 
+			axis.setTickFormat("%b %#d, %H:%#M:%S");
 			lineModel.getAxes().put(AxisType.X, axis);
 
 			if (umidade) {
@@ -269,17 +442,8 @@ public class GraphMB {
 
 			lineModel.setTitle(SensorType.HUMIDITY.toString());
 
-			if (presenca) {
-				lineModel.addSeries(getMeasurements(roomName,
-						SensorType.PRESENCE));
-			}
-			if (temperatura) {
-				lineModel.addSeries(getMeasurements(roomName,
-						SensorType.TEMPERATURE));
-			}
-			if (umidade) {
-				lineModel.addSeries(getMeasurements(roomName,
-						SensorType.HUMIDITY));
+			for (ChartSeries serie : series) {
+				lineModel.addSeries(serie);
 			}
 
 			setGhrapStyle("width:" + graphSize + "px;height:400px");

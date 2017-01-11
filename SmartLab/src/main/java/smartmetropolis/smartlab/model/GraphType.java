@@ -2,7 +2,7 @@ package smartmetropolis.smartlab.model;
 
 public enum GraphType {
 
-	hora("Hora"), dia("Dia"), semana("Semana");
+	hora("1 Hora"), tres_horas("3 Horas"), seis_horas("6 Horas"), dia("1 Dia"), semana("1 Semana");
 
 	private final String value;
 

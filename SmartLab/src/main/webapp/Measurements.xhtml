@@ -49,13 +49,6 @@
 					pattern="dd/MM/yyyy HH:mm:ss">
 					<p:ajax update="tabela" listener="#{measurementB.listMeasurements}" />
 				</p:calendar>
-				
-				<p:outputLabel for="graphlabel" value="Gráfico:" />
-				<h:commandButton id="graphlabel" 
-					action="graph.xhtml" style="width: 60%;"
-					value="Gerar Gráfico" >
-					<p:ajax update="graph" listener="#{measurementB.generateGraph}" />
-				</h:commandButton>
 
 			</p:panelGrid>
 		</h:form>

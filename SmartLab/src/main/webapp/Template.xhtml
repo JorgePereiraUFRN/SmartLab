@@ -51,7 +51,8 @@
 			<div id="top-items">
 				<!-- BEGIN LOGO -->
 				<div id="logo">
-					 <img src="#{request.contextPath}/images/smart_place_icon.gif" width="380" height="310" alt="" />
+					<img src="#{request.contextPath}/images/smart_place_icon.gif"
+						width="380" height="310" alt="" />
 				</div>
 				<!-- END OF LOGO -->
 
@@ -95,20 +96,23 @@
 									<li><h:commandLink action="Room.xhtml" value="Salas" /></li>
 								</ul></li>
 
-							
-							
+
+
 							<li><h:commandLink value="Dispositivos" />
 								<ul>
 									<li><h:commandLink action="Sensors.xhtml" value="Sensores" /></li>
-									<li><h:commandLink action="AirConditioner.xhtml" value="Aparelhos de ar-condicionado" /></li>
+									<li><h:commandLink action="AirConditioner.xhtml"
+											value="Aparelhos de ar-condicionado" /></li>
 								</ul></li>
-								
+
 							<li><h:commandLink value="Consultas" />
 								<ul>
 									<li><h:commandLink action="Measurements.xhtml"
 											value="Consultar medições" /></li>
 									<li><h:commandLink action="AirConditionerHistorical.xhtml"
 											value="Histórico do ar-condicionado" /></li>
+									<li><h:commandLink action="generateGraph.xhtml"
+											value="Gerar gráficos" /></li>
 								</ul></li>
 						</h:form>
 					</ul>
