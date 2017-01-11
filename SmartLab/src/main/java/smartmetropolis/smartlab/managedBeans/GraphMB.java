@@ -21,6 +21,7 @@ import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.DateAxis;
 import org.primefaces.model.chart.LineChartModel;
+import org.primefaces.model.chart.LineChartSeries;
 
 import smartmetropolis.smartlab.controller.LocalController;
 import smartmetropolis.smartlab.controller.MeasurementController;
@@ -38,6 +39,8 @@ import smartmetropolis.smartlab.model.SensorType;
 @ManagedBean(name = "graphMB")
 @SessionScoped
 public class GraphMB {
+	
+	private String graphTiTle;
 
 	private String localName;
 	private String roomName;
@@ -248,7 +251,7 @@ public class GraphMB {
 					boolean atual = m.getValue().equalsIgnoreCase("true");
 
 					if (!last && atual) {
-						lastAddedMeasurement = m;
+						lastAddedMeasurement.setValue("true");
 					}
 				}
 
@@ -260,7 +263,7 @@ public class GraphMB {
 		return processedMeasurements;
 	}
 
-	private ChartSeries getMeasurements(String roomName, SensorType sensorType)
+	private LineChartSeries getMeasurements(String roomName, SensorType sensorType)
 			throws Exception {
 		try {
 			Room room = roomController.findRoom(roomName, localName);
@@ -333,7 +336,7 @@ public class GraphMB {
 				}
 			}
 
-			ChartSeries series = new ChartSeries();
+			LineChartSeries series = new LineChartSeries();
 			series.setLabel(sensorType.toString());
 
 			Measurement[] measurementsArray = measurements
@@ -405,28 +408,28 @@ public class GraphMB {
 			yAxis.setMin(0);
 			yAxis.setMax(35);
 
-			List<ChartSeries> series = new ArrayList<ChartSeries>();
+			List<LineChartSeries> series = new ArrayList<LineChartSeries>();
 
 			if (presenca) {
-				ChartSeries serie = getMeasurements(roomName, SensorType.PRESENCE);
+				LineChartSeries serie = getMeasurements(roomName, SensorType.PRESENCE);
 				if (serie != null) {
 					series.add(serie);
 				}
 			}
 			if (temperatura) {
-				ChartSeries serie = getMeasurements(roomName, SensorType.TEMPERATURE);
+				LineChartSeries serie = getMeasurements(roomName, SensorType.TEMPERATURE);
 				if (serie != null) {
 					series.add(serie);
 				}
 			}
 			if (umidade) {
-				ChartSeries serie = getMeasurements(roomName, SensorType.HUMIDITY);
+				LineChartSeries serie = getMeasurements(roomName, SensorType.HUMIDITY);
 				if (serie != null) {
 					series.add(serie);
 				}
 			}
 
-			DateAxis axis = new DateAxis("Dates");
+			DateAxis axis = new DateAxis("Date");
 			axis.setTickAngle(-50);
 
 			axis.setMin(df.format(graphInitDate));
@@ -439,8 +442,18 @@ public class GraphMB {
 				yAxis.setMin(15);
 				yAxis.setMax(100);
 			}
+			
+			graphTiTle = "Dados de: ";
 
-			lineModel.setTitle(SensorType.HUMIDITY.toString());
+			if(presenca){
+				graphTiTle+=" Presença";
+			}if(temperatura){
+				graphTiTle+=" - Temperatura";
+			}if(umidade){
+				graphTiTle+=" - Umidade";
+			}
+			
+			lineModel.setTitle(graphTiTle);
 
 			for (ChartSeries serie : series) {
 				lineModel.addSeries(serie);
