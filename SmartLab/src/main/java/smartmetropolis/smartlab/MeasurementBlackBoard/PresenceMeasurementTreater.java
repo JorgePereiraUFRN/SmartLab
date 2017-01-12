@@ -16,6 +16,8 @@ public class PresenceMeasurementTreater extends MeasurementTreater {
 	private AirControlInterface AIR_CONTROL = AirControl.getInstance();
 
 	private Logger logger = Logger.getLogger(PresenceMeasurementTreater.class);
+	
+	private ReservesSystem reservesSystem = new ReservesSystem();
 
 	public PresenceMeasurementTreater() {
 		// TODO Auto-generated constructor stub
@@ -48,10 +50,13 @@ public class PresenceMeasurementTreater extends MeasurementTreater {
 							.getSensor().getRoom());
 
 				} else if (!AIR_CONTROL.hasPeopleInTheRoom(room, 15)
-						&& airConditionersAreOn(room.getAirConditioners())) {
+						&& airConditionersAreOn(room.getAirConditioners())
+						&& reservesSystem.hasApprovedReserves(room.getRoomName(), 15)) {
 					// caso nao tenha sido registrada nenhuma presença nos
 					// ultimos 15 min o ar sera desligado
 					AIR_CONTROL.turOffAllAirConditionersOfRom(room);
+					
+					logger.info("desativando todos os aparellhos da sala. Motivo: nao existem pessoas na sala e nao existem reservas para os proximos 15 min ");
 				}
 
 			} catch (Exception e) {

@@ -12,7 +12,7 @@
 		<h:form id="formGraph">
 			<p:panelGrid columns="4" style="horizontal-align:">
 
-				<h:outputLabel for="local" value="Predio:" style="width: 10%;" />
+				<h:outputLabel for="local" value="Predio:" style="width: 10%;"  />
 				<p:selectOneMenu id="local" value="#{graphMB.localName}"
 					effect="fold" editable="false" update="">
 					<p:ajax update="room" listener="#{graphMB.initRoomsMap}" />

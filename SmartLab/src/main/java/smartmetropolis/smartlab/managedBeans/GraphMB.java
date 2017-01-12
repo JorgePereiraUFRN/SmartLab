@@ -20,6 +20,7 @@ import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.DateAxis;
+import org.primefaces.model.chart.LegendPlacement;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 
@@ -45,6 +46,8 @@ public class GraphMB {
 	private String localName;
 	private String roomName;
 	private String graphType;
+	
+	private String label1, label2, label3; 
 
 	private boolean temperatura, umidade, presenca;
 
@@ -337,7 +340,7 @@ public class GraphMB {
 			}
 
 			LineChartSeries series = new LineChartSeries();
-			series.setLabel(sensorType.toString());
+
 
 			Measurement[] measurementsArray = measurements
 					.toArray(new Measurement[measurements.size()]);
@@ -399,6 +402,9 @@ public class GraphMB {
 
 			lineModel = new LineChartModel();
 
+			
+			
+
 			lineModel.getAxes().put(AxisType.X, new CategoryAxis("data"));
 
 			Axis yAxis = lineModel.getAxis(AxisType.Y);
@@ -410,22 +416,35 @@ public class GraphMB {
 
 			List<LineChartSeries> series = new ArrayList<LineChartSeries>();
 
+			label1 = label2 = label3 = "";
+			String seriesColors = "";
+			
 			if (presenca) {
 				LineChartSeries serie = getMeasurements(roomName, SensorType.PRESENCE);
 				if (serie != null) {
+					
 					series.add(serie);
+					label1 = "presença";
+					seriesColors+="58BA27,";
 				}
 			}
 			if (temperatura) {
 				LineChartSeries serie = getMeasurements(roomName, SensorType.TEMPERATURE);
 				if (serie != null) {
+					
 					series.add(serie);
+					label2 = "temperatura";
+					seriesColors+="FFCC33,";
 				}
 			}
 			if (umidade) {
 				LineChartSeries serie = getMeasurements(roomName, SensorType.HUMIDITY);
 				if (serie != null) {
+				
 					series.add(serie);
+					label3 = "umidade";
+					
+					seriesColors+="F74A4A";
 				}
 			}
 
@@ -437,6 +456,8 @@ public class GraphMB {
 
 			axis.setTickFormat("%b %#d, %H:%#M:%S");
 			lineModel.getAxes().put(AxisType.X, axis);
+			
+			lineModel.setZoom(true);
 
 			if (umidade) {
 				yAxis.setMin(15);
@@ -457,7 +478,12 @@ public class GraphMB {
 
 			for (ChartSeries serie : series) {
 				lineModel.addSeries(serie);
+			
 			}
+			
+			lineModel.setSeriesColors(seriesColors);
+			
+			
 
 			setGhrapStyle("width:" + graphSize + "px;height:400px");
 
@@ -565,5 +591,31 @@ public class GraphMB {
 	public void setRoomsMap(Map<String, String> roomsMap) {
 		this.roomsMap = roomsMap;
 	}
+
+	public String getLabel1() {
+		return label1;
+	}
+
+	public void setLabel1(String label1) {
+		this.label1 = label1;
+	}
+
+	public String getLabel2() {
+		return label2;
+	}
+
+	public void setLabel2(String label2) {
+		this.label2 = label2;
+	}
+
+	public String getLabel3() {
+		return label3;
+	}
+
+	public void setLabel3(String label3) {
+		this.label3 = label3;
+	}
+	
+	
 
 }

@@ -8,16 +8,20 @@
 
 
 <ui:decorate template="Template.xhtml">
+
 	<ui:define name="centro">
+	
+	<h:outputText style="color:green;font-size:20px;" value="#{graphMB.label1}"/><br />
+	<h:outputText style="color:yellow;font-size:20px;" value="#{graphMB.label2}"/><br />
+	<h:outputText style="color:red;font-size:20px;" value="#{graphMB.label3}"/>
 
 		<p:scrollPanel mode="native" style="width:920px;height:450px">
 
 			<p:chart id="graph" type="line" model="#{graphMB.lineModel}"
-				style="#{graphMB.ghrapStyle}" responsive="true" />
+				style="#{graphMB.ghrapStyle}" responsive="true"/>
 		</p:scrollPanel>
 
 	</ui:define>
+
 </ui:decorate>
-
-
 </html>
