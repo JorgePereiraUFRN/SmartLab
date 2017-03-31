@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta content="" />
+    <title>
+      Login
+    </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" />
+    <link rel="stylesheet prefetch" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900|RobotoDraft:400,100,300,500,700,900" />
+    <link rel="stylesheet prefetch" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    
+    <link href="#{request.contextPath}/css/login.css" rel="stylesheet"
+		type="text/css" media="screen" />
+  </head>
+  <body>
+    <!--  Mixins -->
+    <!--  Pen Title -->
+    <div class="pen-title">
+      <h1>
+        SmartPlace
+      </h1>
+    </div>
+    <div class="container">
+      <div class="card"></div>
+      <div class="card">
+        <h1 class="title">
+          Login
+        </h1>
+        <form action="">
+          <div class="input-container">
+            <input id="#{label}" /> <label for="#{label}">Usuário</label>
+            <div class="bar"></div>
+          </div>
+          <div class="input-container">
+            <input id="#{label}_" /> <label for="#{label}">Senha</label>
+            <div class="bar"></div>
+          </div>
+          <div class="button-container">
+            <button><span>Entrar</span></button>
+          </div>
+          <div class="footer">
+            <a href="#">Esqueceu sua Senha?</a>
+          </div>
+        </form>
+      </div>
+      <div class="card alt">
+        <div class="toggle"></div>
+        <h1 class="title">
+          Registrar
+          <div class="close"></div>
+        </h1>
+        
+        <form action="">
+          <div class="input-container">
+            <input id="#{label}__" /> <label for="#{label}">Usuário</label>
+            <div class="bar"></div>
+          </div>
+          <div class="input-container">
+            <input id="#{label}___" /> <label for="#{label}">Senha</label>
+            <div class="bar"></div>
+          </div>
+          <div class="input-container">
+            <input id="#{label}____" /> <label for="#{label}">Repita sua
+            Senha</label>
+            <div class="bar"></div>
+          </div>
+          <div class="button-container">
+            <button><span>Próximo</span></button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"
+    type="text/javascript" xml:space="preserve"></script> 
+    <script src="scripts/index.js" type="text/javascript" xml:space="preserve"></script>
+  </body>
+</html>

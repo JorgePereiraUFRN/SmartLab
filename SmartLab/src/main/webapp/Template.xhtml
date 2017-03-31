@@ -13,13 +13,7 @@
 	<ui:insert name="headoptions" />
 
 	<!-- layout style -->
-	<link href="#{request.contextPath}/css/reset.css" rel="stylesheet"
-		type="text/css" media="screen" />
-	<link href="#{request.contextPath}/css/typography.css" rel="stylesheet"
-		type="text/css" media="screen" />
-	<link href="#{request.contextPath}/css/style.css" rel="stylesheet"
-		type="text/css" media="screen" />
-	<link href="#{request.contextPath}/css/slider.css" rel="stylesheet"
+	<link href="#{request.contextPath}/css/main.css" rel="stylesheet"
 		type="text/css" media="screen" />
 
 	<!-- jquery -->
@@ -27,8 +21,6 @@
 
 
 	<!-- superfish -->
-	<link rel="stylesheet" type="text/css"
-		href="#{request.contextPath}/css/superfish.css" media="screen" />
 	<script type="text/javascript"
 		src="#{request.contextPath}/scripts/hoverIntent.js"></script>
 	<script type="text/javascript"
@@ -46,102 +38,51 @@
 </h:head>
 
 <h:body>
-	<div id="wrapper">
-		<div id="top">
-			<div id="top-items">
-				<!-- BEGIN LOGO -->
-				<div id="logo">
-					<img src="#{request.contextPath}/images/smart_place_icon.gif"
-						width="380" height="310" alt="" />
-				</div>
-				<!-- END OF LOGO -->
-
-				<div id="top-right">
-					<div id="loginTop">
-						<!-- Usuário anônimo -->
-						<h:form id="formLogin">
-							<p:message id="messagelogin" for="formLogin" />
-							<h:commandLink action="reguser" value="Cadastre-se" />
-							<table>
-								<tr>
-									<td><h:inputText id="strlogin" /></td>
-									<td><h:inputSecret type="password" /></td>
-									<td><h:commandButton value="Login" /></td>
-								</tr>
-							</table>
-						</h:form>
-
-						<!-- Usuário Logado -->
-						<h:form>
-							<h:outputText value="Usuário " />
-							<strong><h:outputText /></strong>
-							<h:outputText value=" | " />
-							<h:commandLink value="Logout" />
-						</h:form>
-					</div>
-				</div>
-			</div>
-
-			<div id="navmenu-container">
-				<div id="nav-menu">
-					<!-- BEGIN TAB NAVIGATION -->
-					<ul class="sf-menu">
-						<h:form>
-							<li class="first"><h:commandLink action="home" value="HOME" /></li>
-							<li><h:commandLink value="Locais" />
-								<ul>
-									<li><h:commandLink action="Local.xhtml" value="Prédios" /></li>
-
-
-									<li><h:commandLink action="Room.xhtml" value="Salas" /></li>
-								</ul></li>
-
-
-
-							<li><h:commandLink value="Dispositivos" />
-								<ul>
-									<li><h:commandLink action="Sensors.xhtml" value="Sensores" /></li>
-									<li><h:commandLink action="AirConditioner.xhtml"
-											value="Aparelhos de ar-condicionado" /></li>
-								</ul></li>
-
-							<li><h:commandLink value="Consultas" />
-								<ul>
-									<li><h:commandLink action="Measurements.xhtml"
-											value="Consultar medições" /></li>
-									<li><h:commandLink action="AirConditionerHistorical.xhtml"
-											value="Histórico do ar-condicionado" /></li>
-									<li><h:commandLink action="generateGraph.xhtml"
-											value="Gerar gráficos" /></li>
-								</ul></li>
-						</h:form>
-					</ul>
-
-					<!-- END OF  TAB NAVIGATION -->
+	
+		<div class="bar_top">
+			<div class="bar_topd">
+				<ul class="menu_barrax">
+					<li><a href="/" title="Notificações">Notificações</a></li>
+					<li><a href="#" title="Solicitar Instalação ou Manutenção">Solicitações</a></li>
+					<li><a href="#" title="Consultar Recursos">Recursos</a></li>
+				</ul>
+				<div class="transit">
+					<a href="#" target="_blank"><img src="icons/logout.png" title="Sair"/></a>
+					<a href="#" target="_blank"><img src="icons/conf.png" title="Editar Perfil"/></a>
+					<a href="#" target="_blank"><img src="icons/message.png" title="Mensagens"/></a>
 				</div>
 			</div>
 		</div>
+	
+    <div class="pen-title">
+      <h1>
+        SmartPlace
+      </h1>
+    </div>
+    <div class="container">
+      <div class="card"></div>
+      <div class="card">
 
-		<div id="middle">
-			<div id="content-bg">
-				<div id="content">
-					<div id="main">
-						<ui:insert name="centro">Corpo</ui:insert>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div id="footer">
-			<div id="footer-content">
+        <ul class="sidebar-nav">
+          <li class="sidebar-brand">Locais</li>
+          <li><a href="Local.xhtml">Prédios</a></li>
+          <li><a href="Room.xhtml">Salas</a></li>
 
-				<div class="float-right">
-					<p>
-						<h:outputText value="Versão" />
-						1.0.0
-					</p>
-				</div>
-			</div>
-			<div id="footer-bottom"></div>
+          <li class="sidebar-brand">Dispositivos</li>
+          <li><a href="Sensors.xhtml">Sensores</a></li>
+          <li><a href="AirConditioner.xhtml">Ar-Condicionado</a></li>
+
+          <li class="sidebar-brand">Medições</li>
+          <li><a href="Measurements.xhtml">Consultar Medições</a></li>
+          <li><a href="AirConditionerHistorical.xhtml">Histórico do Ar-Condicionado</a></li>
+          <li><a href="generateGraph.xhtml">Gerar Gráficos</a></li>
+        </ul>
+      </div>
+    </div>
+
+	<div class="container-main">
+        <div class="card-alt">
+			<ui:insert name="centro">Corpo</ui:insert>
 		</div>
 	</div>
 </h:body>
