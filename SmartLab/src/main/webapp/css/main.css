@@ -46,6 +46,7 @@ nav{
   background: #ffffff;
   border-radius: 5px;
   padding: 5px 0 5px 0;
+  margin: 10px 0;
   box-sizing: border-box;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   -webkit-transition: .3s ease;
@@ -58,13 +59,6 @@ nav{
 }
 
 /*Enfeite do card*/
-.card:first-child {
-  background: #fafafa;
-  height: 10px;
-  border-radius: 5px 5px 0 0;
-  margin: 0 10px;
-  padding: 0;
-}
 
 .container .card .sidebar-nav {
     width: 250px;
@@ -97,11 +91,13 @@ nav{
 }
 
 .sidebar-nav > .sidebar-brand {
-    height: 65px;
+    height: 55px;
     font-size: 16px;
-    line-height: 60px;
+    line-height: 55px;
+    width: 263px;
     color: #ffffff;
     background: #A40707;
+    border-radius: 0 5px 17px 0;
 }
 
 /*Container main body*/
@@ -119,6 +115,7 @@ nav{
   background: #ffffff;
   border-radius: 5px;
   padding: 50px 0 100px 0;
+  margin: 10px 0;
   box-sizing: border-box;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   -webkit-transition: .3s ease;
@@ -209,14 +206,20 @@ nav{
 /*TESTE NAVBAR*/
 .bar_top {
 	width: 100%;
-	height: 70px;
+	height: 95px;
 	background: #A40707;}
-.bar_top img {
+.bar_top .transit img {
 	height: 30px;
 	float: right;
-	margin: 20px 15px 0 0;
+	margin: 30px 15px 0 0;
 	opacity:0.5;
 	filter:alpha(opacity=80);}
+.bar_top .perfil{
+	height: 80px;
+	float: right;
+	margin: 4px 15px 0 0;
+	border-radius: 50%;
+}
 .bar_top img:hover {
 	opacity:1.0;
 	filter:alpha(opacity=100);}
