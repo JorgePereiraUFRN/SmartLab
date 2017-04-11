@@ -4,11 +4,15 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import smartmetropolis.smartlab.controller.AirConditionerController;
+import smartmetropolis.smartlab.controller.RoomController;
+import smartmetropolis.smartlab.controller.SensorController;
+import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.exceptions.TreaterException;
 import smartmetropolis.smartlab.model.AirConditioner;
 import smartmetropolis.smartlab.model.Measurement;
 import smartmetropolis.smartlab.model.Room;
-import smartmetropolis.smartlab.model.RoomKey;
+import smartmetropolis.smartlab.model.Sensor;
 import smartmetropolis.smartlab.model.SensorType;
 
 public class PresenceMeasurementTreater extends MeasurementTreater {
@@ -16,8 +20,12 @@ public class PresenceMeasurementTreater extends MeasurementTreater {
 	private AirControlInterface AIR_CONTROL = AirControl.getInstance();
 
 	private Logger logger = Logger.getLogger(PresenceMeasurementTreater.class);
-	
+
 	private ReservesSystem reservesSystem = new ReservesSystem();
+	private SensorController sensorController = SensorController.getInstance();
+	private RoomController roomController = RoomController.getInstance();
+	private AirConditionerController airConditionerController = AirConditionerController
+			.getInstance();
 
 	public PresenceMeasurementTreater() {
 		// TODO Auto-generated constructor stub
@@ -27,49 +35,62 @@ public class PresenceMeasurementTreater extends MeasurementTreater {
 	public void treaterMeasurement(Measurement measurement)
 			throws TreaterException {
 
-		if (measurement.getSensor().getSensorType() == SensorType.PRESENCE) {
+		Sensor sensor;
+		try {
+			sensor = sensorController.findSensor(measurement.getSensorId());
 
-			logger.debug("processando dados da medição: " + measurement);
+			if (sensor.getSensorType().ordinal() == SensorType.PRESENCE
+					.ordinal()) {
 
-			try {
-				boolean hasPeople = Boolean
-						.parseBoolean(measurement.getValue());
+				logger.debug("processando dados da medição: " + measurement);
 
-				Room room = measurement.getSensor().getRoom();
-				float temperatureRoom = AIR_CONTROL.getAtualTemperature(room);
+				try {
+					boolean hasPeople = Boolean.parseBoolean(measurement
+							.getValue());
 
-				boolean airconditionersAreOn = airConditionersAreOn(measurement
-						.getSensor().getRoom().getAirConditioners());
+					Room room = roomController.findRoom(sensor.getRoomName());
 
-				if (hasPeople
-						&& !airconditionersAreOn
-						&& (temperatureRoom > (AIR_CONTROL.targetTemperature - 3))) {
-					// ligar todos os aparelhos de ar condicionado da sala tem > 20
+					float temperatureRoom = AIR_CONTROL
+							.getAtualTemperature(room);
 
-					AIR_CONTROL.turOnAllAirCoditionerOfRoom(measurement
-							.getSensor().getRoom());
+					boolean airconditionersAreOn = airConditionersAreOn(airConditionerController
+							.findAirconditionerByRoom(room.getRoomName()));
 
-				} else if (!AIR_CONTROL.hasPeopleInTheRoom(room, 15)
-						&& airConditionersAreOn(room.getAirConditioners())
-						&& reservesSystem.hasApprovedReserves(room.getRoomName(), 15)) {
-					// caso nao tenha sido registrada nenhuma presença nos
-					// ultimos 15 min o ar sera desligado
-					AIR_CONTROL.turOffAllAirConditionersOfRom(room);
-					
-					logger.info("desativando todos os aparellhos da sala. Motivo: nao existem pessoas na sala e nao existem reservas para os proximos 15 min ");
+					if (hasPeople
+							&& !airconditionersAreOn
+							&& (temperatureRoom > (AIR_CONTROL.targetTemperature - 3))) {
+						// ligar todos os aparelhos de ar condicionado da sala
+						// tem > 20
+
+						AIR_CONTROL.turOnAllAirCoditionerOfRoom(room);
+
+					} else if (!AIR_CONTROL.hasPeopleInTheRoom(room, 15)
+							&& airConditionersAreOn(airConditionerController
+									.findAirconditionerByRoom(room
+											.getRoomName()))
+							&& reservesSystem.hasApprovedReserves(
+									room.getRoomName(), 15)) {
+						// caso nao tenha sido registrada nenhuma presença nos
+						// ultimos 15 min o ar sera desligado
+						AIR_CONTROL.turOffAllAirConditionersOfRom(room);
+
+						logger.info("desativando todos os aparellhos da sala. Motivo: nao existem pessoas na sala e nao existem reservas para os proximos 15 min ");
+					}
+
+				} catch (Exception e) {
+					throw new TreaterException("Erro: " + e.getMessage());
 				}
 
-			} catch (Exception e) {
-				throw new TreaterException("Erro: " + e.getMessage());
+			} else {
+				if (next != null) {
+					next.treaterMeasurement(measurement);
+				} else if (next == null) {
+					throw new TreaterException(
+							"Nao foi possivel processar essa medicao");
+				}
 			}
-
-		} else {
-			if (next != null) {
-				next.treaterMeasurement(measurement);
-			} else if (next == null) {
-				throw new TreaterException(
-						"Nao foi possivel processar essa medicao");
-			}
+		} catch (Exception e1) {
+			throw new TreaterException(e1.getMessage());
 		}
 
 	}

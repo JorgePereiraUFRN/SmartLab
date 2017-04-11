@@ -11,7 +11,7 @@ import smartmetropolis.smartlab.model.Room;
 public class AirConditionerStateDao extends GenericHibernateDAO<AirConditionerState, Long> implements AirConditionerStateDaoInterface {
 
 	public AirConditionerStateDao() {
-		// TODO Auto-generated constructor stub
+		super(AirConditionerState.class);
 	}
 
 	public List<AirConditionerState> listByDate(Date initialDate, Date finalDate)
@@ -31,5 +31,8 @@ public class AirConditionerStateDao extends GenericHibernateDAO<AirConditionerSt
 		}
 		return list;
 	}
+
+	
+
 
 }

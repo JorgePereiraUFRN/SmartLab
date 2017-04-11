@@ -11,5 +11,5 @@ public interface MeasurementDaoInterface extends GenericDaoInterface<Measurement
 
 	List<Measurement> listMeasurementsByDate(Date date) throws DAOException;
 	
-	List<Measurement> listMeasurementsBetweendDate(Date initialDate, Date finalDate, Long sensorId) throws DAOException;
+	List<Measurement> listMeasurementsBetweendDate(Date initialDate, Date finalDate, String sensorId) throws DAOException;
 }

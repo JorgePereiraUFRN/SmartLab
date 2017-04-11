@@ -1,6 +1,5 @@
 package smartmetropolis.smartlab.model;
 
-
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -13,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @XmlRootElement
-public class Measurement implements Comparable<Measurement>{
+public class Measurement implements Comparable<Measurement> {
 
 	@Id
 	@GeneratedValue
@@ -21,8 +20,7 @@ public class Measurement implements Comparable<Measurement>{
 	private String value;
 	private Date time;
 
-	@ManyToOne(cascade = CascadeType.REMOVE)
-	private Sensor sensor;
+	private String sensorId;
 
 	public Measurement() {
 		// TODO Auto-generated constructor stub
@@ -40,15 +38,6 @@ public class Measurement implements Comparable<Measurement>{
 		return id;
 	}
 
-
-	public Sensor getSensor() {
-		return sensor;
-	}
-
-	public void setSensor(Sensor sensor) {
-		this.sensor = sensor;
-	}
-
 	public Date getTime() {
 		return time;
 	}
@@ -57,20 +46,26 @@ public class Measurement implements Comparable<Measurement>{
 		this.time = time;
 	}
 
+	@Override
+	public String toString() {
+		return "Measurement [id=" + id + ", value=" + value + ", time=" + time
+				+ ", sensorId=" + sensorId + "]";
+	}
+
 	public void setId(Long measurementId) {
 		this.id = measurementId;
 	}
 
-	@Override
-	public String toString() {
-		return "Measurement [id=" + id + ", value=" + value + ", time=" + time
-				+ ", sensor=" + sensor + "]";
+	public String getSensorId() {
+		return sensorId;
+	}
+
+	public void setSensorId(String sensorId) {
+		this.sensorId = sensorId;
 	}
 
 	public int compareTo(Measurement o) {
 		return this.getTime().compareTo(o.getTime());
 	}
 
-	
-	
 }

@@ -27,7 +27,6 @@ import smartmetropolis.smartlab.model.AirConditionerAction;
 import smartmetropolis.smartlab.model.AirConditionerState;
 import smartmetropolis.smartlab.model.Measurement;
 import smartmetropolis.smartlab.model.Room;
-import smartmetropolis.smartlab.model.RoomKey;
 import smartmetropolis.smartlab.model.SensorType;
 
 public class AirControl implements AirControlInterface {
@@ -64,14 +63,10 @@ public class AirControl implements AirControlInterface {
 			MeasurementController mController = MeasurementController
 					.getInstance();
 
-			RoomKey roomKey = new RoomKey();
-
-			roomKey.setLocalName(room.getLocal().getLocalName());
-			roomKey.setRoomName(room.getRoomName());
 			
 			List<Measurement> measurements = mController
 					.findMeasurementByDateAndRoomAndSensorType(
-							calendar.getTime(), roomKey, SensorType.PRESENCE);
+							calendar.getTime(), room.getRoomName(), SensorType.PRESENCE);
 
 			for (Measurement m : measurements) {
 
@@ -144,7 +139,7 @@ public class AirControl implements AirControlInterface {
 			airConditioner.setItsOn(true);
 			AirConditionerState airState = new AirConditionerState();
 			airState.setAction(AirConditionerAction.ligar);
-			airState.setAirConditioner(airConditioner);
+			airState.setAirConditionerId(airConditioner.getId());
 			airState.setTimestamp(new Date(System.currentTimeMillis()));
 
 			AIR_CONTROLLER.updateAirConditioner(airConditioner);
@@ -167,7 +162,7 @@ public class AirControl implements AirControlInterface {
 				airConditioner.setItsOn(false);
 				AirConditionerState airState = new AirConditionerState();
 				airState.setAction(AirConditionerAction.desligar);
-				airState.setAirConditioner(airConditioner);
+				airState.setAirConditionerId(airConditioner.getId());
 				airState.setTimestamp(new Date(System.currentTimeMillis()));
 
 				AIR_CONTROLLER.updateAirConditioner(airConditioner);
@@ -195,7 +190,7 @@ public class AirControl implements AirControlInterface {
 			if (airConditioner.itsOn) {
 				AirConditionerState airState = new AirConditionerState();
 				airState.setAction(AirConditionerAction.aumentar_temperatura);
-				airState.setAirConditioner(airConditioner);
+				airState.setAirConditionerId(airConditioner.getId());
 				airState.setTimestamp(new Date(System.currentTimeMillis()));
 				AIR_STATE_CONTROLLER.save(airState);
 			}
@@ -220,7 +215,7 @@ public class AirControl implements AirControlInterface {
 			if (airConditioner.itsOn) {
 				AirConditionerState airState = new AirConditionerState();
 				airState.setAction(AirConditionerAction.diminuir_temperatura);
-				airState.setAirConditioner(airConditioner);
+				airState.setAirConditionerId(airConditioner.getId());
 				airState.setTimestamp(new Date(System.currentTimeMillis()));
 
 				AIR_STATE_CONTROLLER.save(airState);
@@ -243,7 +238,7 @@ public class AirControl implements AirControlInterface {
 	public void turOffAllAirConditionersOfRom(Room room) throws DAOException,
 			validateDataException {
 		logger.info("desligando todos os aprelhos da sala: " + room);
-		for (AirConditioner airC : room.getAirConditioners()) {
+		for (AirConditioner airC : AIR_CONTROLLER.findAirconditionerByRoom(room.getRoomName())) {
 			turOffAirConditioner(airC);
 		}
 
@@ -256,7 +251,7 @@ public class AirControl implements AirControlInterface {
 			throws DAOException, validateDataException {
 		logger.info("aumentando temperatura de todos os aprelhos da sala: "
 				+ room);
-		for (AirConditioner airC : room.getAirConditioners()) {
+		for (AirConditioner airC : AIR_CONTROLLER.findAirconditionerByRoom(room.getRoomName())) {
 			increaseTemperature(airC);
 		}
 
@@ -269,7 +264,7 @@ public class AirControl implements AirControlInterface {
 
 		logger.info("ligando todos os aprelhos da sala: " + room);
 
-		for (AirConditioner airC : room.getAirConditioners()) {
+		for (AirConditioner airC : AIR_CONTROLLER.findAirconditionerByRoom(room.getRoomName())) {
 			turOnAirConditioner(airC);
 		}
 
@@ -281,7 +276,7 @@ public class AirControl implements AirControlInterface {
 			throws DAOException, validateDataException {
 		logger.info("diminuindo temperatura de todos os aprelhos da sala: "
 				+ room);
-		for (AirConditioner airC : room.getAirConditioners()) {
+		for (AirConditioner airC : AIR_CONTROLLER.findAirconditionerByRoom(room.getRoomName())) {
 			decreaseTemperature(airC);
 		}
 

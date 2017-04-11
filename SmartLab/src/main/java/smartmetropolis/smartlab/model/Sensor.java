@@ -3,45 +3,31 @@ package smartmetropolis.smartlab.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement
-@Entity
 public class Sensor {
 
-	@Id
-	@GeneratedValue
-	private Long id;
+	private String id;
 	private SensorType sensorType;
-
-	@ManyToOne
-	private Room room;
 	private String description;
+	private String roomName;
+	
+	private Measurement measurement;
 
-	@OneToMany(cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "sensor_id")
-	private List<Measurement> measurements = new ArrayList<Measurement>();
+	/*private List<Measurement> measurements = new ArrayList<Measurement>();*/
 
 	public Sensor() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -53,21 +39,14 @@ public class Sensor {
 		this.sensorType = sensorType;
 	}
 
-	@XmlTransient
-	public List<Measurement> getMeasurements() {
-		return measurements;
+	
+
+	public String getRoomName() {
+		return roomName;
 	}
 
-	public void setMeasurements(List<Measurement> measurements) {
-		this.measurements = measurements;
-	}
-
-	public Room getRoom() {
-		return room;
-	}
-
-	public void setRoom(Room room) {
-		this.room = room;
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
 	}
 
 	public String getDescription() {
@@ -78,10 +57,21 @@ public class Sensor {
 		this.description = description;
 	}
 
-	@Override
-	public String toString() {
-		return "Sensor [id=" + id + ", sensorType=" + sensorType + ", room="
-				+ room.getRoomName() + ", description=" + description + "]";
+	public Measurement getMeasurement() {
+		return measurement;
 	}
 
+	public void setMeasurement(Measurement measurement) {
+		this.measurement = measurement;
+	}
+
+	@Override
+	public String toString() {
+		return "Sensor [id=" + id + ", sensorType=" + sensorType
+				+ ", description=" + description + ", roomName=" + roomName
+				+ ", measurement=" + measurement + "]";
+	}
+	
+	
 }
+	

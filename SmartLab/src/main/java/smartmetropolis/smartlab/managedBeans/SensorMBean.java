@@ -12,6 +12,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import smartmetropolis.smartlab.controller.LocalController;
+import smartmetropolis.smartlab.controller.RoomController;
 import smartmetropolis.smartlab.controller.SensorController;
 import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.exceptions.validateDataException;
@@ -35,6 +36,8 @@ public class SensorMBean {
 	private LocalController localController;
 
 	private SensorController sensorController;
+	
+	private RoomController roomController;
 
 	@PostConstruct
 	public void init() {
@@ -44,7 +47,7 @@ public class SensorMBean {
 
 		sensorController = SensorController.getInstance();
 		localController = LocalController.getInstance();
-		// roomController = RoomController.getInstance();
+		roomController = RoomController.getInstance();
 
 		initSensorsTypeMap();
 		initLocalsMap();
@@ -88,7 +91,7 @@ public class SensorMBean {
 			
 			if (l != null) {
 				
-				for (Room r : l.getRooms()) {
+				for (Room r : roomController.findRoomsByBuilding(l.getLocalName())) {
 					roomsMap.put(r.getRoomName(), r.getRoomName());
 				}
 			}
@@ -104,8 +107,8 @@ public class SensorMBean {
 
 	public void saveSensor() {
 		try {
-			room.setLocal(local);
-			sensor.setRoom(room);
+			room.setPredio(local.getLocalName());
+			sensor.setRoomName(room.getRoomName());
 			
 	
 			sensorController.saveSensor(sensor);

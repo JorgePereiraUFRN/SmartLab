@@ -6,19 +6,26 @@ import java.util.List;
 
 import com.sun.org.apache.bcel.internal.generic.FNEG;
 
+import smartmetropolis.smartlab.dao.AirConditionerDaoInterface;
 import smartmetropolis.smartlab.dao.AirConditionerStateDao;
 import smartmetropolis.smartlab.dao.AirConditionerStateDaoInterface;
+import smartmetropolis.smartlab.dao.ConcreteDaoFactory;
+import smartmetropolis.smartlab.dao.DAOFactory;
 import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.exceptions.validateDataException;
+import smartmetropolis.smartlab.model.AirConditioner;
 import smartmetropolis.smartlab.model.AirConditionerState;
 
 public class AirConditionerStateController {
 
+	private final DAOFactory factory = new ConcreteDaoFactory();
 	private static final AirConditionerStateController AIR_CONDITIONER_CONTROLLER = new AirConditionerStateController();
-	private static final AirConditionerStateDaoInterface airStateDao = new AirConditionerStateDao();
+	private final AirConditionerStateDaoInterface airStateDao;
+	private final AirConditionerDaoInterface airConditionerDao;
 
 	private AirConditionerStateController() {
-
+		airStateDao = factory.getAirStateDao();
+		airConditionerDao = factory.getAirConditionerDao();
 	}
 
 	public static AirConditionerStateController getInstance() {
@@ -30,8 +37,7 @@ public class AirConditionerStateController {
 
 		if (airState == null) {
 			throw new validateDataException("object null");
-		} else if (airState.getAirConditioner() == null
-				|| airState.getAirConditioner().getId() == null) {
+		} else if (airState.getAirConditionerId() == null) {
 			throw new validateDataException("air conditioner id ivalid.");
 		} else if (airState.getAction() == null) {
 			throw new validateDataException("inavlid action.");
@@ -50,7 +56,6 @@ public class AirConditionerStateController {
 
 	}
 
-	
 	public AirConditionerState update(AirConditionerState airState)
 			throws validateDataException, DAOException {
 
@@ -62,50 +67,47 @@ public class AirConditionerStateController {
 		}
 	}
 
-	
-	
 	public List<AirConditionerState> listAll() throws DAOException {
-		return airStateDao.findAll(AirConditionerState.class);
+		return airStateDao.findAll();
 	}
 
-	
-	public List<AirConditionerState> listByRoomAndDate(String roomName, String localName, Date initialDate, Date finalDate) throws DAOException, validateDataException{
-		
-		if(initialDate == null || finalDate == null){
+	public List<AirConditionerState> listByRoomAndDate(String roomName,
+			Date initialDate, Date finalDate) throws DAOException,
+			validateDataException {
+
+		if (initialDate == null || finalDate == null) {
 			throw new validateDataException("invalid date: null");
 		}
-		
-		List<AirConditionerState> states = airStateDao.listByDate(initialDate, finalDate);
-		List<AirConditionerState> aux = new ArrayList<AirConditionerState>();
-		
-		for(AirConditionerState as : states){
 
-			if(as.getAirConditioner().getRoom().getLocalName().equals(localName) && as.getAirConditioner().getRoom().getRoomName().equals(roomName)){
-				aux.add(as);
+		List<AirConditionerState> states = airStateDao.listByDate(initialDate,
+				finalDate);
+		List<AirConditionerState> aux = new ArrayList<AirConditionerState>();
+
+		List<AirConditioner> airCs = airConditionerDao
+				.getAirConditionersByRoom(roomName);
+
+		for (AirConditionerState airC_State : states) {
+
+			for (AirConditioner airC : airCs) {
+
+				if (airC_State.getAirConditionerId().equalsIgnoreCase(
+						airC.getId())) {
+					aux.add(airC_State);
+				}
 			}
+
 		}
-		
+
 		return aux;
-		
+
 	}
-	
-	
+
 	public AirConditionerState findById(Long id) throws DAOException {
-		return airStateDao.findById(AirConditionerState.class, id);
+		return airStateDao.findById(id);
 	}
-	
-	
 
 	public void delete(Long id) throws DAOException, validateDataException {
-
-		AirConditionerState airState = airStateDao.findById(
-				AirConditionerState.class, id);
-
-		if (airState == null) {
-			throw new validateDataException("invalid id");
-		} else {
-			airStateDao.delete(airState);
-		}
+		airStateDao.delete(id);
 
 	}
 

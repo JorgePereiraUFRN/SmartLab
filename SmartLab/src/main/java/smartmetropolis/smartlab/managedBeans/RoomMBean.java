@@ -60,7 +60,7 @@ public class RoomMBean {
 		try {
 
 			// Local local = localController.findLocal(localId);
-			room.setLocal(local);
+			room.setPredio(local.getLocalName());
 			roomController.saveRoom(room);
 			room = new Room();
 			local = new Local();

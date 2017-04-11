@@ -29,10 +29,8 @@ public class SchedulingController {
 			throw new validateDataException("Object null");
 		} else if (scheduling.getDate() == null) {
 			throw new validateDataException("Invalid Date");
-		} else if (scheduling.getRoom() == null
-				|| scheduling.getRoom().getRoomName() == null
-				|| scheduling.getRoom().getLocal() == null
-				|| scheduling.getRoom().getLocal().getLocalName() == null) {
+		} else if (scheduling.getRoomName() == null
+				|| scheduling.getRoomName().equals("")) {
 			throw new validateDataException("Invalid scheduling room");
 		} else if (scheduling.getUser() == null
 				|| scheduling.getUser().getLogin() == null) {
@@ -62,16 +60,14 @@ public class SchedulingController {
 
 	public Scheduling findScheduling(Long id) throws DAOException {
 
-		return schedulingDao.findById(Scheduling.class, id);
+		return schedulingDao.findById( id);
 	}
 
 	public void removeScheduling(Long id) throws DAOException {
 
-		Scheduling s = findScheduling(id);
+	
+			schedulingDao.delete(id);
 
-		if (s != null) {
-			schedulingDao.delete(s);
-		}
 	}
 
 }

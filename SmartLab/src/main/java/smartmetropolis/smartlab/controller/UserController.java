@@ -37,7 +37,7 @@ public class UserController {
 	}
 
 	public User findUser(String login) throws DAOException {
-		return userDao.findById(User.class, login);
+		return userDao.findById( login);
 	}
 
 	public User saveUser(User user) throws UserAlreadyExistsException,
@@ -62,15 +62,11 @@ public class UserController {
 	}
 
 	public void removeUser(String login) throws DAOException {
-
-		User u = findUser(login);
-
-		if (u != null) {
-			userDao.delete(u);
-		}
+			userDao.delete(login);
+		
 	}
 
 	public List<User> findAllUsers() throws DAOException {
-		return userDao.findAll(User.class);
+		return userDao.findAll();
 	}
 }

@@ -13,6 +13,7 @@ import javax.faces.context.FacesContext;
 
 import smartmetropolis.smartlab.controller.AirConditionerStateController;
 import smartmetropolis.smartlab.controller.LocalController;
+import smartmetropolis.smartlab.controller.RoomController;
 import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.exceptions.validateDataException;
 import smartmetropolis.smartlab.model.AirConditionerState;
@@ -34,12 +35,15 @@ public class AirConditionerStateMBean {
 
 	private LocalController localController;
 	private AirConditionerStateController airCStateController;
+	private RoomController roomController;
 
 	private List<AirConditionerState> airCStates = new ArrayList<AirConditionerState>();
 
 	public AirConditionerStateMBean() {
 		localController = LocalController.getInstance();
 		airCStateController = AirConditionerStateController.getInstance();
+		roomController = RoomController.getInstance();
+		
 		initLocalsMap();
 	}
 
@@ -69,7 +73,7 @@ public class AirConditionerStateMBean {
 			Local l = localController.findLocal(localName);
 
 			if (l != null) {
-				for (Room r : l.getRooms()) {
+				for (Room r : roomController.findRoomsByBuilding(l.getLocalName())) {
 					roomsMap.put(r.getRoomName(), r.getRoomName());
 				}
 			}
@@ -88,7 +92,7 @@ public class AirConditionerStateMBean {
 			if (roomName != null && localName != null && initialDate != null
 					&& finalDate != null) {
 				airCStates = airCStateController.listByRoomAndDate(roomName,
-						localName, initialDate, finalDate);
+						 initialDate, finalDate);
 			}
 		} catch (DAOException e) {
 			FacesContext.getCurrentInstance().addMessage(

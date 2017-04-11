@@ -4,18 +4,25 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import smartmetropolis.smartlab.controller.AirConditionerController;
+import smartmetropolis.smartlab.controller.RoomController;
+import smartmetropolis.smartlab.controller.SensorController;
 import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.exceptions.TreaterException;
 import smartmetropolis.smartlab.exceptions.validateDataException;
 import smartmetropolis.smartlab.model.AirConditioner;
 import smartmetropolis.smartlab.model.Measurement;
 import smartmetropolis.smartlab.model.Room;
-import smartmetropolis.smartlab.model.RoomKey;
+import smartmetropolis.smartlab.model.Sensor;
 import smartmetropolis.smartlab.model.SensorType;
 
 public class TemperatureMeasurementTreater extends MeasurementTreater {
 
 	private AirControlInterface AIR_CONTROL = AirControl.getInstance();
+	private SensorController sensorController = SensorController.getInstance();
+	private RoomController roomController = RoomController.getInstance();
+	private AirConditionerController airConditionerController = AirConditionerController
+			.getInstance();
 
 	private Logger logger = Logger
 			.getLogger(TemperatureMeasurementTreater.class);
@@ -28,95 +35,102 @@ public class TemperatureMeasurementTreater extends MeasurementTreater {
 	public void treaterMeasurement(Measurement measurement)
 			throws TreaterException {
 
-		if (measurement.getSensor().getSensorType() == SensorType.TEMPERATURE) {
+		try {
+			Sensor sensor = sensorController.findSensor(measurement
+					.getSensorId());
 
-			logger.debug("processando dados da medição: " + measurement);
+			if (sensor.getSensorType().ordinal() == SensorType.TEMPERATURE
+					.ordinal()) {
 
-			Room room = measurement.getSensor().getRoom();
-			
-			
+				logger.debug("processando dados da medição: " + measurement);
 
-			float temperature = 0;
-			try {
-				temperature = Float.parseFloat(measurement.getValue());
+				Room room = roomController.findRoom(sensor.getRoomName());
 
-				AIR_CONTROL.setAtualTemp(room, temperature);
-			} catch (NumberFormatException e) {
-				throw new TreaterException("erro ao converter float: "
-						+ e.getMessage());
-			}
+				float temperature = 0;
+				try {
+					temperature = Float.parseFloat(measurement.getValue());
 
-			if (AIR_CONTROL.hasPeopleInTheRoom(room, 15)) {
+					AIR_CONTROL.setAtualTemp(room, temperature);
+				} catch (NumberFormatException e) {
+					throw new TreaterException("erro ao converter float: "
+							+ e.getMessage());
+				}
 
-				// tempo em segundos desde o ultimo comando enviado ao ar
-				// condicionado
-				if (AIR_CONTROL.timeFromLastAirChange(measurement.getSensor()
-						.getRoom()) > 10 * 60L) {
+				if (AIR_CONTROL.hasPeopleInTheRoom(room, 15)) {
 
-					try {
+					// tempo em segundos desde o ultimo comando enviado ao ar
+					// condicionado
+					if (AIR_CONTROL.timeFromLastAirChange(room) > 10 * 60L) {
 
-						if (temperature < AIR_CONTROL.targetTemperature) {
-							logger.info("teperatura menor que "
-									+ AIR_CONTROL.targetTemperature + " graus");
-							int diference = (int) (AIR_CONTROL.targetTemperature - temperature);
+						try {
 
-							if (diference > 3) {
-								//temp < 20
-								AIR_CONTROL
-										.turOffAllAirConditionersOfRom(measurement
-												.getSensor().getRoom());
-							} else if(diference > 2) {
-								//temp > 20
-								if (!airConditionersAreOn(room
-										.getAirConditioners())) {
+							if (temperature < AIR_CONTROL.targetTemperature) {
+								logger.info("teperatura menor que "
+										+ AIR_CONTROL.targetTemperature
+										+ " graus");
+								int diference = (int) (AIR_CONTROL.targetTemperature - temperature);
+
+								if (diference > 3) {
+									// temp < 20
 									AIR_CONTROL
-											.turOnAllAirCoditionerOfRoom(room);
+											.turOffAllAirConditionersOfRom(room);
+								} else if (diference > 2) {
+									// temp > 20
+									if (!airConditionersAreOn(airConditionerController
+											.findAirconditionerByRoom(room
+													.getRoomName()))) {
+										AIR_CONTROL
+												.turOnAllAirCoditionerOfRoom(room);
+									}
+									AIR_CONTROL
+											.increaseTemperatureAllAirConditionersOfRoom(room);
+
 								}
+							} else if (temperature > (AIR_CONTROL.targetTemperature + 1)) {
+								// 23
+								logger.info("teperatura maior que "
+										+ AIR_CONTROL.targetTemperature + 1
+										+ " graus");
+
 								AIR_CONTROL
-										.increaseTemperatureAllAirConditionersOfRoom(measurement
-												.getSensor().getRoom());
+										.decreaseTemperatureAllAirConditionersOfRoom(room);
 
 							}
-						} else if (temperature > (AIR_CONTROL.targetTemperature + 1)) {
-							//23
-							logger.info("teperatura maior que "
-									+ AIR_CONTROL.targetTemperature + 1
-									+ " graus");
 
-							AIR_CONTROL
-									.decreaseTemperatureAllAirConditionersOfRoom(measurement
-											.getSensor().getRoom());
-
+						} catch (Exception e) {
+							throw new TreaterException("erro: "
+									+ e.getMessage());
 						}
-
-					} catch (Exception e) {
+					}
+				} else if (airConditionersAreOn(airConditionerController
+						.findAirconditionerByRoom(room.getRoomName()))) {
+					// caso nao tenha sido registrada nenhuma presença nos
+					// ultimos
+					// 15
+					// min e or ar esteja ligado, um comando sera enviado para q
+					// o
+					// mesmo seja desligado
+					logger.info("dado de temperatura recebido, no entanto não foi registrada nenhuma presença nos ultimos 10 min");
+					try {
+						AIR_CONTROL.turOffAllAirConditionersOfRom(room);
+					} catch (DAOException e) {
+						throw new TreaterException("erro: " + e.getMessage());
+					} catch (validateDataException e) {
 						throw new TreaterException("erro: " + e.getMessage());
 					}
 				}
-			} else if (airConditionersAreOn(room.getAirConditioners())) {
-				// caso nao tenha sido registrada nenhuma presença nos ultimos
-				// 15
-				// min e or ar esteja ligado, um comando sera enviado para q o
-				// mesmo seja desligado
-				logger.info("dado de temperatura recebido, no entanto não foi registrada nenhuma presença nos ultimos 10 min");
-				try {
-					AIR_CONTROL.turOffAllAirConditionersOfRom(measurement
-							.getSensor().getRoom());
-				} catch (DAOException e) {
-					throw new TreaterException("erro: " + e.getMessage());
-				} catch (validateDataException e) {
-					throw new TreaterException("erro: " + e.getMessage());
+
+			} else {
+				if (this.next != null) {
+					this.next.treaterMeasurement(measurement);
+				} else if (this.next == null) {
+					System.out.println("next nulo");
+					throw new TreaterException(
+							"Nao foi possivel processar essa medicao");
 				}
 			}
-
-		} else {
-			if (this.next != null) {
-				this.next.treaterMeasurement(measurement);
-			} else if (this.next == null) {
-				System.out.println("next nulo");
-				throw new TreaterException(
-						"Nao foi possivel processar essa medicao");
-			}
+		} catch (Exception e) {
+			throw new TreaterException(e.getMessage());
 		}
 
 	}

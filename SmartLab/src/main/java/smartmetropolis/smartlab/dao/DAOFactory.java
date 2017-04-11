@@ -24,7 +24,6 @@ public abstract class DAOFactory {
         }
     }
  
-    // Add your DAO interfaces here
     
    
     public abstract SensorDaoInterface getSensorDao();
@@ -40,4 +39,6 @@ public abstract class DAOFactory {
     public abstract SchedulingDaoInterface getsSchedulingDao();
     
     public abstract UserDaoInterface getUserDao();
+    
+    public abstract AirConditionerStateDaoInterface getAirStateDao();
 }

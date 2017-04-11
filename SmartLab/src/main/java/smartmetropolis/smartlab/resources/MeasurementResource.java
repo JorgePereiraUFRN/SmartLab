@@ -31,7 +31,7 @@ public class MeasurementResource {
 	}
 
 	@POST
-	public Response saveMeasurement(@QueryParam("sensor") long sensorId,
+	public Response saveMeasurement(@QueryParam("sensor") String sensorId,
 			@QueryParam("value") String value,
 			@QueryParam("dateTime") String datetime) {
 		try {
@@ -44,7 +44,7 @@ public class MeasurementResource {
 								+ " doesn't exist").build();
 			} else {
 				Measurement measurement = new Measurement();
-				measurement.setSensor(sensor);
+				measurement.setSensorId(sensorId);
 				measurement.setValue(value);
 
 				Date time;

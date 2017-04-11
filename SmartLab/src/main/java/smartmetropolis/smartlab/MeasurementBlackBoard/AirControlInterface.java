@@ -4,7 +4,7 @@ import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.exceptions.TreaterException;
 import smartmetropolis.smartlab.exceptions.validateDataException;
 import smartmetropolis.smartlab.model.Room;
-import smartmetropolis.smartlab.model.RoomKey;
+
 
 public interface AirControlInterface {
 	

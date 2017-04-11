@@ -1,7 +1,173 @@
 package smartmetropolis.smartlab.dao;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
+
+import smartmetropolis.smartlab.exceptions.DAOException;
+import smartmetropolis.smartlab.model.Measurement;
 import smartmetropolis.smartlab.model.Sensor;
+import smartmetropolis.smartlab.model.SensorType;
+import br.ufrn.NGSI_10Client.entities.Attribute;
+import br.ufrn.NGSI_10Client.entities.ContextElement;
+import br.ufrn.NGSI_10Client.entities.Metadata;
 
-public class SensorDao extends GenericHibernateDAO<Sensor, Long> implements SensorDaoInterface{
+public class SensorDao extends GenericDaoOrion<Sensor> implements
+		SensorDaoInterface {
 
+	private static final String type = "Sensor";
+
+	private SimpleDateFormat format = new SimpleDateFormat(
+			"yyyy-MM-dd'T'HH:mm:ssZ");
+
+	public SensorDao() {
+		super(type);
+		format.setTimeZone(TimeZone.getTimeZone("GMT"));
+	}
+
+	public ContextElement entityToContextElement(Sensor entity) {
+
+		ContextElement context = new ContextElement(type, entity.getId(), false);
+
+		Attribute sala = new Attribute("Sala", "String", entity.getRoomName());
+		context.addAttribute(sala);
+
+		Attribute sensorType = new Attribute("Tipo_Sensor", "String", entity
+				.getSensorType().toString());
+		context.addAttribute(sensorType);
+
+		Attribute descricao = new Attribute("Descricao", "String",
+				entity.getDescription());
+		context.addAttribute(descricao);
+
+		Attribute medicao = new Attribute("Medicao", "String", entity
+				.getMeasurement().getValue());
+
+		medicao.addMetadata(new Metadata("Data", "DateTime", format
+				.format(entity.getMeasurement().getTime())));
+
+		context.addAttribute(medicao);
+
+		return context;
+	}
+
+	public Sensor contextElementToEntity(ContextElement contextElement) {
+
+		if (contextElement != null && contextElement.getAttributes() != null
+				&& contextElement.getId() != null) {
+
+			Sensor sensor = new Sensor();
+
+			sensor.setId(contextElement.getId());
+			sensor.setDescription(getAttributeValue("Descricao", contextElement));
+			sensor.setRoomName(getAttributeValue("Sala", contextElement));
+
+			String typeSensor = getAttributeValue("Tipo_Sensor", contextElement);
+
+			if (typeSensor.equalsIgnoreCase(SensorType.HUMIDITY.toString())) {
+				sensor.setSensorType(SensorType.HUMIDITY);
+			} else if (typeSensor.equalsIgnoreCase(SensorType.OTHER.toString())) {
+				sensor.setSensorType(SensorType.OTHER);
+			} else if (typeSensor.equalsIgnoreCase(SensorType.PRESENCE
+					.toString())) {
+				sensor.setSensorType(SensorType.PRESENCE);
+			} else if (typeSensor.equalsIgnoreCase(SensorType.TEMPERATURE
+					.toString())) {
+				sensor.setSensorType(SensorType.TEMPERATURE);
+			}
+
+			Measurement me = new Measurement();
+
+			me.setSensorId(sensor.getId());
+			me.setValue(getAttributeValue("Medicao", contextElement));
+			try {
+
+				String data = getAttributeMetadataValue("Medicao", "Data",
+						contextElement);
+				if (data != null) {
+					me.setTime(format.parse(data));
+				}
+			} catch (ParseException e) {
+
+				e.printStackTrace();
+			}
+
+			sensor.setMeasurement(me);
+
+			return sensor;
+		}
+
+		return null;
+	}
+
+	public static void main(String[] args) throws DAOException {
+
+		SensorDaoInterface dao = new SensorDao();
+
+		Sensor s = new Sensor();
+
+		s.setDescription("sensor de presença sala b3018");
+		s.setId("sensor temp 3");
+		s.setRoomName("B3018");
+		s.setSensorType(SensorType.PRESENCE);
+
+		Measurement m = new Measurement();
+		m.setSensorId(s.getId());
+		m.setTime(new Date());
+		m.setValue("false");
+
+		s.setMeasurement(m);
+
+		// dao.save(s);
+
+		for (Sensor se : dao.findAll()) {
+			System.out.println(se);
+		}
+	}
+
+	public List<Sensor> findSensorByRoom(String rooomId) throws DAOException {
+
+		List<Sensor> aux = null;
+
+		List<Sensor> sensors = findAll();
+
+		if (sensors != null && sensors.size() > 0) {
+
+			aux = new ArrayList<Sensor>();
+
+			for (Sensor s : sensors) {
+				if (s.getRoomName().equalsIgnoreCase(rooomId)) {
+					aux.add(s);
+				}
+			}
+
+		}
+
+		return aux;
+	}
+
+	public List<Sensor> findSensorByRoomAndType(String rooomId,
+			SensorType sensorType) throws DAOException {
+
+		List<Sensor> aux = null;
+
+		List<Sensor> sensors = findSensorByRoom(rooomId);
+
+		if (sensors != null && sensors.size() > 0) {
+
+			aux = new ArrayList<Sensor>();
+
+			for (Sensor s : sensors) {
+				if (s.getSensorType().ordinal() == sensorType.ordinal()) {
+					aux.add(s);
+				}
+			}
+
+		}
+
+		return aux;
+	}
 }

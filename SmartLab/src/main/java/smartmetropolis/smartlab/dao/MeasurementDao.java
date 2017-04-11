@@ -7,12 +7,18 @@ import java.util.List;
 import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.model.Measurement;
 import smartmetropolis.smartlab.model.Room;
-import smartmetropolis.smartlab.model.RoomKey;
 import smartmetropolis.smartlab.model.Sensor;
 import smartmetropolis.smartlab.model.SensorType;
 
 public class MeasurementDao extends GenericHibernateDAO<Measurement, Long>
 		implements MeasurementDaoInterface {
+	
+	
+
+	public MeasurementDao() {
+		super(Measurement.class);
+
+	}
 
 	public List<Measurement> listMeasurementsByDate(Date date)
 			throws DAOException {
@@ -34,7 +40,7 @@ public class MeasurementDao extends GenericHibernateDAO<Measurement, Long>
 	}
 
 	public List<Measurement> listMeasurementsBetweendDate(Date initialDate,
-			Date finalDate, Long sensorId) throws DAOException {
+			Date finalDate, String sensorId) throws DAOException {
 		List<Measurement> list = null;
 		try {
 			list = getInstance()
@@ -50,21 +56,6 @@ public class MeasurementDao extends GenericHibernateDAO<Measurement, Long>
 		return list;
 	}
 
-	/*
-	 * public static void main(String ags[]) throws DAOException {
-	 * 
-	 * MeasurementDaoInterface measurementDao = new MeasurementDao();
-	 * 
-	 * Measurement m = measurementDao.findById(Measurement.class, 2l);
-	 * 
-	 * Calendar calendar = Calendar.getInstance();
-	 * calendar.setTimeInMillis(System.currentTimeMillis());
-	 * calendar.add(Calendar.MINUTE, -500);
-	 * 
-	 * 
-	 * List<Measurement> list = measurementDao.listMeasurementsByDate(
-	 * calendar.getTime());
-	 * 
-	 * for (Measurement me : list) { System.out.println(me); } }
-	 */
+
+	
 }

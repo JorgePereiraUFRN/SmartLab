@@ -20,10 +20,11 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 	protected static final EntityManagerFactory factory = Persistence
 			.createEntityManagerFactory("SmartLab");
 
-	EntityManager em = null;
+	private EntityManager em = null;
+	private Class<T> classe;
 
-	public GenericHibernateDAO() {
-
+	public GenericHibernateDAO(Class<T> classe) {
+		this.classe = classe;
 	}
 
 	public T save(T entity) throws DAOException {
@@ -50,8 +51,11 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 		return save(entity);
 	}
 
-	public void delete(T entity) throws DAOException {
+	public void delete(ID id) throws DAOException {
 		try {
+			
+			T entity = findById(id);
+			
 			getInstance().getTransaction().begin();
 			getInstance().remove(entity);
 			getInstance().getTransaction().commit();
@@ -62,7 +66,7 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 
 	}
 
-	public T findById(Class<T> classe, ID id) throws DAOException {
+	public T findById( ID id) throws DAOException {
 
 		T found = null;
 
@@ -79,7 +83,7 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<T> findAll(Class<T> classe) throws DAOException {
+	public List<T> findAll() throws DAOException {
 		List<T> list = null;
 		try {
 			list = getInstance().createQuery(
@@ -110,4 +114,8 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 
 		return em;
 	}
+
+	
+
+	
 }

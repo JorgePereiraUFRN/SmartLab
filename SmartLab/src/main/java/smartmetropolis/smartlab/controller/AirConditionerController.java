@@ -3,20 +3,24 @@ package smartmetropolis.smartlab.controller;
 import java.util.List;
 
 import smartmetropolis.smartlab.dao.AirConditionerDaoInterface;
+import smartmetropolis.smartlab.dao.ConcreteDaoFactory;
 import smartmetropolis.smartlab.dao.DAOFactory;
 import smartmetropolis.smartlab.dao.HibernateDAOFactory;
+import smartmetropolis.smartlab.dao.RoomDaoInterface;
 import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.exceptions.validateDataException;
 import smartmetropolis.smartlab.model.AirConditioner;
 
 public class AirConditionerController {
 
-	private final DAOFactory factory = new HibernateDAOFactory();
+	private final DAOFactory factory = new ConcreteDaoFactory();
 	private static final AirConditionerController AIR_CONDITIONER_CONTROLLER = new AirConditionerController();
 	private final AirConditionerDaoInterface airConditionerDao;
+	private final RoomDaoInterface roomDao;
 
 	private AirConditionerController() {
 		airConditionerDao = factory.getAirConditionerDao();
+		roomDao = factory.getRoomDao();
 	}
 
 	public static synchronized AirConditionerController getInstance() {
@@ -24,17 +28,23 @@ public class AirConditionerController {
 	}
 
 	private void validateAirConditioner(AirConditioner airC)
-			throws validateDataException {
+			throws validateDataException, DAOException {
 
-		if (airC == null) {
+		if (airC == null || airC.getId() == null) {
 			throw new validateDataException("Invalid Values: null");
-		}
-		if (airC.getRoom() == null || airC.getRoom().getRoomName() == null
-				|| airC.getRoom().getLocal() == null
-				|| airC.getRoom().getLocal().getLocalName() == null) {
-			throw new validateDataException("Invalid Room");
-		}
-		if(airC.getIpaddressAirControl() == null || airC.getIpaddressAirControl().equals("")){
+			
+		} else if (airC.getRoomId() == null) {
+
+			throw new validateDataException("Invalid Room Id");
+
+		} else if (airC.getId() != null) {
+			if (roomDao.findById(airC.getRoomId()) == null) {
+				throw new validateDataException("Invalid Room Id");
+			}
+			
+			
+		} else if (airC.getIpaddressAirControl() == null
+				|| airC.getIpaddressAirControl().equals("")) {
 			throw new validateDataException("Invalid IP Adddres of air control");
 		}
 	}
@@ -50,20 +60,14 @@ public class AirConditionerController {
 	public void removeAirconditioner(Long airId) throws DAOException,
 			validateDataException {
 
-		AirConditioner air = findAirConditioner(airId);
-
-		if (air != null) {
-			airConditionerDao.delete(air);
-		} else {
-			throw new validateDataException("Invalide id");
-		}
+		airConditionerDao.delete(airId.toString());
 	}
 
 	public AirConditioner updateAirConditioner(AirConditioner airC)
 			throws DAOException, validateDataException {
 		validateAirConditioner(airC);
 
-		if (airC.getId() == null || airC.getId() < 0) {
+		if (airC.getId() == null || !airC.getId().equals("")) {
 			throw new validateDataException("Invalide air conditioner id");
 		}
 
@@ -72,10 +76,16 @@ public class AirConditionerController {
 	}
 
 	public AirConditioner findAirConditioner(Long airId) throws DAOException {
-		return airConditionerDao.findById(AirConditioner.class, airId);
+		return airConditionerDao.findById(airId.toString());
 	}
 
-	public List<AirConditioner> listAllAircAirConditioners() throws DAOException {
-		return airConditionerDao.findAll(AirConditioner.class);
+	public List<AirConditioner> listAllAircAirConditioners()
+			throws DAOException {
+		return airConditionerDao.findAll();
+	}
+	
+	public List<AirConditioner> findAirconditionerByRoom(String roomId){
+		
+		return findAirconditionerByRoom(roomId);
 	}
 }

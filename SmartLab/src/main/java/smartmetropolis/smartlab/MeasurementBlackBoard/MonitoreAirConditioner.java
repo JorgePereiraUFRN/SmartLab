@@ -9,7 +9,6 @@ import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.exceptions.TreaterException;
 import smartmetropolis.smartlab.exceptions.validateDataException;
 import smartmetropolis.smartlab.model.Room;
-import smartmetropolis.smartlab.model.RoomKey;
 
 public class MonitoreAirConditioner extends Thread {
 
@@ -54,7 +53,7 @@ public class MonitoreAirConditioner extends Thread {
 						if (!hasPeople && !hasReserves) {
 
 							Room room = ROOM_CONTROLLER.findRoom(
-									r.getRoomName(), r.getLocalName());
+									r.getRoomName());
 
 							if (room != null) {
 								logger.info("desativando aparelhos de ar condicionado da sala: "

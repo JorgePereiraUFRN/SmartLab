@@ -1,9 +1,8 @@
 package smartmetropolis.smartlab.dao;
 
-
-public class HibernateDAOFactory extends DAOFactory {
-
-    private GenericHibernateDAO instantiateDAO(Class daoClass) {
+public class ConcreteDaoFactory extends DAOFactory {
+	
+	private GenericHibernateDAO instantiateDAO(Class daoClass) {
         try {
             GenericHibernateDAO dao = (GenericHibernateDAO) daoClass.newInstance();
            
@@ -15,30 +14,27 @@ public class HibernateDAOFactory extends DAOFactory {
 
 	@Override
 	public SensorDaoInterface getSensorDao() {
-		
-		return (SensorDaoInterface) instantiateDAO(SensorDao.class);
+		return new SensorDao();
 	}
 
 	@Override
 	public MeasurementDaoInterface getMeasurementDao() {
-		
 		return (MeasurementDaoInterface) instantiateDAO(MeasurementDao.class);
 	}
 
 	@Override
 	public RoomDaoInterface getRoomDao() {
-		
-		return (RoomDaoInterface) instantiateDAO(RoomDao.class);
+		return new RoomDao();
 	}
 
 	@Override
 	public AirConditionerDaoInterface getAirConditionerDao() {
-		return  (AirConditionerDaoInterface) instantiateDAO(AirConditionerDao.class);
+		return new AirConditionerDao();
 	}
 
 	@Override
 	public LocalDaoInterface getLocalDao() {
-		return  (LocalDaoInterface) instantiateDAO(LocalDao.class);
+		return new LocalDao();
 	}
 
 	@Override
@@ -48,7 +44,7 @@ public class HibernateDAOFactory extends DAOFactory {
 
 	@Override
 	public UserDaoInterface getUserDao() {
-		return  (UserDaoInterface) instantiateDAO(UserDao.class);
+		return (UserDaoInterface) instantiateDAO(UserDao.class);
 	}
 
 	@Override
@@ -56,7 +52,4 @@ public class HibernateDAOFactory extends DAOFactory {
 		return (AirConditionerStateDao) instantiateDAO(AirConditionerStateDao.class);
 	}
 
-
-	
-	
 }

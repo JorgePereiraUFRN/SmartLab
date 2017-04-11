@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.sun.org.apache.bcel.internal.generic.LLOAD;
 
+import smartmetropolis.smartlab.dao.ConcreteDaoFactory;
 import smartmetropolis.smartlab.dao.DAOFactory;
 import smartmetropolis.smartlab.dao.HibernateDAOFactory;
 import smartmetropolis.smartlab.dao.LocalDaoInterface;
@@ -13,7 +14,7 @@ import smartmetropolis.smartlab.model.Local;
 
 public class LocalController {
 
-	private final DAOFactory factory = new HibernateDAOFactory();
+	private final DAOFactory factory = new ConcreteDaoFactory();
 	private final LocalDaoInterface localDao;
 	private static final LocalController LOCAL_CONTROLLER = new LocalController();
 
@@ -29,7 +30,8 @@ public class LocalController {
 
 		if (local == null) {
 			throw new validateDataException("Local null");
-		} else if (local.getLocalName() == null || local.getLocalName().equals("")) {
+		} else if (local.getLocalName() == null
+				|| local.getLocalName().equals("")) {
 			throw new validateDataException("Local name is null");
 		}
 	}
@@ -48,21 +50,18 @@ public class LocalController {
 	}
 
 	public List<Local> findAllLocals() throws DAOException {
-		return localDao.findAll(Local.class);
+		return localDao.findAll();
 	}
 
 	public Local findLocal(String localName) throws DAOException {
 
-		return localDao.findById(Local.class, localName);
+		return localDao.findById(localName);
 	}
 
 	public void deleteLocal(String locaName) throws DAOException {
 
-		Local l = findLocal(locaName);
+		localDao.delete(locaName);
 
-		if (l != null) {
-			localDao.delete(l);
-		}
 	}
 
 }

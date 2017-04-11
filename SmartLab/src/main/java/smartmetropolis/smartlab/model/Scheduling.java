@@ -16,7 +16,7 @@ public class Scheduling {
 	private Long id;
 
 	@ManyToOne(cascade = CascadeType.REMOVE)
-	private Room room;
+	private String roomName;
 
 	@ManyToOne(cascade = CascadeType.REMOVE)
 	private User user;
@@ -55,16 +55,18 @@ public class Scheduling {
 		return id;
 	}
 
-	public void setId(long id) {
+	public String getRoomName() {
+		return roomName;
+	}
+
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
+	}
+
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public Room getRoom() {
-		return room;
-	}
-
-	public void setRoom(Room room) {
-		this.room = room;
-	}
+	
 
 }

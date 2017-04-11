@@ -30,10 +30,10 @@ public class SensorController {
 		if (sensor == null) {
 			throw new validateDataException("Sensor is null");
 
-		} else if (sensor.getRoom() == null
-				|| sensor.getRoom().getRoomName() == null
-				|| sensor.getRoom().getLocal() == null
-				|| sensor.getRoom().getLocal().getLocalName() == null) {
+		}  else if(sensor.getId() == null || sensor.getId().equals("")){
+			throw new validateDataException("invalid sensor id");
+		}		else if (sensor.getRoomName() == null
+				|| sensor.getRoomName().equals("")) {
 			throw new validateDataException("invalid room");
 		} else if (sensor.getSensorType() == null) {
 			throw new validateDataException("Sensor Type is null");
@@ -52,28 +52,24 @@ public class SensorController {
 			DAOException {
 		validateData(sensor);
 
-		if (sensor.getId() == null || sensor.getId() < 0) {
-			throw new validateDataException("invalid Id: " + sensor.getId());
-		}
+		validateData(sensor);
+		
 		return sensorDao.update(sensor);
 
 	}
 
-	public Sensor findSensor(Long sensorId) throws DAOException {
-		return sensorDao.findById(Sensor.class, sensorId);
+	public Sensor findSensor(String sensorId) throws DAOException {
+		return sensorDao.findById( sensorId);
 	}
 
 	public List<Sensor> findSensors() throws DAOException {
-		return sensorDao.findAll(Sensor.class);
+		return sensorDao.findAll();
 	}
 
-	public void deleteSensor(long sensorId) throws DAOException,
+	public void deleteSensor(String sensorId) throws DAOException,
 			validateDataException {
-		Sensor sensor = sensorDao.findById(Sensor.class, sensorId);
-		if (sensor == null) {
-			throw new validateDataException("invalid Id");
-		}
-		sensorDao.delete(sensor);
+		
+		sensorDao.delete(sensorId);
 	}
 
 }

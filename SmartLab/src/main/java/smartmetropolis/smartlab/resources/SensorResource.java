@@ -50,7 +50,7 @@ public class SensorResource {
 	@GET
 	@Path("/{sensorId}")
 	// @Produces(MediaType.APPLICATION_XML)
-	public Response getSensor(@PathParam("sensorId") long sensorId)
+	public Response getSensor(@PathParam("sensorId") String sensorId)
 			throws DAOException {
 
 		Sensor sensor = sensorController.findSensor(sensorId);
@@ -68,7 +68,7 @@ public class SensorResource {
 	@DELETE
 	@Path("/{sensorId}")
 	// @Produces(MediaType.APPLICATION_XML)
-	public Response deleteSensor(@PathParam("sensorId") long sensorId) {
+	public Response deleteSensor(@PathParam("sensorId") String sensorId) {
 
 		try {
 

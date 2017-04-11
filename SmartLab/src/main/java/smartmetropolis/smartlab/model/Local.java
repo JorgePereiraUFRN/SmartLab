@@ -1,30 +1,15 @@
 package smartmetropolis.smartlab.model;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.xml.bind.annotation.XmlTransient;
-
-
-@Entity
 public class Local {
-	@Id
+	
+
 	private String localName;
 	
 	private double latitude;
 	private double longitude;
 	
-	@OneToMany(cascade=CascadeType.REMOVE)
-	@JoinColumn(name="localName")
-	private List<Room> rooms = new ArrayList<Room>();
 	
-
 	public String getLocalName() {
 		return localName;
 	}
@@ -49,14 +34,12 @@ public class Local {
 		this.longitude = longitude;
 	}
 
-	@XmlTransient
-	public List<Room> getRooms() {
-		return rooms;
+	@Override
+	public String toString() {
+		return "Local [localName=" + localName + ", latitude=" + latitude
+				+ ", longitude=" + longitude + "]";
 	}
 
-	public void setRooms(List<Room> rooms) {
-		this.rooms = rooms;
-	}
 
 	
 

@@ -111,7 +111,7 @@ public class GraphMB {
 			Local l = localController.findLocal(localName);
 
 			if (l != null) {
-				for (Room r : l.getRooms()) {
+				for (Room r : roomController.findRoomsByBuilding(l.getLocalName())) {
 					roomsMap.put(r.getRoomName(), r.getRoomName());
 				}
 			}

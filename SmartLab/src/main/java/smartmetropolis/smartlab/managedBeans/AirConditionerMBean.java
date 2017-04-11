@@ -70,7 +70,7 @@ public class AirConditionerMBean {
 			
 			if (l != null) {
 				
-				for (Room r : l.getRooms()) {
+				for (Room r : roomController.findRoomsByBuilding(l.getLocalName())) {
 					roomsMap.put(r.getRoomName(), r.getRoomName());
 				}
 			}
@@ -88,11 +88,11 @@ public class AirConditionerMBean {
 	public void saveAirconditioner(){
 		
 		try {
-			Room r = roomController.findRoom(roomName, localName);
+			Room r = roomController.findRoom(roomName);
 			
 			
 			if(r != null){
-				airConditioner.setRoom(r);
+				airConditioner.setRoomId(r.getRoomName());
 				airConditioner.setItsOn(false);
 				
 				airController.saveAirConditioner(airConditioner);

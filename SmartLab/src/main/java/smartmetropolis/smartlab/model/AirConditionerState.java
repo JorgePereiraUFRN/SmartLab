@@ -20,8 +20,7 @@ public class AirConditionerState {
 	private Long id;
 	private AirConditionerAction action;
 	private Date timestamp;
-	@ManyToOne(cascade = CascadeType.REMOVE)
-	private AirConditioner airConditioner;
+	private String airConditionerId;
 	
 	
 	public Long getId() {
@@ -31,13 +30,13 @@ public class AirConditionerState {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public AirConditioner getAirConditioner() {
-		return airConditioner;
+	
+	public String getAirConditionerId() {
+		return airConditionerId;
 	}
 
-	public void setAirConditioner(AirConditioner airConditioner) {
-		this.airConditioner = airConditioner;
+	public void setAirConditionerId(String airConditionerId) {
+		this.airConditionerId = airConditionerId;
 	}
 
 	public AirConditionerAction getAction() {
@@ -59,10 +58,9 @@ public class AirConditionerState {
 	@Override
 	public String toString() {
 		return "AirConditionerState [id=" + id + ", action=" + action
-				+ ", timestamp=" + timestamp + ", airConditioner="
-				+ airConditioner + "]";
+				+ ", timestamp=" + timestamp + ", airConditionerId="
+				+ airConditionerId + "]";
 	}
-	
-	
+		
 
 }
