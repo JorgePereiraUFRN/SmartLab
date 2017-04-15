@@ -290,7 +290,7 @@ public class AirControl implements AirControlInterface {
 		try {
 			webServiceClient = Client.create();
 
-			String uri = "http://" + airConditioner.getIpaddressAirControl()
+			String uri = "http://" + airConditioner.getIpAddressAirControl()
 					+ ":8080/WS-AirConditioner/air-conditioner/";
 			WebResource resource = webServiceClient.resource(uri + command);
 

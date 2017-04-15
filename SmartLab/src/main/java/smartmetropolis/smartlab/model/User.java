@@ -1,26 +1,18 @@
 package smartmetropolis.smartlab.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.xml.bind.annotation.XmlTransient;
 
-@Entity
+@Entity(name="smartplaceUser")
 public class User {	
 	@Id
 	private String login;
 	private String password;
 	private Float preferenceTemperature;
 	private String name;
-
-	@OneToMany(cascade=CascadeType.REMOVE)
-	@JoinColumn(name="user_login")
-	private List<Scheduling> schedulings = new ArrayList<Scheduling>();
+	private String email;
+	private String role;
+	
 
 	public User() {
 		// TODO Auto-generated constructor stub
@@ -58,13 +50,24 @@ public class User {
 		this.password = password;
 	}
 
-	@XmlTransient
-	public List<Scheduling> getSchedulings() {
-		return schedulings;
+	
+
+	public String getEmail() {
+		return email;
 	}
 
-	public void setSchedulings(List<Scheduling> schedulings) {
-		this.schedulings = schedulings;
+	public void setEmail(String email) {
+		this.email = email;
 	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+	
+	
 
 }

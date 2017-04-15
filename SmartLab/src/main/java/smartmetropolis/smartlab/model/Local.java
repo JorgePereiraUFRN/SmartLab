@@ -3,7 +3,6 @@ package smartmetropolis.smartlab.model;
 
 public class Local {
 	
-
 	private String localName;
 	
 	private double latitude;

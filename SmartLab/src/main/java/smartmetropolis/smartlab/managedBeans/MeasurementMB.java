@@ -95,7 +95,10 @@ public class MeasurementMB {
 			Local l = localController.findLocal(localName);
 
 			if (l != null) {
-				for (Room r : l.getRooms()) {
+				
+				List<Room> rooms = roomController.findRoomsByBuilding(l.getLocalName());
+				
+				for (Room r : rooms) {
 					roomsMap.put(r.getRoomName(), r.getRoomName());
 				}
 			}
@@ -113,10 +116,12 @@ public class MeasurementMB {
 		sensorsMap = new HashMap<String, String>();
 
 		try {
-			Room r = roomController.findRoom(roomName, localName);
+			Room r = roomController.findRoom(roomName);
 			if (r != null) {
+				
+				List<Sensor> sensors = sensorController.findSensorsByRoom(r.getRoomName());
 
-				for (Sensor s : r.getSensors()) {
+				for (Sensor s : sensors) {
 					sensorsMap.put(s.getSensorType() + " - Id: " + s.getId(), s
 							.getId().toString());
 				}
@@ -142,11 +147,11 @@ public class MeasurementMB {
 
 			if ((sensorId != null || !sensorId.equals(""))
 					&& initialDate != null && finalDate != null) {
-				long id = Long.parseLong(sensorId);
+				
 
 				measurements = measurementController
 						.listMeasurementsBySensorAndDate(initialDate,
-								finalDate, id);
+								finalDate, sensorId);
 
 			}
 		} catch (DAOException e) {
@@ -178,7 +183,7 @@ public class MeasurementMB {
 			
 			yAxis.setLabel("valores");
 
-			Sensor s = sensorController.findSensor(Long.parseLong(sensorId));
+			Sensor s = sensorController.findSensor(sensorId);
 
 			if (s.getSensorType().ordinal() == SensorType.OTHER.ordinal()) {
 

@@ -25,8 +25,7 @@ public class LocalMBean {
 	}
 	
 	
-	
-	public void saveLocal(){
+	public String  saveLocal(){
 		
 		try {
 			localController.saveLocal(local);
@@ -46,19 +45,28 @@ public class LocalMBean {
 							"Erro persistir dados: ", e.getMessage()));
 		}
 		
+		return null;
 	}
 	
 	
-	public void listAllLocals(){
+	public String listAllLocals(){
 		
+		System.out.println("litando todos os predios");
 		try {
 			locals = localController.findAllLocals();
+			
+			for(Local l : locals){
+				System.out.println(l);
+			}
+			
 		} catch (DAOException e) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
 							"Erro ao recuperar dados: ", e.getMessage()));
 		}
+		
+		return null;
 	}
 
 

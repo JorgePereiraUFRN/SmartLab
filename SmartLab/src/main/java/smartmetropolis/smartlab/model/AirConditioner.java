@@ -5,7 +5,7 @@ public class AirConditioner {
 
 	private String id;
 	private String roomId;
-	private String ipaddressAirControl;
+	private String ipAddressAirControl;
 
 	public AirConditioner() {
 		// TODO Auto-generated constructor stub
@@ -29,12 +29,12 @@ public class AirConditioner {
 		this.id = id;
 	}
 
-	public String getIpaddressAirControl() {
-		return ipaddressAirControl;
+	public String getIpAddressAirControl() {
+		return ipAddressAirControl;
 	}
 
-	public void setIpaddressAirControl(String ipaddressAirControl) {
-		this.ipaddressAirControl = ipaddressAirControl;
+	public void setIpAddressAirControl(String ipaddressAirControl) {
+		this.ipAddressAirControl = ipaddressAirControl;
 	}
 
 	public String getRoomId() {
@@ -48,7 +48,7 @@ public class AirConditioner {
 	@Override
 	public String toString() {
 		return "AirConditioner [id=" + id + ", rommId=" + roomId
-				+ ", ipaddressAirControl=" + ipaddressAirControl + ", itsOn="
+				+ ", ipaddressAirControl=" + ipAddressAirControl + ", itsOn="
 				+ itsOn + "]";
 	}
 

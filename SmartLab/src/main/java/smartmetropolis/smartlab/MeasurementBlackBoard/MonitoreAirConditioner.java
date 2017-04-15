@@ -41,6 +41,10 @@ public class MonitoreAirConditioner extends Thread {
 
 			try {
 				List<Room> rooms = ROOM_CONTROLLER.findAllRooms();
+				
+				if(rooms == null){
+					break;
+				}
 
 				for (Room r : rooms) {
 					try {
@@ -68,7 +72,6 @@ public class MonitoreAirConditioner extends Thread {
 						}
 
 					} catch (TreaterException e) {
-
 						logger.error(e.getMessage());
 					} catch (DAOException e) {
 						logger.error(e.getMessage());

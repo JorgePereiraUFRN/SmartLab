@@ -40,14 +40,14 @@ import smartmetropolis.smartlab.model.SensorType;
 @ManagedBean(name = "graphMB")
 @SessionScoped
 public class GraphMB {
-	
+
 	private String graphTiTle;
 
 	private String localName;
 	private String roomName;
 	private String graphType;
-	
-	private String label1, label2, label3; 
+
+	private String label1, label2, label3;
 
 	private boolean temperatura, umidade, presenca;
 
@@ -65,12 +65,14 @@ public class GraphMB {
 	private LocalController localController;
 	private RoomController roomController;
 	private MeasurementController measurementController;
+	private SensorController sensorController;
 
 	public GraphMB() {
 
 		localController = LocalController.getInstance();
 		roomController = RoomController.getInstance();
 		measurementController = MeasurementController.getInstance();
+		sensorController = SensorController.getInstance();
 
 		initLocalsMap();
 
@@ -111,7 +113,8 @@ public class GraphMB {
 			Local l = localController.findLocal(localName);
 
 			if (l != null) {
-				for (Room r : roomController.findRoomsByBuilding(l.getLocalName())) {
+				for (Room r : roomController.findRoomsByBuilding(l
+						.getLocalName())) {
 					roomsMap.put(r.getRoomName(), r.getRoomName());
 				}
 			}
@@ -142,7 +145,7 @@ public class GraphMB {
 	}
 
 	private List<Measurement> avgTempHumidMeasurements(
-			List<Measurement> measurements, int time) {
+			List<Measurement> measurements, int time) throws DAOException {
 
 		List<Measurement> processedMeasurements = new ArrayList<Measurement>();
 
@@ -156,9 +159,14 @@ public class GraphMB {
 
 		for (Measurement m : measurements) {
 
-			if (m.getSensor().getSensorType().ordinal() == SensorType.TEMPERATURE
-					.ordinal()
-					|| m.getSensor().getSensorType().ordinal() == SensorType.HUMIDITY
+			Sensor s = sensorController.findSensor(m.getSensorId());
+
+			if (s == null) {
+				break;
+			}
+
+			if (s.getSensorType().ordinal() == SensorType.TEMPERATURE.ordinal()
+					|| s.getSensorType().ordinal() == SensorType.HUMIDITY
 							.ordinal()) {
 
 				long diferrence = m.getTime().getTime()
@@ -181,7 +189,6 @@ public class GraphMB {
 					me.setTime(m.getTime());
 
 					processedMeasurements.add(me);
-					
 
 					cont = 0;
 					sum = 0;
@@ -197,7 +204,7 @@ public class GraphMB {
 	}
 
 	private List<Measurement> avgPresenceMeasurements(
-			List<Measurement> measurements, int time) {
+			List<Measurement> measurements, int time) throws DAOException {
 
 		List<Measurement> processedMeasurements = new ArrayList<Measurement>();
 
@@ -212,7 +219,13 @@ public class GraphMB {
 
 		for (Measurement m : measurements) {
 
-			if (m.getSensor().getSensorType().ordinal() == SensorType.PRESENCE
+			Sensor s = sensorController.findSensor(m.getSensorId());
+
+			if (s == null) {
+				break;
+			}
+
+			if (s.getSensorType().ordinal() == SensorType.PRESENCE
 					.ordinal()) {
 
 				if (previus != null) {
@@ -266,18 +279,26 @@ public class GraphMB {
 		return processedMeasurements;
 	}
 
-	private LineChartSeries getMeasurements(String roomName, SensorType sensorType)
-			throws Exception {
+	private LineChartSeries getMeasurements(String roomName,
+			SensorType sensorType) throws Exception {
 		try {
-			Room room = roomController.findRoom(roomName, localName);
+			Room room = roomController.findRoom(roomName);
+			
+	
 
-			if (room == null || room.getSensors() == null) {
+			if (room == null ) {
 				throw new Exception("Room: " + roomName + " não encontrada");
 			}
 
 			Sensor sensor = null;
+			
+			List<Sensor> sensorsRoom = sensorController.findSensorsByRoom(roomName);
+			
+			if(sensorsRoom == null){
+				return null;
+			}
 
-			for (Sensor s : room.getSensors()) {
+			for (Sensor s : sensorsRoom) {
 				if (s.getSensorType().ordinal() == sensorType.ordinal()) {
 					sensor = s;
 					break;
@@ -341,7 +362,6 @@ public class GraphMB {
 
 			LineChartSeries series = new LineChartSeries();
 
-
 			Measurement[] measurementsArray = measurements
 					.toArray(new Measurement[measurements.size()]);
 
@@ -381,8 +401,6 @@ public class GraphMB {
 				graphSize = measurements.size() * 20;
 			}
 
-			
-
 			return series;
 
 		} catch (Exception e) {
@@ -402,9 +420,6 @@ public class GraphMB {
 
 			lineModel = new LineChartModel();
 
-			
-			
-
 			lineModel.getAxes().put(AxisType.X, new CategoryAxis("data"));
 
 			Axis yAxis = lineModel.getAxis(AxisType.Y);
@@ -418,33 +433,36 @@ public class GraphMB {
 
 			label1 = label2 = label3 = "";
 			String seriesColors = "";
-			
+
 			if (presenca) {
-				LineChartSeries serie = getMeasurements(roomName, SensorType.PRESENCE);
+				LineChartSeries serie = getMeasurements(roomName,
+						SensorType.PRESENCE);
 				if (serie != null) {
-					
+
 					series.add(serie);
 					label1 = "presença";
-					seriesColors+="58BA27,";
+					seriesColors += "58BA27,";
 				}
 			}
 			if (temperatura) {
-				LineChartSeries serie = getMeasurements(roomName, SensorType.TEMPERATURE);
+				LineChartSeries serie = getMeasurements(roomName,
+						SensorType.TEMPERATURE);
 				if (serie != null) {
-					
+
 					series.add(serie);
 					label2 = "temperatura";
-					seriesColors+="FFCC33,";
+					seriesColors += "FFCC33,";
 				}
 			}
 			if (umidade) {
-				LineChartSeries serie = getMeasurements(roomName, SensorType.HUMIDITY);
+				LineChartSeries serie = getMeasurements(roomName,
+						SensorType.HUMIDITY);
 				if (serie != null) {
-				
+
 					series.add(serie);
 					label3 = "umidade";
-					
-					seriesColors+="F74A4A";
+
+					seriesColors += "F74A4A";
 				}
 			}
 
@@ -456,34 +474,34 @@ public class GraphMB {
 
 			axis.setTickFormat("%b %#d, %H:%#M:%S");
 			lineModel.getAxes().put(AxisType.X, axis);
-			
+
 			lineModel.setZoom(true);
 
 			if (umidade) {
 				yAxis.setMin(15);
 				yAxis.setMax(100);
 			}
-			
+
 			graphTiTle = "Dados de: ";
 
-			if(presenca){
-				graphTiTle+=" Presença";
-			}if(temperatura){
-				graphTiTle+=" - Temperatura";
-			}if(umidade){
-				graphTiTle+=" - Umidade";
+			if (presenca) {
+				graphTiTle += " Presença";
 			}
-			
+			if (temperatura) {
+				graphTiTle += " - Temperatura";
+			}
+			if (umidade) {
+				graphTiTle += " - Umidade";
+			}
+
 			lineModel.setTitle(graphTiTle);
 
 			for (ChartSeries serie : series) {
 				lineModel.addSeries(serie);
-			
+
 			}
-			
+
 			lineModel.setSeriesColors(seriesColors);
-			
-			
 
 			setGhrapStyle("width:" + graphSize + "px;height:400px");
 
@@ -615,7 +633,5 @@ public class GraphMB {
 	public void setLabel3(String label3) {
 		this.label3 = label3;
 	}
-	
-	
 
 }

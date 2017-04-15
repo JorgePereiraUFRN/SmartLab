@@ -5,7 +5,6 @@ import java.util.List;
 import smartmetropolis.smartlab.dao.AirConditionerDaoInterface;
 import smartmetropolis.smartlab.dao.ConcreteDaoFactory;
 import smartmetropolis.smartlab.dao.DAOFactory;
-import smartmetropolis.smartlab.dao.HibernateDAOFactory;
 import smartmetropolis.smartlab.dao.RoomDaoInterface;
 import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.exceptions.validateDataException;
@@ -43,8 +42,8 @@ public class AirConditionerController {
 			}
 			
 			
-		} else if (airC.getIpaddressAirControl() == null
-				|| airC.getIpaddressAirControl().equals("")) {
+		} else if (airC.getIpAddressAirControl() == null
+				|| airC.getIpAddressAirControl().equals("")) {
 			throw new validateDataException("Invalid IP Adddres of air control");
 		}
 	}

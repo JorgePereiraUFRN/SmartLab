@@ -40,7 +40,7 @@ public class AirConditionerDao extends GenericDaoOrion<AirConditioner> implement
 		Attribute estado = new Attribute("Acionado", "Boolean", entity.getItsOn().toString());
 		context.addAttribute(estado);
 		
-		Attribute ipAddres = new Attribute("Ip_Controlador", "String", entity.getIpaddressAirControl());
+		Attribute ipAddres = new Attribute("Ip_Controlador", "String", entity.getIpAddressAirControl());
 		context.addAttribute(ipAddres);
 
 
@@ -57,7 +57,7 @@ public class AirConditionerDao extends GenericDaoOrion<AirConditioner> implement
 			
 			airC.setId(contextElement.getId());
 			
-			airC.setIpaddressAirControl(getAttributeValue("Ip_Controlador", contextElement));
+			airC.setIpAddressAirControl(getAttributeValue("Ip_Controlador", contextElement));
 			
 			airC.setRoomId(getAttributeValue("Sala", contextElement));
 			

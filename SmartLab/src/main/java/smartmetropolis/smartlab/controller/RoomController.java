@@ -2,8 +2,8 @@ package smartmetropolis.smartlab.controller;
 
 import java.util.List;
 
+import smartmetropolis.smartlab.dao.ConcreteDaoFactory;
 import smartmetropolis.smartlab.dao.DAOFactory;
-import smartmetropolis.smartlab.dao.HibernateDAOFactory;
 import smartmetropolis.smartlab.dao.RoomDaoInterface;
 import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.exceptions.TreaterException;
@@ -15,7 +15,7 @@ public class RoomController {
 
 	private static final RoomController ROOM_CONTROLLER = new RoomController();
 	private final LocalController localController;
-	private final DAOFactory factory = new HibernateDAOFactory();
+	private final DAOFactory factory = new ConcreteDaoFactory();
 	private final RoomDaoInterface roomDao = null;
 
 	private RoomController() {

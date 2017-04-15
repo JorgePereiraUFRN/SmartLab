@@ -109,9 +109,9 @@ public class SensorDao extends GenericDaoOrion<Sensor> implements
 
 		Sensor s = new Sensor();
 
-		s.setDescription("sensor de presença sala b3018");
-		s.setId("sensor temp 3");
-		s.setRoomName("B3018");
+		s.setDescription("sensor de presença sala B3018");
+		s.setId("Sensor_de_presenca_n5");
+		s.setRoomName("B318");
 		s.setSensorType(SensorType.PRESENCE);
 
 		Measurement m = new Measurement();
@@ -121,7 +121,7 @@ public class SensorDao extends GenericDaoOrion<Sensor> implements
 
 		s.setMeasurement(m);
 
-		// dao.save(s);
+		dao.save(s);
 
 		for (Sensor se : dao.findAll()) {
 			System.out.println(se);

@@ -36,7 +36,6 @@ public abstract class DAOFactory {
     
     public abstract LocalDaoInterface getLocalDao();
     
-    public abstract SchedulingDaoInterface getsSchedulingDao();
     
     public abstract UserDaoInterface getUserDao();
     

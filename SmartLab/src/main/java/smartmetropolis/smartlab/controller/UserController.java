@@ -2,8 +2,8 @@ package smartmetropolis.smartlab.controller;
 
 import java.util.List;
 
+import smartmetropolis.smartlab.dao.ConcreteDaoFactory;
 import smartmetropolis.smartlab.dao.DAOFactory;
-import smartmetropolis.smartlab.dao.HibernateDAOFactory;
 import smartmetropolis.smartlab.dao.UserDaoInterface;
 import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.exceptions.UserAlreadyExistsException;
@@ -12,7 +12,7 @@ import smartmetropolis.smartlab.model.User;
 
 public class UserController {
 
-	private final DAOFactory factory = new HibernateDAOFactory();
+	private final DAOFactory factory = new ConcreteDaoFactory();
 	private final UserDaoInterface userDao;
 	private static final UserController userController = new UserController();
 

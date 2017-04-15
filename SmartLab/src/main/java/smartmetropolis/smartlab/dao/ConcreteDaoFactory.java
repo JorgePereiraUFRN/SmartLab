@@ -38,11 +38,6 @@ public class ConcreteDaoFactory extends DAOFactory {
 	}
 
 	@Override
-	public SchedulingDaoInterface getsSchedulingDao() {
-		return  (SchedulingDaoInterface) instantiateDAO(SchedulingDao.class);
-	}
-
-	@Override
 	public UserDaoInterface getUserDao() {
 		return (UserDaoInterface) instantiateDAO(UserDao.class);
 	}

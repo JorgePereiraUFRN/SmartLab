@@ -2,8 +2,8 @@ package smartmetropolis.smartlab.controller;
 
 import java.util.List;
 
+import smartmetropolis.smartlab.dao.ConcreteDaoFactory;
 import smartmetropolis.smartlab.dao.DAOFactory;
-import smartmetropolis.smartlab.dao.HibernateDAOFactory;
 import smartmetropolis.smartlab.dao.MeasurementDaoInterface;
 import smartmetropolis.smartlab.dao.SensorDaoInterface;
 import smartmetropolis.smartlab.exceptions.DAOException;
@@ -13,7 +13,7 @@ import smartmetropolis.smartlab.model.Sensor;
 
 public class SensorController {
 
-	private final DAOFactory factory = new HibernateDAOFactory();
+	private final DAOFactory factory = new ConcreteDaoFactory();
 	private final SensorDaoInterface sensorDao;
 	private static final SensorController SENSOR_CONTROLLER = new SensorController();
 
@@ -70,6 +70,11 @@ public class SensorController {
 			validateDataException {
 		
 		sensorDao.delete(sensorId);
+	}
+	
+	public List<Sensor> findSensorsByRoom(String roomId) throws DAOException{
+		
+		return sensorDao.findSensorByRoom(roomId);
 	}
 
 }

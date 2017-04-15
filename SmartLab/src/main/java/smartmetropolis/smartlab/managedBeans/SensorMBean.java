@@ -91,7 +91,13 @@ public class SensorMBean {
 			
 			if (l != null) {
 				
-				for (Room r : roomController.findRoomsByBuilding(l.getLocalName())) {
+				List<Room> rooms = roomController.findRoomsByBuilding(l.getLocalName());
+				
+				if(rooms == null){
+					return;
+				}
+				
+				for (Room r : rooms) {
 					roomsMap.put(r.getRoomName(), r.getRoomName());
 				}
 			}

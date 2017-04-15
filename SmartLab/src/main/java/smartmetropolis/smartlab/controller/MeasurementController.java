@@ -7,8 +7,8 @@ import java.util.List;
 import smartmetropolis.smartlab.MeasurementBlackBoard.MeasurementTreater;
 import smartmetropolis.smartlab.MeasurementBlackBoard.PresenceMeasurementTreater;
 import smartmetropolis.smartlab.MeasurementBlackBoard.TemperatureMeasurementTreater;
+import smartmetropolis.smartlab.dao.ConcreteDaoFactory;
 import smartmetropolis.smartlab.dao.DAOFactory;
-import smartmetropolis.smartlab.dao.HibernateDAOFactory;
 import smartmetropolis.smartlab.dao.MeasurementDaoInterface;
 import smartmetropolis.smartlab.dao.SensorDaoInterface;
 import smartmetropolis.smartlab.exceptions.DAOException;
@@ -20,7 +20,7 @@ import smartmetropolis.smartlab.model.SensorType;
 
 public class MeasurementController {
 
-	private final DAOFactory factory = new HibernateDAOFactory();
+	private final DAOFactory factory = new ConcreteDaoFactory();
 	private final MeasurementDaoInterface measurementDao;
 	private final SensorDaoInterface sensorDao;
 	private static final MeasurementController MEASURAMENT_CONTROLLER = new MeasurementController();
