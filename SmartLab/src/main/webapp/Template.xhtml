@@ -15,24 +15,13 @@
 	<!-- layout style -->
 	<link href="#{request.contextPath}/css/main.css" rel="stylesheet"
 		type="text/css" media="screen" />
+		
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" 
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
+	crossorigin="anonymous"/>
 
-	<!-- jquery -->
-	<h:outputScript name="jquery/jquery.js" library="primefaces" />
-
-
-	<!-- superfish -->
-	<script type="text/javascript"
-		src="#{request.contextPath}/scripts/hoverIntent.js"></script>
-	<script type="text/javascript"
-		src="#{request.contextPath}/scripts/superfish.js"></script>
-
-	<!-- slider -->
-	<script type="text/javascript"
-		src="#{request.contextPath}/scripts/easySlider1.5.js"></script>
-
-	<!-- initialize jquery plugins -->
-	<script type="text/javascript"
-		src="#{request.contextPath}/scripts/init.js"></script>
 	<link rel="shortcut icon" type="image/x-icon"
 		href="#{request.contextPath}/images/favicon.ico" />
 </h:head>
@@ -55,7 +44,7 @@
 			
 		</div>
 
-    <div class="container">
+    <div class="container-menu">
       <div class="card">
 
         <ul class="sidebar-nav">
@@ -82,9 +71,30 @@
     </div>
 
 	<div class="container-main">
-        <div class="card-alt">
-			<ui:insert name="centro">Corpo</ui:insert>
-		</div>
+		<ui:insert name="centro">Corpo</ui:insert>
 	</div>
+
+	
+	<!-- jquery -->
+	<h:outputScript name="jquery/jquery.js" library="primefaces" />
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" 
+	crossorigin="anonymous"></script>
+	
+	<!-- superfish -->
+	<script type="text/javascript"
+		src="#{request.contextPath}/scripts/hoverIntent.js"></script>
+	<script type="text/javascript"
+		src="#{request.contextPath}/scripts/superfish.js"></script>
+
+	<!-- slider -->
+	<script type="text/javascript"
+		src="#{request.contextPath}/scripts/easySlider1.5.js"></script>
+
+	<!-- initialize jquery plugins -->
+	<script type="text/javascript"
+		src="#{request.contextPath}/scripts/init.js"></script>
 </h:body>
 </html>

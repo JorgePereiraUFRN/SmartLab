@@ -13,53 +13,60 @@
 			closable="true" />
 
 		<h:form id="formLocal">
-			<p:panelGrid columns="4" style="horizontal-align:">
-
-
-				<h:outputLabel for="localName" value="Nome do Setor ou Predio:" />
-				<h:inputText id="localN" value="#{localB.local.localName}" />
-
-				<h:outputLabel for="LocalLatituide" value="Latitude:" />
-				<h:inputText id="localLat" value="#{localB.local.latitude}" />
-
-				<h:outputLabel for="LocalLongotude" value="Longitude:" />
-				<h:inputText id="localLong" value="#{localB.local.longitude}" />
-			</p:panelGrid>
-
-			<center> <h:commandButton action="#{localB.saveLocal}"
-				style="width: 10%;" value="Salvar" update="tabela" /> </center>
+			<div class="row">
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="localName" value="Nome do Setor ou Predio:" />
+						<h:inputText styleClass="form-control" id="localN" value="#{localB.local.localName}" />
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="LocalLatituide" value="Latitude:" />
+						<h:inputText styleClass="form-control" id="localLat" value="#{localB.local.latitude}" />
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="LocalLongotude" value="Longitude:" />
+						<h:inputText styleClass="form-control" id="localLong" value="#{localB.local.longitude}" />
+					</div>
+				</div>
+			</div>
+			<div>
+            	<h:commandButton action="#{localB.saveLocal}" class="button-container" value="Salvar" update="tabela" />
+          	</div>
 		</h:form>
 
-
-		<p:dataTable id="tabela" var="item" value="#{localB.locals}"
-			paginator="true" rows="50" emptyMessage="Não há registros na lista"
-			paginatorTemplate="{CurrentPageReport}   {PreviousPageLink} {PageLinks} {NextPageLink}  {RowsPerPageDropdown}">
-			<p:column headerText="Nome" style="width: 20%;">
-				<h:outputText value="#{item.localName}" />
-			</p:column>
-			<p:column headerText="Latitude" style="width: 20%;">
-				<h:outputText value="#{item.latitude}" />
-			</p:column>
-			<p:column headerText="Longitude" style="width: 20%;">
-				<h:outputText value="#{item.longitude}" />
-			</p:column>
-			<p:column headerText="Editar" style="width: 10%;">
-				<div align="center">
-					<h:commandButton image="/images/application_form_edit.png" />
-				</div>
-			</p:column>
-			<p:column headerText="Deletar" style="width: 10%;">
-				<div align="center">
-					<h:commandButton image="/images/delete.png" />
-				</div>
-			</p:column>
-
-		</p:dataTable>
-		<center> <p:commandButton value="Listar" id="listLocals"
-			style="width: 10%;" actionListener="#{localB.listAllLocals}"
-			update="tabela" /> </center>
-
-
+		<br></br>
+		<table class="table table-hover">
+			<tr>
+		      <th  align="center">Nome</th>
+		      <th  align="center">Latitude</th>
+		      <th  align="center">Longetude</th>
+		      <th  align="center">Editar</th>
+		      <th  align="center">Deletar</th>
+		     </tr>
+		     
+		     <tbody>
+		      <ui:repeat var="item" value="#{localB.locals}" id="tabela" paginator="true" rows="50" emptyMessage="Não há registros na lista" paginatorTemplate="{CurrentPageReport}   {PreviousPageLink} {PageLinks} {NextPageLink}  {RowsPerPageDropdown}">
+		        <tr>
+		         <td>#{item.localName}</td>
+		         <td>#{item.latitude}</td>
+		         <td>#{item.longitude}</td>
+		         <td align="center" ><h:commandButton image="/images/application_form_edit.png" /></td>
+		         <td align="center" ></td>
+		         
+		        </tr>
+		
+		      </ui:repeat>
+		     </tbody>
+		</table>
+		
+		<div>
+           <h:commandButton class="button-container" value="Listar" id="listLocals" style="width: 10%;" actionListener="#{localB.listAllLocals}" update="tabela" />
+         </div>
+         
 		<script type="text/javascript">
     function hideOrShow(show) {
         // Get the panel using its ID

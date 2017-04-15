@@ -9,68 +9,75 @@
 <ui:decorate template="Template.xhtml">
 	<ui:define name="centro">
 
-		<h:form id="formMeasurements">
-			<p:panelGrid columns="4" style="horizontal-align:">
-
-				<h:outputLabel for="local" value="Predio:" style="width: 10%;" />
-				<p:selectOneMenu id="local" value="#{AirCstateB.localName}"
-					effect="fold" editable="false" update="">
-					<p:ajax update="room" listener="#{AirCstateB.initRoomsMap}" />
-					<f:selectItem itemLabel="Select One" itemValue="" />
-					<f:selectItems value="#{AirCstateB.localsMap}" />
-				</p:selectOneMenu>
-
-				<h:outputLabel for="room" value="Sala:" style="width: 10%;" />
-				<p:selectOneMenu id="room" value="#{AirCstateB.roomName}"
-					effect="fold" editable="false" update="">
-					<!-- <p:ajax event="change" update="@this" /> -->
-					<p:ajax update="tabela" listener="#{AirCstateB.listAirCStates}" />
-					<f:selectItem itemLabel="Select One" itemValue="" />
-					<f:selectItems value="#{AirCstateB.roomsMap}" />
-				</p:selectOneMenu>
-
-				<p:outputLabel for="datetimeInitial" value="Data Inicial:" />
-				<p:calendar id="datetimeInitial" value="#{AirCstateB.initialDate}"
-					pattern="dd/MM/yyyy HH:mm:ss">
-					<p:ajax update="tabela" listener="#{AirCstateB.listAirCStates}" />
-				</p:calendar>
-
-				<p:outputLabel for="datetimeFinal" value="Data Final:" />
-				<p:calendar id="datetimeFinal" value="#{AirCstateB.finalDate}"
-					pattern="dd/MM/yyyy HH:mm:ss">
-					<p:ajax update="tabela" listener="#{AirCstateB.listAirCStates}" />
-				</p:calendar>
-
-
-
-			</p:panelGrid>
+		<h:form id="formLocal">
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<h:outputLabel for="local" value="Predio: "/>
+						<p:selectOneMenu id="local" value="#{AirCstateB.localName}" editable="false" update="">
+							<p:ajax update="room" listener="#{AirCstateB.initRoomsMap}" />
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems value="#{AirCstateB.localsMap}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+					<h:outputLabel for="room" value="Sala: "  />
+					<p:selectOneMenu id="room" value="#{AirCstateB.roomName}" editable="false" update="">
+						<!-- <p:ajax event="change" update="@this" /> -->
+						<p:ajax update="tabela" listener="#{AirCstateB.listAirCStates}" />
+						<f:selectItem itemLabel="Select One" itemValue="" />
+						<f:selectItems value="#{AirCstateB.roomsMap}" />
+					</p:selectOneMenu>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<p:outputLabel for="datetimeInitial" value="Data Inicial: " />
+						<p:calendar id="datetimeInitial" value="#{AirCstateB.initialDate}"
+							pattern="dd/MM/yyyy HH:mm:ss">
+							<p:ajax update="tabela" listener="#{AirCstateB.listAirCStates}" />
+						</p:calendar>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<p:outputLabel for="datetimeFinal" value="Data Final: " />
+						<p:calendar id="datetimeFinal" value="#{AirCstateB.finalDate}"
+							pattern="dd/MM/yyyy HH:mm:ss">
+							<p:ajax update="tabela" listener="#{AirCstateB.listAirCStates}" />
+						</p:calendar>
+					</div>
+				</div>
+			</div>
 		</h:form>
 
 
-		<p:dataTable id="tabela" var="item" value="#{AirCstateB.airCStates}"
-			paginator="true" rows="50" emptyMessage="Não há registros na lista"
-			paginatorTemplate="{CurrentPageReport}  {PreviousPageLink} {PageLinks} {NextPageLink}  {RowsPerPageDropdown}">
 
-			<p:column headerText="Ar-condicionado (id)" style="width: 10%;">
-				<div align="center">
-					<h:outputText value="#{item.airConditioner.id}" />
-				</div>
-			</p:column>
-			<p:column headerText="Ação" style="width: 10%;">
-				<div align="center">
-					<h:outputText value="#{item.action.toString()}" />
-				</div>
-			</p:column>
-			<p:column headerText="Data" style="width: 25%;">
-				<div align="center">
-					<h:outputText value="#{item.timestamp}">
-						<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
-					</h:outputText>
-				</div>
-			</p:column>
-
-
-		</p:dataTable>
+		<br></br>
+		<table class="table table-hover">
+			<tr>
+		      <th  align="center">Ar-condicionado</th>
+		      <th  align="center">Ação</th>
+		      <th  align="center">Data</th>
+		     </tr>
+		     
+		     <tbody>
+		      <ui:repeat var="item" value="#{AirCstateB.airCStates}" id="tabela" paginator="true" rows="50" emptyMessage="Não há registros na lista">
+		        <tr>
+		         <td>#{item.airConditioner.id}</td>
+		         <td>#{item.action.toString()}</td>
+		         <td>#{item.timestamp}</td>
+		         
+		         <!-- <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" /> -->
+		        </tr>
+		
+		      </ui:repeat>
+		     </tbody>
+		</table>
 
 
 	</ui:define>

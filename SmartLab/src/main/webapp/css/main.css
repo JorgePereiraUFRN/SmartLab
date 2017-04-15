@@ -1,10 +1,10 @@
 body {
-  background: #e9e9e9;
+  background-color: #e9e9e9!important;
   padding: 0;
   margin: 0;
   color: #666666;
-  font-family: 'RobotoDraft', 'Roboto', sans-serif;
-  font-size: 14px;
+  font-family: 'RobotoDraft', 'Roboto', sans-serif!important;
+  font-size: 14px!important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -33,20 +33,20 @@ nav{
 }
 
 /* Container */
-.container {
+.container-menu {
   position: absolute;
   max-width: 250px;
   width: 100%;
-  margin-left: 10px;
+  left:10px;
+  top: 120px;
 }
 
 /* Card menu*/
-.card {
+.container-menu .card {
   position: relative;
   background: #ffffff;
   border-radius: 5px;
-  padding: 5px 0 5px 0;
-  margin: 10px 0;
+  padding: 15px 0 5px 0;
   box-sizing: border-box;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   -webkit-transition: .3s ease;
@@ -60,7 +60,7 @@ nav{
 
 /*Enfeite do card*/
 
-.container .card .sidebar-nav {
+.container-menu .card .sidebar-nav {
     width: 250px;
     list-style: none;
     padding: 0;
@@ -102,37 +102,26 @@ nav{
 
 /*Container main body*/
 .container-main {
-  padding-top: -200px;
-  position: relative;
   max-width: 850px;
   width: 100%;
-  margin-left: 300px;
-}
-
-/* Card */
-.card-alt {
+  left: 300px;
+  top: 120px;
   position: absolute;
   background: #ffffff;
   border-radius: 5px;
-  padding: 50px 0 100px 0;
-  margin: 10px 0;
+  padding: 40px 30px 40px;
   box-sizing: border-box;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   -webkit-transition: .3s ease;
   transition: .3s ease;
-  /* Title */
-  /* Inputs */
-  /* Button */
-  /* Footer */
-  /* Alt Card */
 }
 
 /*Tabelas, entradas, botões*/
 
 
-.container-main.active .card.alt .title,
-.container-main.active .card.alt .input-container,
-.container-main.active .card.alt .button-container {
+.container-main.active .title,
+.container-main.active .input-container,
+.container-main.active .button-container {
   left: 0;
   opacity: 1;
   visibility: visible;
@@ -140,25 +129,25 @@ nav{
   transition: .3s ease;
 }
 
-.container-main.active .card.alt .button-container {
+.container-main.active .button-container {
   -webkit-transition-delay: .7s;
           transition-delay: .7s;
 }
 
-.card .button-container {
-  margin: 0 60px;
+.container-main .button-container {
+  margin: 0 335px;
   text-align: center;
-}
-.card .button-container button {
+  
   outline: 0;
   cursor: pointer;
   position: relative;
   display: inline-block;
   background: 0;
-  width: 240px;
+  width: 120px;
   border: 2px solid #e3e3e3;
-  padding: 20px 0;
-  font-size: 24px;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #A40707;
   font-weight: 600;
   line-height: 1;
   text-transform: uppercase;
@@ -166,14 +155,8 @@ nav{
   -webkit-transition: .3s ease;
   transition: .3s ease;
 }
-.card .button-container button span {
-  position: relative;
-  z-index: 1;
-  color: #ddd;
-  -webkit-transition: .3s ease;
-  transition: .3s ease;
-}
-.card .button-container button:before {
+
+.container-main .button-container:before {
   content: '';
   position: absolute;
   top: 50%;
@@ -188,16 +171,11 @@ nav{
   -webkit-transition: .3s ease;
   transition: .3s ease;
 }
-.card .button-container button:hover, .card .button-container button:active, .card .button-container button:focus {
+.container-main .button-container:hover, .card .button-container:active, .card .button-container:focus {
   border-color: #A40707;
-}
-.card .button-container button:hover span, .card .button-container button:active span, .card .button-container button:focus span {
   color: #A40707;
 }
-.card .button-container button:active span, .card .button-container button:focus span {
-  color: #ffffff;
-}
-.card .button-container button:active:before, .card .button-container button:focus:before {
+.container-main .button-container:active:before, .card .button-container:focus:before {
   opacity: 1;
   -webkit-transform: scale(10);
   transform: scale(10);

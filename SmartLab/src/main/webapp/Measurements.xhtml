@@ -8,86 +8,83 @@
 
 <ui:decorate template="Template.xhtml">
 	<ui:define name="centro">
-
-		<h:form id="formMeasurements">
-			<p:panelGrid columns="4" style="horizontal-align:">
-
-				<h:outputLabel for="local" value="Predio:" style="width: 10%;" />
-				<p:selectOneMenu id="local" value="#{measurementB.localName}"
-					effect="fold" editable="false" update="">
-					<p:ajax update="room" listener="#{measurementB.initRoomsMap}" />
-					<f:selectItem itemLabel="Select One" itemValue="" />
-					<f:selectItems value="#{measurementB.localsMap}" />
-				</p:selectOneMenu>
-
-				<h:outputLabel for="room" value="Sala:" style="width: 10%;" />
-				<p:selectOneMenu id="room" value="#{measurementB.roomName}"
-					effect="fold" editable="false" update="">
-					<p:ajax update="sensor" listener="#{measurementB.initSensorsMap}" />
-					<f:selectItem itemLabel="Select One" itemValue="" />
-					<f:selectItems value="#{measurementB.roomsMap}" />
-				</p:selectOneMenu>
-
-				<h:outputLabel for="sensor" value="Sensor:" style="width: 10%;" />
-				<p:selectOneMenu id="sensor" value="#{measurementB.sensorId}"
-					effect="fold" editable="false" update="">
-					<p:ajax update="tabela" listener="#{measurementB.listMeasurements}" />
-					<f:selectItem itemLabel="Select One" itemValue=""
-						style="width: 30%;" />
-					<f:selectItems value="#{measurementB.sensorsMap}" />
-				</p:selectOneMenu>
-
-				<p:outputLabel for="datetimeInitial" value="Data Inicial:" />
-				<p:calendar id="datetimeInitial" value="#{measurementB.initialDate}"
-					pattern="dd/MM/yyyy HH:mm:ss">
-					<p:ajax update="tabela" listener="#{measurementB.listMeasurements}" />
-				</p:calendar>
-
-
-				<p:outputLabel for="datetimeFinal" value="Data Final:" />
-				<p:calendar id="datetimeFinal" value="#{measurementB.finalDate}"
-					pattern="dd/MM/yyyy HH:mm:ss">
-					<p:ajax update="tabela" listener="#{measurementB.listMeasurements}" />
-				</p:calendar>
-
-			</p:panelGrid>
+	
+	<h:form id="formLocal">
+			<div class="row">
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="local" value="Predio: "/>
+						<p:selectOneMenu id="local" value="#{measurementB.localName}" editable="false" update="">
+							<p:ajax update="room" listener="#{measurementB.initRoomsMap}" />
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems value="#{measurementB.localsMap}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="room" value="Sala: "/>
+						<p:selectOneMenu id="room" value="#{measurementB.roomName}"  editable="false" update="">
+							<p:ajax update="sensor" listener="#{measurementB.initSensorsMap}" />
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems value="#{measurementB.roomsMap}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="sensor" value="Sensor: "/>
+						<p:selectOneMenu id="sensor" value="#{measurementB.sensorId}" editable="false" update="">
+							<p:ajax update="tabela" listener="#{measurementB.listMeasurements}" />
+							<f:selectItem itemLabel="Select One" itemValue=""
+								style="width: 30%;" />
+							<f:selectItems value="#{measurementB.sensorsMap}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<p:outputLabel for="datetimeInitial" value="Data Inicial:" />
+					<p:calendar id="datetimeInitial" value="#{measurementB.initialDate}" pattern="dd/MM/yyyy HH:mm:ss">
+						<p:ajax update="tabela" listener="#{measurementB.listMeasurements}" />
+					</p:calendar>
+				</div>
+				<div class="col-xs-6">
+					<p:outputLabel for="datetimeFinal" value="Data Final:" />
+					<p:calendar id="datetimeFinal" value="#{measurementB.finalDate}" pattern="dd/MM/yyyy HH:mm:ss">
+						<p:ajax update="tabela" listener="#{measurementB.listMeasurements}" />
+					</p:calendar>
+				</div>
+			</div>
 		</h:form>
-
-
-
+		
 		<p:dialog header="Modal Dialog" widgetVar="dlg2" modal="true"
 			height="350px" width="1000px">
 			<p:chart id="graph" type="line" model="#{measurementB.lineModel}"
 				style="height:300px;" />
 		</p:dialog>
 
+		<br></br>
+		<table class="table table-hover">
+			<tr>
+		      <th  align="center">Valor da Medição</th>
+		      <th  align="center">Data</th>
+		     </tr>
+		     
+		     <tbody>
+		      <ui:repeat var="item" value="#{measurementB.measurements}" id="tabela" paginator="true" rows="50" emptyMessage="Não há registros na lista">
+		        <tr>
+		         <td>#{item.value}</td>
+		         <td>#{item.time}</td>
 
-
-
-
-		<p:dataTable id="tabela" var="item"
-			value="#{measurementB.measurements}" paginator="true" rows="50"
-			emptyMessage="Não há registros na lista"
-			paginatorTemplate="{CurrentPageReport}  {PreviousPageLink} {PageLinks} {NextPageLink}  {RowsPerPageDropdown}">
-
-			<p:column headerText="Valor da medição" style="width: 10%;">
-				<div align="center">
-					<h:outputText value="#{item.value}" />
-				</div>
-			</p:column>
-			<p:column headerText="Data" style="width: 25%;">
-				<div align="center">
-					<h:outputText value="#{item.time}">
-						<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
-					</h:outputText>
-				</div>
-			</p:column>
-
-
-		</p:dataTable>
-
-
-
+				<!-- <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" /> -->
+		         
+		        </tr>
+		
+		      </ui:repeat>
+		     </tbody>
+		</table>
 	</ui:define>
 </ui:decorate>
 

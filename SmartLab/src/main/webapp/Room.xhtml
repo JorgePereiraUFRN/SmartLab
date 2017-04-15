@@ -12,52 +12,56 @@
 		<p:growl id="mensagem" showDetail="true" autoUpdate="true"
 			closable="true" />
 
-		<h:form id="formRoom">
-			<p:panelGrid columns="4" style="horizontal-align:">
-
-
-				<h:outputLabel for="RoomName" value="Nome da Sala:" />
-				<h:inputText id="roomN" value="#{roomB.room.roomName}" />
-
-				<h:outputLabel for="roomLocal" value="Setor de aula / Predio:" />
-				<p:selectOneMenu id="roomL" value="#{roomB.local.localName}"
-					effect="fold" editable="false" update="">
-					<f:selectItem itemLabel="Select One" itemValue="" />
-					<f:selectItems value="#{roomB.localsMap}" />
-				</p:selectOneMenu>
-
-			</p:panelGrid>
-			<center> <h:commandButton action="#{roomB.saveRoom}"
-				style="width: 10%;" value="Save" update="tabela" /> </center>
+		<h:form id="formLocal">
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<h:outputLabel for="RoomName" value="Nome da Sala:" />
+						<h:inputText class="form-control" id="roomN" value="#{roomB.room.roomName}" />
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<h:outputLabel for="roomLocal" value="Setor de aula / Predio:" />
+						<p:selectOneMenu id="roomL" value="#{roomB.local.localName}" editable="false" update="">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems value="#{roomB.localsMap}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+			</div>
+			<div>
+            	<h:commandButton action="#{roomB.saveRoom}" class="button-container" value="Salvar" update="tabela" />
+          	</div>
 		</h:form>
 
 
-
-		<p:dataTable id="tabela" var="item" value="#{roomB.rooms}"
-			paginator="true" rows="50" emptyMessage="Não há registros na lista"
-			paginatorTemplate="{CurrentPageReport}   {PreviousPageLink} {PageLinks} {NextPageLink}  {RowsPerPageDropdown}">
-
-			<p:column headerText="Nome" style="width: 10%;">
-				<h:outputText value="#{item.roomName}" />
-			</p:column>
-			<p:column headerText="Setor/Predio" style="width: 25%;">
-				<h:outputText value="#{item.local.localName}" />
-			</p:column>
-			<p:column headerText="Editar" style="width: 10%;">
-				<div align="center">
-					<h:commandButton image="/images/application_form_edit.png" />
-				</div>
-			</p:column>
-			<p:column headerText="Deletar" style="width: 10%;">
-				<div align="center">
-					<h:commandButton image="/images/delete.png" />
-				</div>
-			</p:column>
-
-		</p:dataTable>
-		<center> <p:commandButton value="List" id="listRooms"
-			style="width: 10%;" actionListener="#{roomB.listRoons}"
-			update="tabela" /> </center>
+		<br></br>
+		<table class="table table-hover">
+			<tr>
+		      <th  align="center">Nome</th>
+		      <th  align="center">Setor/Prédio</th>
+		      <th  align="center">Editar</th>
+		      <th  align="center">Deletar</th>
+		     </tr>
+		     
+		     <tbody>
+		      <ui:repeat var="item" value="#{roomB.rooms}" id="tabela" paginator="true" rows="50" emptyMessage="Não há registros na lista" paginatorTemplate="{CurrentPageReport}   {PreviousPageLink} {PageLinks} {NextPageLink}  {RowsPerPageDropdown}">
+		        <tr>
+		         <td>#{item.roomName}</td>
+		         <td>#{item.local.localName}</td>
+		         <td align="center" ><h:commandButton image="/images/application_form_edit.png" /></td>
+		         <td align="center" ></td>
+		         
+		        </tr>
+		
+		      </ui:repeat>
+		     </tbody>
+		</table>
+		
+		<div>
+           <h:commandButton class="button-container" value="Listar" id="istRooms" actionListener="#{roomB.listRoons}" update="tabela"/>
+        </div>
 
 	</ui:define>
 </ui:decorate>
