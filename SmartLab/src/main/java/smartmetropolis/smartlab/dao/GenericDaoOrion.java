@@ -1,6 +1,8 @@
 package smartmetropolis.smartlab.dao;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +25,13 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 
 import smartmetropolis.smartlab.exceptions.DAOException;
-import smartmetropolis.smartlab.model.Local;
 
 public abstract class GenericDaoOrion<T> implements
 		GenericDaoInterface<T, String> {
-	
+
 	private final String entityType;
-	
-	public GenericDaoOrion(String entityType){
+
+	public GenericDaoOrion(String entityType) {
 		this.entityType = entityType;
 	}
 
@@ -40,8 +41,10 @@ public abstract class GenericDaoOrion<T> implements
 
 			Client client = Client.create();
 
-			WebResource webResource = client.resource(orionURI
-					+ "/v1/contextEntities/" + id);
+			URI uri = new URI(orionURI, "/v1/contextEntities/"+id, null);
+			
+
+			WebResource webResource = client.resource(uri.toASCIIString());
 
 			ContextElementRequest contextRequest = webResource.accept(
 					"application/json").get(ContextElementRequest.class);
@@ -50,6 +53,8 @@ public abstract class GenericDaoOrion<T> implements
 
 		} catch (Exception e) {
 
+			e.printStackTrace();
+			
 			throw new DAOException(e.getMessage());
 
 		}
@@ -60,28 +65,33 @@ public abstract class GenericDaoOrion<T> implements
 
 		List<T> entities = null;
 
-		Client client = Client.create();
+		try {
+			Client client = Client.create();
 
-		WebResource webResource = client.resource(orionURI
-				+ "/v1/contextEntityTypes/"+entityType);
+			URI uri = new URI(orionURI, "/v1/contextEntityTypes/" + entityType, null);
 
-		ContextElementsList list = webResource.accept("application/json").get(
-				ContextElementsList.class);
+			WebResource webResource = client.resource(uri.toASCIIString());
 
-		if (list != null && list.getContextResponses() != null
-				&& list.getContextResponses().size() > 0) {
+			ContextElementsList list = webResource.accept("application/json")
+					.get(ContextElementsList.class);
 
-			entities = new ArrayList<T>();
+			if (list != null && list.getContextResponses() != null
+					&& list.getContextResponses().size() > 0) {
 
-			for (ContextElementRequest req : list.getContextResponses()) {
+				entities = new ArrayList<T>();
 
-				ContextElement element = req.getContextElement();
+				for (ContextElementRequest req : list.getContextResponses()) {
 
-				entities.add(contextElementToEntity(element));
+					ContextElement element = req.getContextElement();
+
+					entities.add(contextElementToEntity(element));
+				}
 			}
-		}
 
-		return entities;
+			return entities;
+		} catch (Exception e) {
+			throw new DAOException(e.getMessage());
+		}
 	}
 
 	public T save(T entity) throws DAOException {
@@ -131,8 +141,11 @@ public abstract class GenericDaoOrion<T> implements
 
 		try {
 			HttpClient client = HttpClientBuilder.create().build();
-			HttpDelete delete = new HttpDelete(orionURI
-					+ "/v1/contextEntities/" + id);
+
+
+			URI uri = new URI(orionURI, "/v1/contextEntities/" + id, null);
+			
+			HttpDelete delete = new HttpDelete(uri.toASCIIString());
 
 			HttpResponse response = client.execute(delete);
 
@@ -146,6 +159,8 @@ public abstract class GenericDaoOrion<T> implements
 
 		} catch (IOException e) {
 			throw new DAOException(e.getMessage());
+		} catch (URISyntaxException e) {
+			throw new DAOException(e.getMessage());
 		}
 
 	}
@@ -153,25 +168,26 @@ public abstract class GenericDaoOrion<T> implements
 	protected String getAttributeMetadataValue(String attribute,
 			String metadata, ContextElement contextElement) {
 		{
-			
-			if (contextElement != null && contextElement.getAttributes() != null
+
+			if (contextElement != null
+					&& contextElement.getAttributes() != null
 					&& contextElement.getId() != null) {
 
 				for (Attribute at : contextElement.getAttributes()) {
 
 					if (at.getName().equalsIgnoreCase(attribute)) {
-						
-						
-						if(at.getMetadatas() != null && at.getMetadatas().size() > 0){
-							
-							for(Metadata mt: at.getMetadatas()){
-								
-								if(mt.getName().equals(metadata)){
+
+						if (at.getMetadatas() != null
+								&& at.getMetadatas().size() > 0) {
+
+							for (Metadata mt : at.getMetadatas()) {
+
+								if (mt.getName().equals(metadata)) {
 									return mt.getValue();
 								}
 							}
 						}
-						
+
 					}
 
 				}

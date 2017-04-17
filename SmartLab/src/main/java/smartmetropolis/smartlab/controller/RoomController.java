@@ -14,13 +14,13 @@ import smartmetropolis.smartlab.model.Room;
 public class RoomController {
 
 	private static final RoomController ROOM_CONTROLLER = new RoomController();
-	private final LocalController localController;
+
 	private final DAOFactory factory = new ConcreteDaoFactory();
-	private final RoomDaoInterface roomDao = null;
+	private final RoomDaoInterface roomDao ;
 
 	private RoomController() {
-		//roomDao = factory.getRoomDao();
-		localController = LocalController.getInstance();
+		roomDao = factory.getRoomDao();
+
 	}
 
 	public static synchronized RoomController getInstance() {

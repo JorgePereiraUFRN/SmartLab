@@ -43,11 +43,20 @@ public class SensorDao extends GenericDaoOrion<Sensor> implements
 				entity.getDescription());
 		context.addAttribute(descricao);
 
-		Attribute medicao = new Attribute("Medicao", "String", entity
-				.getMeasurement().getValue());
+		String measurementValue = "null";
+		String measurementTime = "null";
 
-		medicao.addMetadata(new Metadata("Data", "DateTime", format
-				.format(entity.getMeasurement().getTime())));
+		if (entity.getMeasurement() != null
+				&& entity.getMeasurement().getTime() != null) {
+
+			measurementValue = entity.getMeasurement().getValue();
+
+			measurementTime = format.format(entity.getMeasurement().getTime());
+		}
+
+		Attribute medicao = new Attribute("Medicao", "String", measurementValue);
+
+		medicao.addMetadata(new Metadata("Data", "DateTime", measurementTime));
 
 		context.addAttribute(medicao);
 
@@ -87,12 +96,11 @@ public class SensorDao extends GenericDaoOrion<Sensor> implements
 
 				String data = getAttributeMetadataValue("Medicao", "Data",
 						contextElement);
-				if (data != null) {
+				if (data != null && data != "null") {
 					me.setTime(format.parse(data));
 				}
 			} catch (ParseException e) {
-
-				e.printStackTrace();
+				System.out.println("erro parsing data da medição");
 			}
 
 			sensor.setMeasurement(me);

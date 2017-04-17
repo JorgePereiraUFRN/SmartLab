@@ -20,7 +20,7 @@ import smartmetropolis.smartlab.model.Room;
 public class RoomMBean {
 
 	private Room room;
-	private Local local;
+	// private Local local;
 	private RoomController roomController;
 	private LocalController localController;
 	private List<Room> rooms;
@@ -31,7 +31,7 @@ public class RoomMBean {
 		room = new Room();
 		roomController = RoomController.getInstance();
 		localController = LocalController.getInstance();
-		local = new Local();
+		// local = new Local();
 
 		initMap();
 	}
@@ -55,15 +55,12 @@ public class RoomMBean {
 
 	}
 
-	public void saveRoom() {
+	public String saveRoom() {
 
 		try {
 
-			// Local local = localController.findLocal(localId);
-			room.setPredio(local.getLocalName());
 			roomController.saveRoom(room);
 			room = new Room();
-			local = new Local();
 
 			listRoons();
 
@@ -78,6 +75,8 @@ public class RoomMBean {
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
 							"Erro ao salvar: ", e.getMessage()));
 		}
+
+		return null;
 	}
 
 	public void listRoons() {
@@ -114,14 +113,6 @@ public class RoomMBean {
 
 	public void setLocalsMap(Map<String, String> localsMap) {
 		this.localsMap = localsMap;
-	}
-
-	public Local getLocal() {
-		return local;
-	}
-
-	public void setLocal(Local local) {
-		this.local = local;
 	}
 
 }

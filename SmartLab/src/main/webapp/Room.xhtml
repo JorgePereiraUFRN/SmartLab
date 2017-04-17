@@ -23,7 +23,7 @@
 				<div class="col-xs-6">
 					<div class="form-group">
 						<h:outputLabel for="roomLocal" value="Setor de aula / Predio:" />
-						<p:selectOneMenu id="roomL" value="#{roomB.local.localName}" editable="false" update="">
+						<p:selectOneMenu id="roomL" value="#{roomB.room.predio}" editable="false" update="">
 							<f:selectItem itemLabel="Select One" itemValue="" />
 							<f:selectItems value="#{roomB.localsMap}" />
 						</p:selectOneMenu>
@@ -37,31 +37,40 @@
 
 
 		<br></br>
-		<table class="table table-hover">
-			<tr>
-		      <th  align="center">Nome</th>
-		      <th  align="center">Setor/Prédio</th>
-		      <th  align="center">Editar</th>
-		      <th  align="center">Deletar</th>
-		     </tr>
-		     
-		     <tbody>
-		      <ui:repeat var="item" value="#{roomB.rooms}" id="tabela" paginator="true" rows="50" emptyMessage="Não há registros na lista" paginatorTemplate="{CurrentPageReport}   {PreviousPageLink} {PageLinks} {NextPageLink}  {RowsPerPageDropdown}">
-		        <tr>
-		         <td>#{item.roomName}</td>
-		         <td>#{item.local.localName}</td>
-		         <td align="center" ><h:commandButton image="/images/application_form_edit.png" /></td>
-		         <td align="center" ></td>
-		         
-		        </tr>
-		
-		      </ui:repeat>
-		     </tbody>
-		</table>
-		
+		<h:dataTable id="tabela" value="#{roomB.rooms}" var="item"
+			styleClass="table table-hover" headerClass="order-table-header"
+			rowClasses="order-table-odd-row,order-table-even-row">
+
+			<h:column>
+				<f:facet name="header">Predio</f:facet>
+    				#{item.predio}
+    			</h:column>
+
+			<h:column>
+				<f:facet name="header">Sala</f:facet>
+    				#{item.roomName}
+    			</h:column>
+
+			<h:column>
+				<f:facet name="header">Editar</f:facet>
+					<h:commandButton image="/images/application_form_edit.png" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">Deletar</f:facet>
+					<h:commandButton image="/images/delete.png" />
+    			</h:column>
+
+		</h:dataTable>
+
+
 		<div>
-           <h:commandButton class="button-container" value="Listar" id="istRooms" actionListener="#{roomB.listRoons}" update="tabela"/>
-        </div>
+			<p:commandButton styleClass="button-container" value="Listar" id="listRooms" 
+				actionListener="#{roomB.listRoons}" update="tabela" />
+		</div>
+
+		
+		
 
 	</ui:define>
 </ui:decorate>

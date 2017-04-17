@@ -11,13 +11,14 @@
 
 		<p:growl id="mensagem" showDetail="true" autoUpdate="true"
 			closable="true" />
-			
+
 		<h:form id="formLocal">
 			<div class="row">
 				<div class="col-xs-4">
 					<div class="form-group">
 						<h:outputLabel for="sensorType" value="Tipo do Sensor: " />
-						<p:selectOneMenu id="sensorType" value="#{sensorB.sensor.sensorType}" editable="false" update="">
+						<p:selectOneMenu id="sensorType"
+							value="#{sensorB.sensor.sensorType}" editable="false" update="">
 							<f:selectItem itemLabel="Select One" itemValue="" />
 							<f:selectItems value="#{sensorB.sensorsType}" />
 						</p:selectOneMenu>
@@ -26,7 +27,8 @@
 				<div class="col-xs-4">
 					<div class="form-group">
 						<h:outputLabel for="LocalS" value="Prédio: " />
-						<p:selectOneMenu id="LocalS" value="#{sensorB.local.localName}" editable="false" update="">
+						<p:selectOneMenu id="LocalS" value="#{sensorB.predio}"
+							editable="false" update="">
 							<p:ajax update="RoomS" listener="#{sensorB.initRoomsMap}" />
 							<f:selectItem itemLabel="Select One" itemValue="" />
 							<f:selectItems value="#{sensorB.localsMap}" />
@@ -36,7 +38,8 @@
 				<div class="col-xs-4">
 					<div class="form-group">
 						<h:outputLabel for="RoomS" value="Sala: " />
-						<p:selectOneMenu id="RoomS" value="#{sensorB.room.roomName}" editable="false" update="">
+						<p:selectOneMenu id="RoomS" value="#{sensorB.sensor.roomName}"
+							editable="false" update="">
 							<f:selectItem itemLabel="Select One" itemValue="" />
 							<f:selectItems value="#{sensorB.roomsMap}" />
 						</p:selectOneMenu>
@@ -47,43 +50,56 @@
 				<div class="col-xs-12">
 					<div class="form-group">
 						<h:outputLabel for="sensorDescription" value="Descrição: " />
-						<h:inputText class="form-control" id="sensorDescription" value="#{sensorB.sensor.description}" />
+						<h:inputText class="form-control" id="sensorDescription"
+							value="#{sensorB.sensor.description}" />
 					</div>
 				</div>
 			</div>
 			<div>
-            	<h:commandButton action="#{localB.saveLocal}" class="button-container" value="Salvar" update="tabela" />
-          	</div>
+				<h:commandButton action="#{sensorB.saveSensor}"
+					class="button-container" value="Salvar" update="tabela" />
+			</div>
 		</h:form>
 
 		<br></br>
-		<table class="table table-hover">
-			<tr>
-		      <th  align="center">ID</th>
-		      <th  align="center">Prédio</th>
-		      <th  align="center">Tipo do Sensor</th>
-		      <th  align="center">Editar</th>
-		      <th  align="center">Deletar</th>
-		     </tr>
-		     
-		     <tbody>
-		      <ui:repeat var="item" value="#{sensorB.sensors}" id="tabela" paginator="true" rows="50" emptyMessage="Não há registros na lista" paginatorTemplate="{CurrentPageReport}   {PreviousPageLink} {PageLinks} {NextPageLink}  {RowsPerPageDropdown}">
-		        <tr>
-		         <td>#{item.id}</td>
-		         <td>#{item.room.roomName}</td>
-		         <td>#{item.sensorType.toString()}</td>
-		         <td align="center" ><h:commandButton image="/images/application_form_edit.png" /></td>
-		         <td align="center" ></td>
-		         
-		        </tr>
-		
-		      </ui:repeat>
-		     </tbody>
-		</table>
-		
+
+		<h:dataTable id="tabela" value="#{sensorB.sensors}" var="item"
+			styleClass="table table-hover" headerClass="order-table-header"
+			rowClasses="order-table-odd-row,order-table-even-row">
+
+			<h:column>
+				<f:facet name="header">ID</f:facet>
+    				#{item.id}
+    			</h:column>
+
+			<h:column>
+				<f:facet name="header">Sala</f:facet>
+    				#{item.roomName}
+    			</h:column>
+
+			<h:column>
+				<f:facet name="header">Tipo do Sensor</f:facet>
+    				#{item.sensorType}
+    			</h:column>
+			<h:column>
+				<f:facet name="header">Editar</f:facet>
+				<h:commandButton image="/images/application_form_edit.png" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">Deletar</f:facet>
+				<h:commandButton image="/images/delete.png" />
+			</h:column>
+
+		</h:dataTable>
+
+
 		<div>
-           <h:commandButton class="button-container" value="Listar" id="listsensors" actionListener="#{sensorB.listSensors}" update="tabela" />
-         </div>
+		<p:commandButton styleClass="button-container" value="Listar" id="listSensors" 
+				actionListener="#{sensorB.listSensors}" update="tabela" />
+				
+			
+		</div>
 
 	</ui:define>
 </ui:decorate>

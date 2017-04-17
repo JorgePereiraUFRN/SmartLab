@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -26,8 +27,7 @@ import smartmetropolis.smartlab.model.SensorType;
 public class SensorMBean {
 
 	private Sensor sensor;
-	private Room room;
-	private Local local;
+	private String predio;
 	private List<Sensor> sensors = new ArrayList<Sensor>();
 	private Map<SensorType, SensorType> sensorsType;
 	private Map<String, String> localsMap;
@@ -42,8 +42,6 @@ public class SensorMBean {
 	@PostConstruct
 	public void init() {
 		sensor = new Sensor();
-		room = new Room();
-		local = new Local();
 
 		sensorController = SensorController.getInstance();
 		localController = LocalController.getInstance();
@@ -87,7 +85,7 @@ public class SensorMBean {
 		roomsMap = new HashMap<String, String>();
 
 		try {
-			Local l = localController.findLocal(local.getLocalName());
+			Local l = localController.findLocal(predio);
 			
 			if (l != null) {
 				
@@ -103,6 +101,7 @@ public class SensorMBean {
 			}
 
 		} catch (DAOException e) {
+			e.printStackTrace();
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -111,11 +110,11 @@ public class SensorMBean {
 
 	}
 
-	public void saveSensor() {
+	public String saveSensor() {
 		try {
-			room.setPredio(local.getLocalName());
-			sensor.setRoomName(room.getRoomName());
+		
 			
+			sensor.setId(UUID.randomUUID().toString());
 	
 			sensorController.saveSensor(sensor);
 			FacesContext.getCurrentInstance().addMessage(
@@ -125,8 +124,6 @@ public class SensorMBean {
 
 			listSensors();
 
-			room = new Room();
-			local = new Local();
 			sensor = new Sensor();
 
 		} catch (DAOException e) {
@@ -140,6 +137,8 @@ public class SensorMBean {
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
 							"Save Sensor: ", e.getMessage()));
 		}
+		
+		return null;
 	}
 
 	public void listSensors() {
@@ -178,20 +177,14 @@ public class SensorMBean {
 		this.sensorsType = sensorsType;
 	}
 
-	public Room getRoom() {
-		return room;
+	
+
+	public String getPredio() {
+		return predio;
 	}
 
-	public void setRoom(Room room) {
-		this.room = room;
-	}
-
-	public Local getLocal() {
-		return local;
-	}
-
-	public void setLocal(Local local) {
-		this.local = local;
+	public void setPredio(String predio) {
+		this.predio = predio;
 	}
 
 	public Map<String, String> getLocalsMap() {
