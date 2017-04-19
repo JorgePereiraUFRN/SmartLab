@@ -21,6 +21,7 @@ import smartmetropolis.smartlab.controller.MeasurementController;
 import smartmetropolis.smartlab.exceptions.ComunicationException;
 import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.exceptions.TreaterException;
+import smartmetropolis.smartlab.exceptions.UnavailableDataException;
 import smartmetropolis.smartlab.exceptions.validateDataException;
 import smartmetropolis.smartlab.model.AirConditioner;
 import smartmetropolis.smartlab.model.AirConditionerAction;
@@ -63,10 +64,10 @@ public class AirControl implements AirControlInterface {
 			MeasurementController mController = MeasurementController
 					.getInstance();
 
-			
 			List<Measurement> measurements = mController
 					.findMeasurementByDateAndRoomAndSensorType(
-							calendar.getTime(), room.getRoomName(), SensorType.PRESENCE);
+							calendar.getTime(), room.getRoomName(),
+							SensorType.PRESENCE);
 
 			for (Measurement m : measurements) {
 
@@ -211,7 +212,7 @@ public class AirControl implements AirControlInterface {
 					+ targetTemperature);
 			sendCommandToAirConditionerControl(airConditioner, "turn-on/"
 					+ targetTemperature);
-			
+
 			if (airConditioner.itsOn) {
 				AirConditionerState airState = new AirConditionerState();
 				airState.setAction(AirConditionerAction.diminuir_temperatura);
@@ -234,11 +235,11 @@ public class AirControl implements AirControlInterface {
 		lastAirChange.put(room, dt);
 	}
 
-	
 	public void turOffAllAirConditionersOfRom(Room room) throws DAOException,
 			validateDataException {
 		logger.info("desligando todos os aprelhos da sala: " + room);
-		for (AirConditioner airC : AIR_CONTROLLER.findAirconditionerByRoom(room.getRoomName())) {
+		for (AirConditioner airC : AIR_CONTROLLER.findAirconditionerByRoom(room
+				.getRoomName())) {
 			turOffAirConditioner(airC);
 		}
 
@@ -246,37 +247,37 @@ public class AirControl implements AirControlInterface {
 
 	}
 
-	
 	public void increaseTemperatureAllAirConditionersOfRoom(Room room)
 			throws DAOException, validateDataException {
 		logger.info("aumentando temperatura de todos os aprelhos da sala: "
 				+ room);
-		for (AirConditioner airC : AIR_CONTROLLER.findAirconditionerByRoom(room.getRoomName())) {
+		for (AirConditioner airC : AIR_CONTROLLER.findAirconditionerByRoom(room
+				.getRoomName())) {
 			increaseTemperature(airC);
 		}
 
 		updateTimeFromLastAirChange(room);
 	}
 
-	
 	public void turOnAllAirCoditionerOfRoom(Room room) throws DAOException,
 			validateDataException {
 
 		logger.info("ligando todos os aprelhos da sala: " + room);
 
-		for (AirConditioner airC : AIR_CONTROLLER.findAirconditionerByRoom(room.getRoomName())) {
+		for (AirConditioner airC : AIR_CONTROLLER.findAirconditionerByRoom(room
+				.getRoomName())) {
 			turOnAirConditioner(airC);
 		}
 
 		// updateTimeFromLastAirChange(room);
 	}
 
-	
 	public void decreaseTemperatureAllAirConditionersOfRoom(Room room)
 			throws DAOException, validateDataException {
 		logger.info("diminuindo temperatura de todos os aprelhos da sala: "
 				+ room);
-		for (AirConditioner airC : AIR_CONTROLLER.findAirconditionerByRoom(room.getRoomName())) {
+		for (AirConditioner airC : AIR_CONTROLLER.findAirconditionerByRoom(room
+				.getRoomName())) {
 			decreaseTemperature(airC);
 		}
 
@@ -294,7 +295,7 @@ public class AirControl implements AirControlInterface {
 					+ ":8080/WS-AirConditioner/air-conditioner/";
 			WebResource resource = webServiceClient.resource(uri + command);
 
-			logger.info("enviando requisição: "+uri + command);
+			logger.info("enviando requisição: " + uri + command);
 			resource.put();
 		} catch (Exception e) {
 			logger.error("erro ao enviar requisição para o controlador do condicionado: "
@@ -305,9 +306,15 @@ public class AirControl implements AirControlInterface {
 		}
 	}
 
-	public float getAtualTemperature(Room rom) {
-
-		return atualTemp.get(rom);
+	public Float getAtualTemperature(Room rom) throws UnavailableDataException {
+		
+		try {
+			return atualTemp.get(rom);
+		} catch (NullPointerException e) {
+			throw new UnavailableDataException(
+					"erro ao consultar temperatura da sala " + rom
+							+ ". \nErro: " + e.getMessage());
+		}
 	}
 
 	public void setAtualTemp(Room room, float temp) {

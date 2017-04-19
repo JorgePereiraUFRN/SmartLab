@@ -31,8 +31,7 @@ public class AirConditionerDao extends GenericDaoOrion<AirConditioner> implement
 
 	public ContextElement entityToContextElement(AirConditioner entity) {
 		
-		ContextElement context = new ContextElement(type,
-				"Ar_Condicionado_"+entity.getId()+"_Sala_"+entity.getRoomId(), false);
+		ContextElement context = new ContextElement(type, entity.getId(), false);
 
 		Attribute sala = new Attribute("Sala", "String", entity.getRoomId());
 		context.addAttribute(sala);

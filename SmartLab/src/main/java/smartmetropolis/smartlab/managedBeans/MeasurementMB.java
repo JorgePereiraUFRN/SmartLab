@@ -143,6 +143,7 @@ public class MeasurementMB {
 	public void listMeasurements() {
 
 		measurements = null;
+
 		try {
 
 			if ((sensorId != null || !sensorId.equals(""))
@@ -152,6 +153,7 @@ public class MeasurementMB {
 				measurements = measurementController
 						.listMeasurementsBySensorAndDate(initialDate,
 								finalDate, sensorId);
+				
 
 			}
 		} catch (DAOException e) {

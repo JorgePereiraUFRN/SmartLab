@@ -2,6 +2,7 @@ package smartmetropolis.smartlab.MeasurementBlackBoard;
 
 import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.exceptions.TreaterException;
+import smartmetropolis.smartlab.exceptions.UnavailableDataException;
 import smartmetropolis.smartlab.exceptions.validateDataException;
 import smartmetropolis.smartlab.model.Room;
 
@@ -28,7 +29,7 @@ public interface AirControlInterface {
 	public  void decreaseTemperatureAllAirConditionersOfRoom(Room room)
 			throws DAOException, validateDataException;
 	
-	public float getAtualTemperature(Room rom);
+	public Float getAtualTemperature(Room rom) throws UnavailableDataException;
 	
 	public void setAtualTemp(Room room, float temp);
 

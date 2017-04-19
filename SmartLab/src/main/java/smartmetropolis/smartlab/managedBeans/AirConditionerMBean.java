@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -85,13 +86,18 @@ public class AirConditionerMBean {
 	}
 	
 	
-	public void saveAirconditioner(){
+	public String saveAirconditioner(){
 		
 		try {
 			Room r = roomController.findRoom(roomName);
 			
 			
 			if(r != null){
+				
+				String id = UUID.randomUUID().toString();
+				
+				
+				airConditioner.setId(id.split("-")[0]);		
 				airConditioner.setRoomId(r.getRoomName());
 				airConditioner.setItsOn(false);
 				
@@ -111,6 +117,8 @@ public class AirConditionerMBean {
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
 							"Dado inválido: ", e.getMessage()));
 		}
+		
+		return null;
 		
 	}
 	

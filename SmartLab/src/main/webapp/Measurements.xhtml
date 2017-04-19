@@ -66,25 +66,31 @@
 		</p:dialog>
 
 		<br></br>
-		<table class="table table-hover">
-			<tr>
-		      <th  align="center">Valor da Medição</th>
-		      <th  align="center">Data</th>
-		     </tr>
-		     
-		     <tbody>
-		      <ui:repeat var="item" value="#{measurementB.measurements}" id="tabela" paginator="true" rows="50" emptyMessage="Não há registros na lista">
-		        <tr>
-		         <td>#{item.value}</td>
-		         <td>#{item.time}</td>
+		<h:dataTable id="tabela" value="#{measurementB.measurements}" var="item"
+			styleClass="table table-hover" headerClass="order-table-header"
+			rowClasses="order-table-odd-row,order-table-even-row">
 
-				<!-- <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" /> -->
-		         
-		        </tr>
+			<h:column>
+				<f:facet name="header">Sensor</f:facet>
+    				#{item.sensorId}
+    			</h:column>
+
+			<h:column>
+				<f:facet name="header">Valor</f:facet>
+    				#{item.value}
+    			</h:column>
+
+			<h:column>
+				<f:facet name="header">Data/Hora</f:facet>
+    				#{item.time.toLocaleString()}
+    				
+    			</h:column>
+
+			
+
+		</h:dataTable>
 		
-		      </ui:repeat>
-		     </tbody>
-		</table>
+		
 	</ui:define>
 </ui:decorate>
 

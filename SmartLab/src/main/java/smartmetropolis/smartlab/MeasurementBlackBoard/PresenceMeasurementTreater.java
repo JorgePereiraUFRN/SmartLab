@@ -38,6 +38,8 @@ public class PresenceMeasurementTreater extends MeasurementTreater {
 		Sensor sensor;
 		try {
 			sensor = sensorController.findSensor(measurement.getSensorId());
+			
+			
 
 			if (sensor.getSensorType().ordinal() == SensorType.PRESENCE
 					.ordinal()) {
@@ -50,8 +52,15 @@ public class PresenceMeasurementTreater extends MeasurementTreater {
 
 					Room room = roomController.findRoom(sensor.getRoomName());
 
-					float temperatureRoom = AIR_CONTROL
+					Float temperatureRoom = AIR_CONTROL
 							.getAtualTemperature(room);
+					
+					if(temperatureRoom == null){
+						
+						logger.debug("impossivel tratar medição: os dados de temperatura da sala estao indisponiveis.");
+						
+						return;
+					}
 
 					boolean airconditionersAreOn = airConditionersAreOn(airConditionerController
 							.findAirconditionerByRoom(room.getRoomName()));
@@ -78,6 +87,7 @@ public class PresenceMeasurementTreater extends MeasurementTreater {
 					}
 
 				} catch (Exception e) {
+					e.printStackTrace();
 					throw new TreaterException("Erro: " + e.getMessage());
 				}
 

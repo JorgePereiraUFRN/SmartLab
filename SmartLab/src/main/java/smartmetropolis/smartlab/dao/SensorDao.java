@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.apache.log4j.Logger;
+
 import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.model.Measurement;
 import smartmetropolis.smartlab.model.Sensor;
@@ -19,6 +21,8 @@ public class SensorDao extends GenericDaoOrion<Sensor> implements
 		SensorDaoInterface {
 
 	private static final String type = "Sensor";
+	
+	private Logger logger = Logger.getLogger(SensorDao.class);
 
 	private SimpleDateFormat format = new SimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ssZ");
@@ -100,7 +104,7 @@ public class SensorDao extends GenericDaoOrion<Sensor> implements
 					me.setTime(format.parse(data));
 				}
 			} catch (ParseException e) {
-				System.out.println("erro parsing data da medição");
+				logger.error("erro parsing data da medição: "+sensor);
 			}
 
 			sensor.setMeasurement(me);

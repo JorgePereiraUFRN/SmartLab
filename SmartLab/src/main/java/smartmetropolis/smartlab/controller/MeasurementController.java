@@ -40,7 +40,7 @@ public class MeasurementController {
 		return MEASURAMENT_CONTROLLER;
 	}
 
-	private void validateData(Measurement measurement)
+	private void validateData(Measurement measurement, Sensor s)
 			throws validateDataException, DAOException {
 
 		if (measurement == null) {
@@ -55,7 +55,6 @@ public class MeasurementController {
 			throw new validateDataException("Measurement sensorId is invalidy");
 		}
 
-		Sensor s = sensorDao.findById(measurement.getSensorId());
 
 		if (s == null) {
 			throw new validateDataException("Measurement sensorId is invalidy");
@@ -86,7 +85,14 @@ public class MeasurementController {
 
 	public Measurement saveMeasurement(Measurement measurement)
 			throws validateDataException, DAOException {
-		validateData(measurement);
+		
+		Sensor s = sensorDao.findById(measurement.getSensorId());
+		
+		validateData(measurement, s);
+		
+		s.setMeasurement(measurement);
+		
+		sensorDao.update(s);
 
 		Measurement m = measurementDao.save(measurement);
 

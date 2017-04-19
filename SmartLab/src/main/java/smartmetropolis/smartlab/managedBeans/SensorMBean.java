@@ -113,8 +113,9 @@ public class SensorMBean {
 	public String saveSensor() {
 		try {
 		
+			String id = UUID.randomUUID().toString();
 			
-			sensor.setId(UUID.randomUUID().toString());
+			sensor.setId(id.split("-")[0]);
 	
 			sensorController.saveSensor(sensor);
 			FacesContext.getCurrentInstance().addMessage(
