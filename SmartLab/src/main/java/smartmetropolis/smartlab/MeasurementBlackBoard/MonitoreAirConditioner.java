@@ -46,25 +46,25 @@ public class MonitoreAirConditioner extends Thread {
 					break;
 				}
 
-				for (Room r : rooms) {
+				for (Room room : rooms) {
 					try {
 
 						boolean hasPeople = airControlUtil.hasPeopleInTheRoom(
-								r, 15);
+								room.getRoomName(), 15);
 						
-						boolean hasReserves = reservesSystem.hasApprovedReserves(r.getRoomName(), 15);
+						boolean hasReserves = reservesSystem.hasApprovedReserves(room.getRoomName(), 15);
 
 						if (!hasPeople && !hasReserves) {
 
-							Room room = ROOM_CONTROLLER.findRoom(
-									r.getRoomName());
+/*							Room room = ROOM_CONTROLLER.findRoom(
+									r.getRoomName());*/
 
 							if (room != null) {
 								logger.info("desativando aparelhos de ar condicionado da sala: "
 										+ room
 										+ "\nmotivo: 1 ausencia de pessoas na sala. 2 não existem reservas para os proximos 15 min");
 								airControlUtil
-										.turOffAllAirConditionersOfRom(room);
+										.turOffAllAirConditionersOfRom(room.getRoomName());
 							} else {
 								logger.error("sala " + room + " não encontrada");
 							}

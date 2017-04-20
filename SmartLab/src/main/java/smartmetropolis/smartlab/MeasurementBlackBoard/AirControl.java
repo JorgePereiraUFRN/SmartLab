@@ -38,9 +38,9 @@ public class AirControl implements AirControlInterface {
 			.getInstance();
 	private static final AirConditionerController AIR_CONTROLLER = AirConditionerController
 			.getInstance();
-	private Map<Room, Date> lastAirChange = new HashMap<Room, Date>();
+	private Map<String, Date> lastAirChange = new HashMap<String, Date>();
 
-	private Map<Room, Float> atualTemp = new HashMap<Room, Float>();
+	private Map<String, Float> atualTemp = new HashMap<String, Float>();
 
 	private Logger logger = Logger.getLogger(AirControl.class);
 
@@ -54,7 +54,7 @@ public class AirControl implements AirControlInterface {
 		return AIR_CONTROL_UTIL;
 	}
 
-	public boolean hasPeopleInTheRoom(Room room, int minutes)
+	public boolean hasPeopleInTheRoom(String room, int minutes)
 			throws TreaterException {
 		try {
 
@@ -66,7 +66,7 @@ public class AirControl implements AirControlInterface {
 
 			List<Measurement> measurements = mController
 					.findMeasurementByDateAndRoomAndSensorType(
-							calendar.getTime(), room.getRoomName(),
+							calendar.getTime(), room,
 							SensorType.PRESENCE);
 
 			for (Measurement m : measurements) {
@@ -103,13 +103,13 @@ public class AirControl implements AirControlInterface {
 	 * @see smartmetropolis.smartlab.MeasurementBlackBoard.AirControl#
 	 * timeFromLastAirChange(smartmetropolis.smartlab.model.Room)
 	 */
-	public Long timeFromLastAirChange(Room room) {
+	public Long timeFromLastAirChange(String roomId) {
 
-		if (lastAirChange.get(room) == null) {
+		if (lastAirChange.get(roomId) == null) {
 
 			calendar.setTimeInMillis(System.currentTimeMillis());
 			Date dt = calendar.getTime();
-			lastAirChange.put(room, dt);
+			lastAirChange.put(roomId, dt);
 
 			// na primeira vez q esse metodo for chamado o tempo retornado será
 			// de 100 min
@@ -119,7 +119,7 @@ public class AirControl implements AirControlInterface {
 			// tempo em minutos
 			calendar.setTimeInMillis(System.currentTimeMillis());
 			long duration = calendar.getTime().getTime()
-					- lastAirChange.get(room).getTime();
+					- lastAirChange.get(roomId).getTime();
 
 			long result = TimeUnit.MILLISECONDS.toSeconds(duration);
 			return result;
@@ -228,18 +228,17 @@ public class AirControl implements AirControlInterface {
 
 	}
 
-	private void updateTimeFromLastAirChange(Room room) {
-		lastAirChange.remove(room);
+	private void updateTimeFromLastAirChange(String roomId) {
+		lastAirChange.remove(roomId);
 		calendar.setTimeInMillis(System.currentTimeMillis());
 		Date dt = calendar.getTime();
-		lastAirChange.put(room, dt);
+		lastAirChange.put(roomId, dt);
 	}
 
-	public void turOffAllAirConditionersOfRom(Room room) throws DAOException,
+	public void turOffAllAirConditionersOfRom(String room) throws DAOException,
 			validateDataException {
 		logger.info("desligando todos os aprelhos da sala: " + room);
-		for (AirConditioner airC : AIR_CONTROLLER.findAirconditionerByRoom(room
-				.getRoomName())) {
+		for (AirConditioner airC : AIR_CONTROLLER.findAirconditionerByRoom(room)) {
 			turOffAirConditioner(airC);
 		}
 
@@ -247,41 +246,39 @@ public class AirControl implements AirControlInterface {
 
 	}
 
-	public void increaseTemperatureAllAirConditionersOfRoom(Room room)
+	public void increaseTemperatureAllAirConditionersOfRoom(String roomId)
 			throws DAOException, validateDataException {
 		logger.info("aumentando temperatura de todos os aprelhos da sala: "
-				+ room);
-		for (AirConditioner airC : AIR_CONTROLLER.findAirconditionerByRoom(room
-				.getRoomName())) {
+				+ roomId);
+		for (AirConditioner airC : AIR_CONTROLLER.findAirconditionerByRoom(roomId)) {
 			increaseTemperature(airC);
 		}
 
-		updateTimeFromLastAirChange(room);
+		updateTimeFromLastAirChange(roomId);
 	}
 
-	public void turOnAllAirCoditionerOfRoom(Room room) throws DAOException,
+	public void turOnAllAirCoditionerOfRoom(String room) throws DAOException,
 			validateDataException {
 
 		logger.info("ligando todos os aprelhos da sala: " + room);
 
 		for (AirConditioner airC : AIR_CONTROLLER.findAirconditionerByRoom(room
-				.getRoomName())) {
+				)) {
 			turOnAirConditioner(airC);
 		}
 
 		// updateTimeFromLastAirChange(room);
 	}
 
-	public void decreaseTemperatureAllAirConditionersOfRoom(Room room)
+	public void decreaseTemperatureAllAirConditionersOfRoom(String roomId)
 			throws DAOException, validateDataException {
 		logger.info("diminuindo temperatura de todos os aprelhos da sala: "
-				+ room);
-		for (AirConditioner airC : AIR_CONTROLLER.findAirconditionerByRoom(room
-				.getRoomName())) {
+				+ roomId);
+		for (AirConditioner airC : AIR_CONTROLLER.findAirconditionerByRoom(roomId)) {
 			decreaseTemperature(airC);
 		}
 
-		updateTimeFromLastAirChange(room);
+		updateTimeFromLastAirChange(roomId);
 
 	}
 
@@ -289,6 +286,7 @@ public class AirControl implements AirControlInterface {
 			AirConditioner airConditioner, String command)
 			throws ComunicationException {
 		try {
+			
 			webServiceClient = Client.create();
 
 			String uri = "http://" + airConditioner.getIpAddressAirControl()
@@ -297,6 +295,8 @@ public class AirControl implements AirControlInterface {
 
 			logger.info("enviando requisição: " + uri + command);
 			resource.put();
+			
+			
 		} catch (Exception e) {
 			logger.error("erro ao enviar requisição para o controlador do condicionado: "
 					+ e.getMessage());
@@ -306,26 +306,30 @@ public class AirControl implements AirControlInterface {
 		}
 	}
 
-	public Float getAtualTemperature(Room rom) throws UnavailableDataException {
+	public Float getAtualTemperature(String roomId) throws UnavailableDataException {
 		
-		try {
-			return atualTemp.get(rom);
-		} catch (NullPointerException e) {
+		Float temp = atualTemp.get(roomId);
+
+		if(temp == null){
 			throw new UnavailableDataException(
-					"erro ao consultar temperatura da sala " + rom
-							+ ". \nErro: " + e.getMessage());
+					"erro ao consultar temperatura da sala " + roomId);
 		}
+		
+		return temp;
 	}
 
-	public void setAtualTemp(Room room, float temp) {
+	public void setAtualTemp(String roomId, Float temp) {
 
-		if (atualTemp.get(room) == null) {
-			atualTemp.put(room, temp);
+		if (atualTemp.get(roomId) == null) {
+			atualTemp.put(roomId, temp);
+			System.out.println("setando temp: "+temp+" "+roomId);
 		} else {
-			atualTemp.remove(room);
-			atualTemp.put(room, temp);
+			atualTemp.remove(roomId);
+			atualTemp.put(roomId, temp);
 		}
 
 	}
+
+	
 
 }

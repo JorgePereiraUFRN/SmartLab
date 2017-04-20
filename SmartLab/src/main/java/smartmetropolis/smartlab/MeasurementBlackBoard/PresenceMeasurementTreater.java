@@ -51,9 +51,11 @@ public class PresenceMeasurementTreater extends MeasurementTreater {
 							.getValue());
 
 					Room room = roomController.findRoom(sensor.getRoomName());
+					
+					System.out.println(room);
 
 					Float temperatureRoom = AIR_CONTROL
-							.getAtualTemperature(room);
+							.getAtualTemperature(room.getRoomName());
 					
 					if(temperatureRoom == null){
 						
@@ -71,9 +73,9 @@ public class PresenceMeasurementTreater extends MeasurementTreater {
 						// ligar todos os aparelhos de ar condicionado da sala
 						// tem > 20
 
-						AIR_CONTROL.turOnAllAirCoditionerOfRoom(room);
+						AIR_CONTROL.turOnAllAirCoditionerOfRoom(room.getRoomName());
 
-					} else if (!AIR_CONTROL.hasPeopleInTheRoom(room, 15)
+					} else if (!AIR_CONTROL.hasPeopleInTheRoom(room.getRoomName(), 15)
 							&& airConditionersAreOn(airConditionerController
 									.findAirconditionerByRoom(room
 											.getRoomName()))
@@ -81,7 +83,7 @@ public class PresenceMeasurementTreater extends MeasurementTreater {
 									room.getRoomName(), 15)) {
 						// caso nao tenha sido registrada nenhuma presença nos
 						// ultimos 15 min o ar sera desligado
-						AIR_CONTROL.turOffAllAirConditionersOfRom(room);
+						AIR_CONTROL.turOffAllAirConditionersOfRom(room.getRoomName());
 
 						logger.info("desativando todos os aparellhos da sala. Motivo: nao existem pessoas na sala e nao existem reservas para os proximos 15 min ");
 					}

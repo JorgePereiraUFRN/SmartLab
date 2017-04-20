@@ -11,26 +11,26 @@ public interface AirControlInterface {
 	
 	public static final int targetTemperature = 23; 
 
-	public  boolean hasPeopleInTheRoom(Room room, int minutes)
+	public  boolean hasPeopleInTheRoom(String room, int minutes)
 			throws TreaterException;
 
-	public  Long timeFromLastAirChange(Room room);
+	public  Long timeFromLastAirChange(String room);
 
-	public  void turOffAllAirConditionersOfRom(Room room) throws DAOException,
+	public  void turOffAllAirConditionersOfRom(String room) throws DAOException,
 			validateDataException;
 
-	public void increaseTemperatureAllAirConditionersOfRoom(Room room)
+	public void increaseTemperatureAllAirConditionersOfRoom(String room)
 			throws DAOException, validateDataException;
 
-	public void turOnAllAirCoditionerOfRoom(Room room) throws DAOException,
+	public void turOnAllAirCoditionerOfRoom(String room) throws DAOException,
 			validateDataException;
 
 	
-	public  void decreaseTemperatureAllAirConditionersOfRoom(Room room)
+	public  void decreaseTemperatureAllAirConditionersOfRoom(String room)
 			throws DAOException, validateDataException;
 	
-	public Float getAtualTemperature(Room rom) throws UnavailableDataException;
+	public Float getAtualTemperature(String rom) throws UnavailableDataException;
 	
-	public void setAtualTemp(Room room, float temp);
+	public void setAtualTemp(String room, Float temp);
 
 }

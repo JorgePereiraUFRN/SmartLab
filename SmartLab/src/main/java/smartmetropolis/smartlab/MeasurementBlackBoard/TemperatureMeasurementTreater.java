@@ -50,21 +50,22 @@ public class TemperatureMeasurementTreater extends MeasurementTreater {
 				try {
 					temperature = Float.parseFloat(measurement.getValue());
 
-					AIR_CONTROL.setAtualTemp(room, temperature);
+					AIR_CONTROL.setAtualTemp(room.getRoomName(), temperature);
 				} catch (NumberFormatException e) {
 					throw new TreaterException("erro ao converter float: "
 							+ e.getMessage());
 				}
 
-				if (AIR_CONTROL.hasPeopleInTheRoom(room, 15)) {
+				if (AIR_CONTROL.hasPeopleInTheRoom(room.getRoomName(), 15)) {
 
 					// tempo em segundos desde o ultimo comando enviado ao ar
 					// condicionado
-					if (AIR_CONTROL.timeFromLastAirChange(room) > 10 * 60L) {
+					if (AIR_CONTROL.timeFromLastAirChange(room.getRoomName()) > 10 * 60L) {
 
 						try {
 
 							if (temperature < AIR_CONTROL.targetTemperature) {
+								
 								logger.info("teperatura menor que "
 										+ AIR_CONTROL.targetTemperature
 										+ " graus");
@@ -73,17 +74,17 @@ public class TemperatureMeasurementTreater extends MeasurementTreater {
 								if (diference > 3) {
 									// temp < 20
 									AIR_CONTROL
-											.turOffAllAirConditionersOfRom(room);
+											.turOffAllAirConditionersOfRom(room.getRoomName());
 								} else if (diference > 2) {
 									// temp > 20
 									if (!airConditionersAreOn(airConditionerController
 											.findAirconditionerByRoom(room
 													.getRoomName()))) {
 										AIR_CONTROL
-												.turOnAllAirCoditionerOfRoom(room);
+												.turOnAllAirCoditionerOfRoom(room.getRoomName());
 									}
 									AIR_CONTROL
-											.increaseTemperatureAllAirConditionersOfRoom(room);
+											.increaseTemperatureAllAirConditionersOfRoom(room.getRoomName());
 
 								}
 							} else if (temperature > (AIR_CONTROL.targetTemperature + 1)) {
@@ -93,7 +94,7 @@ public class TemperatureMeasurementTreater extends MeasurementTreater {
 										+ " graus");
 
 								AIR_CONTROL
-										.decreaseTemperatureAllAirConditionersOfRoom(room);
+										.decreaseTemperatureAllAirConditionersOfRoom(room.getRoomName());
 
 							}
 
@@ -112,7 +113,7 @@ public class TemperatureMeasurementTreater extends MeasurementTreater {
 					// mesmo seja desligado
 					logger.info("dado de temperatura recebido, no entanto não foi registrada nenhuma presença nos ultimos 10 min");
 					try {
-						AIR_CONTROL.turOffAllAirConditionersOfRom(room);
+						AIR_CONTROL.turOffAllAirConditionersOfRom(room.getRoomName());
 					} catch (DAOException e) {
 						throw new TreaterException("erro: " + e.getMessage());
 					} catch (validateDataException e) {

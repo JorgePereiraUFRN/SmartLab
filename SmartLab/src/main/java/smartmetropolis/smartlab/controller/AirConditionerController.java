@@ -66,7 +66,8 @@ public class AirConditionerController {
 			throws DAOException, validateDataException {
 		validateAirConditioner(airC);
 
-		if (airC.getId() == null || !airC.getId().equals("")) {
+
+		if (airC.getId() == null || airC.getId().equals("")) {
 			throw new validateDataException("Invalide air conditioner id");
 		}
 
@@ -83,8 +84,8 @@ public class AirConditionerController {
 		return airConditionerDao.findAll();
 	}
 	
-	public List<AirConditioner> findAirconditionerByRoom(String roomId){
+	public List<AirConditioner> findAirconditionerByRoom(String roomId) throws DAOException{
 		
-		return findAirconditionerByRoom(roomId);
+		return airConditionerDao.getAirConditionersByRoom(roomId);
 	}
 }

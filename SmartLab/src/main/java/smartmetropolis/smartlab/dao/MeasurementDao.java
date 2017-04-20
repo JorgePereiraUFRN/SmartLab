@@ -29,9 +29,7 @@ public class MeasurementDao extends GenericHibernateDAO<Measurement, Long>
 					.createQuery(
 							"select m from "
 									+ Measurement.class.getSimpleName()
-									+ " m, " + Sensor.class.getSimpleName()
-									+ " s, " + Room.class.getSimpleName()
-									+ " r where  m.time > :time")
+									+ " m where  m.time > :time")
 					.setParameter("time", date).getResultList();
 		} catch (Exception e) {
 			throw new DAOException(e.getMessage());
