@@ -43,6 +43,7 @@
 						</p:calendar>
 					</div>
 				</div>
+				
 				<div class="col-xs-6">
 					<div class="form-group">
 						<p:outputLabel for="datetimeFinal" value="Data Final: " />
@@ -58,26 +59,30 @@
 
 
 		<br></br>
-		<table class="table table-hover">
-			<tr>
-		      <th  align="center">Ar-condicionado</th>
-		      <th  align="center">Ação</th>
-		      <th  align="center">Data</th>
-		     </tr>
-		     
-		     <tbody>
-		      <ui:repeat var="item" value="#{AirCstateB.airCStates}" id="tabela" paginator="true" rows="50" emptyMessage="Não há registros na lista">
-		        <tr>
-		         <td>#{item.airConditioner.id}</td>
-		         <td>#{item.action.toString()}</td>
-		         <td>#{item.timestamp}</td>
-		         
-		         <!-- <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" /> -->
-		        </tr>
+		<h:dataTable id="tabela" value="#{AirCstateB.airCStates}" var="item"
+			styleClass="table table-hover" headerClass="order-table-header"
+			rowClasses="order-table-odd-row,order-table-even-row">
+
+			<h:column>
+				<f:facet name="header">Id ArCondicionado</f:facet>
+    				#{item.airConditionerId}
+    			</h:column>
+
+			<h:column>
+				<f:facet name="header">Ação</f:facet>
+    				#{item.action}
+    			</h:column>
+
+			<h:column>
+				<f:facet name="header">Data/Hora</f:facet>
+    				#{item.timestamp.toLocaleString()}
+    				
+    			</h:column>
+
+			
+
+		</h:dataTable>
 		
-		      </ui:repeat>
-		     </tbody>
-		</table>
 
 
 	</ui:define>

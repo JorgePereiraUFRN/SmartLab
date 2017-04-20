@@ -81,10 +81,12 @@ public class AirConditionerStateController {
 
 		List<AirConditionerState> states = airStateDao.listByDate(initialDate,
 				finalDate);
+		
 		List<AirConditionerState> aux = new ArrayList<AirConditionerState>();
 
 		List<AirConditioner> airCs = airConditionerDao
 				.getAirConditionersByRoom(roomName);
+		
 
 		for (AirConditionerState airC_State : states) {
 

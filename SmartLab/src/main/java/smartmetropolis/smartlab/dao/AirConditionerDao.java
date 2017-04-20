@@ -101,8 +101,8 @@ public static void main(String[] args) throws DAOException {
 		
 		//System.out.println( dao.getAirConditionersByRoom("B318"));
 		
-		/*
-		for(AirConditioner irc : dao.findAll()){
+		
+	/*	for(AirConditioner irc : dao.getAirConditionersByRoom("B318")){
 			System.out.println(irc);
 		}*/
 		

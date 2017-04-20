@@ -87,12 +87,16 @@ public class AirConditionerStateMBean {
 	}
 
 	public void listAirCStates() {
+		
+	
 		try {
 
 			if (roomName != null && localName != null && initialDate != null
 					&& finalDate != null) {
+				
 				airCStates = airCStateController.listByRoomAndDate(roomName,
 						 initialDate, finalDate);
+								
 			}
 		} catch (DAOException e) {
 			FacesContext.getCurrentInstance().addMessage(

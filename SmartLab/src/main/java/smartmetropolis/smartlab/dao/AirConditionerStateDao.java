@@ -22,9 +22,7 @@ public class AirConditionerStateDao extends GenericHibernateDAO<AirConditionerSt
 					.createQuery(
 							"select s from "
 									+ AirConditionerState.class.getSimpleName()
-									+ " s, " + AirConditioner.class.getSimpleName()
-									+ " a, " + Room.class.getSimpleName()
-									+ " r where  s.timestamp between :initialDate and :finalDate")
+									+ " s where  s.timestamp between :initialDate and :finalDate")
 					.setParameter("initialDate", initialDate).setParameter("finalDate", finalDate).getResultList();
 		} catch (Exception e) {
 			throw new DAOException(e.getMessage());
