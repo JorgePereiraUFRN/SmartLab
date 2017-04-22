@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14927192380510" configfile="/SmartLab/src/main/webapp/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="*" id="pf14927192971931" outlinks="pf14927192971932" path="*"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/public/index.xhtml" id="pf14927192971933" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf14927192971932" path="/pages/public/index.xhtml"/>
+  <links id="pf14927192971932" target="pf14927192971933" source="pf14927192971931" outcome="errorLogin"/>
+</pageflow:Pageflow>
