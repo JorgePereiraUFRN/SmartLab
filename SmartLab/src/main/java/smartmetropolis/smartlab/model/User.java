@@ -1,17 +1,22 @@
 package smartmetropolis.smartlab.model;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity(name="smartplaceUser")
 public class User {	
 	@Id
+	@Column(name="user_login")
 	private String login;
 	private String password;
 	private Float preferenceTemperature;
 	private String name;
 	private String email;
-	private String role;
+	@OneToOne(mappedBy="user", cascade = CascadeType.ALL)
+	private UserRole role;
 	
 
 	public User() {
@@ -50,8 +55,6 @@ public class User {
 		this.password = password;
 	}
 
-	
-
 	public String getEmail() {
 		return email;
 	}
@@ -60,12 +63,20 @@ public class User {
 		this.email = email;
 	}
 
-	public String getRole() {
+	public UserRole getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(UserRole role) {
 		this.role = role;
+	}
+
+	@Override
+	public String toString() {
+		return "User [login=" + login + ", password=" + password
+				+ ", preferenceTemperature=" + preferenceTemperature
+				+ ", name=" + name + ", email=" + email + ", role=" + role
+				+ "]";
 	}
 	
 	

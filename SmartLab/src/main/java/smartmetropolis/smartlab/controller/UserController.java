@@ -28,10 +28,12 @@ public class UserController {
 
 		if (user == null) {
 			throw new validateDataException("User is null");
-		} else if (user.getLogin() != null || user.getLogin().equals("")) {
+		} else if (user.getLogin() == null || user.getLogin().equals("")) {
 			throw new validateDataException("Invalid login");
 		} else if (user.getPassword() == null || user.getPassword().equals("")) {
 			throw new validateDataException("Invalid password");
+		}else if(user.getRole() == null ||  user.getRole().getRole() == null ||  user.getRole().getRole().equals("") ){
+			throw new validateDataException("Invalid user role.");
 		}
 
 	}

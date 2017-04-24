@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta content="" />
+	<title>Registrar Usuario</title>
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" />
+	<link rel="stylesheet prefetch"
+		href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900|RobotoDraft:400,100,300,500,700,900" />
+	<link rel="stylesheet prefetch"
+		href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+
+	<link href="#{request.contextPath}/css/login.css" rel="stylesheet"
+		type="text/css" media="screen" />
+</h:head>
+<h:body>
+	<!--  Mixins -->
+	<!--  Pen Title -->
+	<div class="pen-title">
+		<h1>SmartPlace</h1>
+	</div>
+	<div class="container">
+		<div class="card">
+			<h1 class="title">Registrar Usuário</h1>
+			<h:form>
+				<div align="center">
+					<h:outputLabel for="login" value="Login: " />
+					<p:inputText id="login" value="#{userMb.usuario.login}" />
+				</div>
+				<br />
+				<div align="center">
+					<h:outputLabel for="password" value="Senha: " />
+					<p:password id="pasword" value="#{userMb.usuario.password}" feedback="true" />
+					
+				</div>
+				<br />
+				<div align="center">
+					<h:outputLabel for="name" value="Nome: " />
+					<p:inputText id="name" value="#{userMb.usuario.name}" />
+				</div>
+				<br />
+				<div align="center">
+					<h:outputLabel for="email" value="Email: " />
+					<p:inputText id="email" value="#{userMb.usuario.email}" />
+				</div>
+
+				<br />
+				<div align="center">
+					<h:outputLabel for="userType" value="Tipo de Usuário: " />
+					<h:selectOneMenu id="userType" value="#{userMb.selectedRole}"
+						editable="false" update="">
+						<f:selectItems value="#{userMb.userRoles}" />
+					</h:selectOneMenu>
+				</div>
+				<br />
+
+
+				<div align="center">
+					<p:commandButton styleClass="button-container" value="Salvar"
+						id="btSave" actionListener="#{userMb.saveUser}" />
+
+				</div>
+
+
+			</h:form>
+		</div>
+
+
+	</div>
+	<script
+		src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"
+		type="text/javascript" xml:space="preserve"></script>
+	<script src="scripts/index.js" type="text/javascript"
+		xml:space="preserve"></script>
+</h:body>
+</html>

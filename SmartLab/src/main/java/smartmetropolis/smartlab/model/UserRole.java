@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-@Entity
+@Entity(name="userRole")
 public class UserRole {
 
 	@Id
@@ -15,6 +15,8 @@ public class UserRole {
 	private String role;
 	@OneToOne
 	private User user;
+	
+	public static String ADMININISTRATOR = "Administrador", SUPPORT = "Suporte", PROFESSOR = "Professor";
 
 	public Long getId() {
 		return id;
@@ -39,5 +41,12 @@ public class UserRole {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	@Override
+	public String toString() {
+		return "UserRole [id=" + id + ", role=" + role + "]";
+	}
+	
+	
 
 }
