@@ -1,8 +1,10 @@
 package smartmetropolis.smartlab.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity(name="userRole")
@@ -14,6 +16,7 @@ public class UserRole {
 
 	private String role;
 	@OneToOne
+	@JoinColumn(name="user_login")
 	private User user;
 	
 	public static String ADMININISTRATOR = "Administrador", SUPPORT = "Suporte", PROFESSOR = "Professor";

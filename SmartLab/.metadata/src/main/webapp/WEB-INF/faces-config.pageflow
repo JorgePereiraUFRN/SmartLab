@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14927192380510" configfile="/SmartLab/src/main/webapp/WEB-INF/faces-config.xml">
   <nodes xsi:type="pageflow:PFPage" name="pages/public/index.xhtml" x="122" y="178" id="pf14927192971933" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" path="/pages/public/index.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="562" id="pf149298214269321" path="*"/>
-  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" x="122" y="946" id="pf149299449979133" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf149299548637644 pf149299548637645" path="/login.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="loginError.xhtml" id="pf149299548637646" referenceLink="//@navigationRule.0/@navigationCase.1/@toViewId|" inlinks="pf149299548637644" path="/loginError.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="Home.xhtml" id="pf149299548637647" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf149299548637645" path="/Home.xhtml"/>
-  <links id="pf149299548637644" target="pf149299548637646" source="pf149299449979133" outcome="errorLogin"/>
-  <links id="pf149299548637645" target="pf149299548637647" source="pf149299449979133" outcome="home" fromaction="#{userMb.logIn}"/>
+  <nodes xsi:type="pageflow:PFPage" name="*" id="pf149300230862148" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf149300230862149 pf149300230862150" path="/*"/>
+  <nodes xsi:type="pageflow:PFPage" name="Home.xhtml" id="pf149300230862151" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf149300230862149" path="/Home.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="loginError.xhtml" id="pf149300230862152" referenceLink="//@navigationRule.0/@navigationCase.1/@toViewId|" inlinks="pf149300230862150" path="/loginError.xhtml"/>
+  <links id="pf149300230862149" target="pf149300230862151" source="pf149300230862148" outcome="home" fromaction="#{userMb.logIn}"/>
+  <links id="pf149300230862150" target="pf149300230862152" source="pf149300230862148" outcome="errorLogin"/>
 </pageflow:Pageflow>

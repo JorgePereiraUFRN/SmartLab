@@ -7,7 +7,7 @@
     
 	<navigation-rule>
 	
-		<from-view-id>/login.xhtml</from-view-id>
+		<from-view-id>/*</from-view-id>
 		
 		<navigation-case>
 			<from-action>#{userMb.logIn}</from-action>

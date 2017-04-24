@@ -21,11 +21,18 @@ import smartmetropolis.smartlab.model.UserRole;
 @ManagedBean
 public class UserMb implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private User usuario;
 	
 	private static  UserController USER_CONTROLLER;
 	
 	private String selectedRole;
+	
+	private boolean loged = false;
 
 	private Map<String, String> userRoles = new HashMap<String, String>();
 
@@ -40,10 +47,8 @@ public class UserMb implements Serializable{
 		userRoles.put(UserRole.SUPPORT, UserRole.SUPPORT);
 	}
 
-	public void saveUser() {
+	public String saveUser() {
 
-		
-		
 		UserRole userRole = new UserRole();
 		userRole.setRole(selectedRole);
 		userRole.setUser(usuario);
@@ -66,6 +71,8 @@ public class UserMb implements Serializable{
 		
 		usuario = new User();
 		
+		return "home";
+		
 	}
 	
 	
@@ -75,6 +82,7 @@ public class UserMb implements Serializable{
 		try {
 			request.login(usuario.getLogin(), usuario.getPassword());
 			System.out.println("logado!");
+			loged = true;
 			return "home";
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(
@@ -84,6 +92,27 @@ public class UserMb implements Serializable{
 			return "errorLogin";
 		}
 		
+
+	}
+	
+	private HttpServletRequest getRequest() {
+		return (HttpServletRequest) FacesContext.getCurrentInstance()
+				.getExternalContext().getRequest();
+	}
+
+	
+	public boolean isProfessor() {
+		return getRequest().isUserInRole("Professor");
+
+	}
+
+	public boolean isAdminitrator() {
+		return getRequest().isUserInRole("Administrador");
+
+	}
+	
+	public boolean isSupport() {
+		return getRequest().isUserInRole("Suporte");
 
 	}
 
@@ -109,6 +138,14 @@ public class UserMb implements Serializable{
 
 	public void setSelectedRole(String selectedRole) {
 		this.selectedRole = selectedRole;
+	}
+
+	public boolean isLoged() {
+		return loged;
+	}
+
+	public void setLoged(boolean loged) {
+		this.loged = loged;
 	}
 
 	

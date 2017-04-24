@@ -49,36 +49,45 @@
 		</div>
 
 	</div>
+	
+	<ui:fragment rendered="#{userMb.loged}">
 
 	<div class="container-menu">
-		<div class="card">
+		<div class="card" >
 
 			<ul class="sidebar-nav">
-				<li class="sidebar-brand">Locais</li>
-				<li><h:link value="Prédios" outcome="/pages/Admin/Local.xhtml" /></li>
+			<ui:fragment rendered="#{userMb.adminitrator}">
+				<li class="sidebar-brand">Prédios</li>
+				<li><h:link value="Prédios" outcome="/pages/Admin/Local.xhtml"  /></li>
 				<li><h:link value="Salas" outcome="/pages/Admin/Room.xhtml" /></li>
-
+			
+			</ui:fragment>
+			
+			<ui:fragment rendered="#{userMb.adminitrator}">
 				<li class="sidebar-brand">Dispositivos</li>
-				<li><h:link value="Sensores" outcome="/pages/Admin/Sensors.xhtml" /></li>
-				<li><h:link value="Ar-condicionado" outcome="/pages/Admin/AirConditioner.xhtml" /></li>
-				
+				<li><h:link value="Sensores" outcome="/pages/Admin/Sensors.xhtml"  /></li>
+				<li><h:link value="Ar-condicionado" outcome="/pages/Admin/AirConditioner.xhtml"  /></li>
+			</ui:fragment>	
 
+			<ui:fragment rendered="#{userMb.adminitrator}">
 				<li class="sidebar-brand">Medições</li>
 				<li><h:link value="Consultar Medições" outcome="/pages/Admin/Measurements.xhtml" /></li>
-				<li><h:link value="Historico do Ar-condicionado" outcome="/pages/Admin/AirConditionerHistorical.xhtml" /></li>
-				<li><h:link value="Graficos" outcome="/pages/Admin/generateGraph.xhtml" /></li>
-			
+				<li><h:link value="Historico do Ar-condicionado" outcome="/pages/Admin/AirConditionerHistorical.xhtml"/></li>
+				<li><h:link value="Graficos" outcome="/pages/Admin/generateGraph.xhtml"/></li>
+			</ui:fragment>
 
+
+			<ui:fragment rendered="#{userMb.support}">
 				<li class="sidebar-brand">Solicitações</li>
 				<li><h:link value="Realizar Solicitações" outcome="/pages/Support/Solicitation.xhtml" /></li>
-				<li><h:link value="Status das Solicitações" outcome="/pages/Support/SolicitationStatus.xhtml" /></li>
-				<li><h:link value="Consultar Recursos" outcome="/pages/Support/Resources.xhtml" /></li>
-				
+				<li><h:link value="Status das Solicitações" outcome="/pages/Support/SolicitationStatus.xhtml"/></li>
+				<li><h:link value="Consultar Recursos" outcome="/pages/Support/Resources.xhtml"  /></li>
+			</ui:fragment>	
 
 			</ul>
 		</div>
 	</div>
-
+</ui:fragment>
 	<div class="container-main">
 		<ui:insert name="centro">Corpo</ui:insert>
 	</div>
