@@ -85,10 +85,10 @@ public class UserMb implements Serializable{
 			loged = true;
 			return "home";
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(
+			/*FacesContext.getCurrentInstance().addMessage(
 					"formLogin",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro",
-							"Login ou senha inválidos"));
+							"Login ou senha inválidos"));*/
 			return "errorLogin";
 		}
 		
