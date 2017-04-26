@@ -12,20 +12,20 @@
 		<navigation-case>
 			<from-action>#{userMb.logIn}</from-action>
 			<from-outcome>home</from-outcome>
-			<to-view-id>/Home.xhtml</to-view-id>
+			<to-view-id>/pages/Public/Home.xhtml</to-view-id>
 		</navigation-case>
 		
 		
 		<navigation-case>
 			<from-action>#{userMb.saveUser}</from-action>
 			<from-outcome>home</from-outcome>
-			<to-view-id>/Home.xhtml</to-view-id>
+			<to-view-id>/pages/Public/Home.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
 			<from-action>#{userMb.logIn}</from-action>
 			<from-outcome>errorLogin</from-outcome>
-			<to-view-id>/loginError.xhtml</to-view-id>
+			<to-view-id>/pages/Public/loginError.xhtml</to-view-id>
 		</navigation-case>
 
 

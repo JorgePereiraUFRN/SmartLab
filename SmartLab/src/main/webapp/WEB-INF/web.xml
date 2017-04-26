@@ -6,7 +6,7 @@
 	<display-name>SmartLab</display-name>
 
 	<welcome-file-list>
-		<welcome-file>Home.xhtml</welcome-file>
+		<welcome-file>pages/Public/Home.xhtml</welcome-file>
 	</welcome-file-list>
 
 	<servlet>
@@ -24,15 +24,15 @@
 	<!-- Error pages -->
 	<error-page>
 		<error-code>400</error-code>
-		<location>/DefaultErrorPage.xhtml</location>
+		<location>/pages/Public/DefaultErrorPage.xhtml</location>
 	</error-page>
 	<error-page>
 		<error-code>404</error-code>
-		<location>/DefaultErrorPage.xhtml</location>
+		<location>/pages/Public//DefaultErrorPage.xhtml</location>
 	</error-page>
 	<error-page>
 		<error-code>500</error-code>
-		<location>/DefaultErrorPage.xhtml</location>
+		<location>/pages/Public//DefaultErrorPage.xhtml</location>
 	</error-page>
 	
 	
@@ -116,7 +116,7 @@
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Restricted Area - Suporte Only</web-resource-name>
-			<url-pattern>/pages/support/*</url-pattern>
+			<url-pattern>/pages/Support/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>suporte</role-name>

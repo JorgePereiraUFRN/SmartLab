@@ -1,9 +1,13 @@
 package smartmetropolis.smartlab.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity(name="smartplaceUser")
@@ -17,6 +21,9 @@ public class User {
 	private String email;
 	@OneToOne(mappedBy="user", cascade = CascadeType.ALL)
 	private UserRole role;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Solicitation> solicitations = new ArrayList<Solicitation>();
 	
 
 	public User() {
