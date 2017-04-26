@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:decorate template="/WEB-INF/templates/Template.xhtml">
+	<ui:define name="centro">
+
+		<p:growl id="mensagem" showDetail="true" autoUpdate="true"
+			closable="true" />
+
+		<h:form id="formLocal">
+			<div class="row">
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="localName" value="Nome do Setor ou Predio:" />
+						<h:inputText styleClass="form-control" id="localN"
+							value="#{localB.local.localName}" />
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="" value="Sala/Lab:" />
+						<h:inputText styleClass="form-control" id="localLat"
+							value="#{localB.local.latitude}" />
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="local" value="Recurso: "/>
+						<p:selectOneMenu id="local" value="#{measurementB.localName}" editable="false" update="">
+							<p:ajax update="" listener="#{measurementB.initRoomsMap}" />
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems value="#{measurementB.localsMap}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+			</div>
+			<div>
+				<h:commandButton action="#{localB.saveLocal}"
+					class="button-container" value="Consultar" update="tabela" />
+			</div>
+		</h:form>
+
+		<br></br>
+		<h:dataTable id="tabela" value="#{localB.locals}" var="item"
+			styleClass="table table-hover" headerClass="order-table-header"
+			rowClasses="order-table-odd-row,order-table-even-row">
+
+			<h:column>
+				<f:facet name="header">Predio</f:facet>
+    				#{item.localName}
+    			</h:column>
+
+			<h:column>
+				<f:facet name="header">Sala</f:facet>
+    				#{item.latitude}
+    			</h:column>
+
+			<h:column>
+				<f:facet name="header">Recurso</f:facet>
+    				#{item.longitude}
+    			</h:column>
+
+		</h:dataTable>
+
+		<script type="text/javascript">
+			function hideOrShow(show) {
+				// Get the panel using its ID
+				var obj = document.getElementById("myForm:myPanel");
+				if (show) {
+					obj.style.display = "block";
+				} else {
+					obj.style.display = "none";
+				}
+			}
+		</script>
+
+
+		
+	</ui:define>
+</ui:decorate>
+
+</html>

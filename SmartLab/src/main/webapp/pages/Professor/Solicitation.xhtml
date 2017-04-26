@@ -8,8 +8,8 @@
 
 <ui:decorate template="/WEB-INF/templates/Template.xhtml">
 	<ui:define name="centro">
-	
-	<h:form id="formLocal">
+
+		<h:form id="formLocal">
 			<div class="row">
 				<div class="col-xs-4">
 					<div class="form-group">
@@ -32,6 +32,8 @@
 					</div>
 				</div>
 				<div class="col-xs-4">
+				
+				<!-- COLOCAR A DATA AQUI AO INVÉS DO SENSOR -->
 					<div class="form-group">
 						<h:outputLabel for="sensor" value="Sensor: "/>
 						<p:selectOneMenu id="sensor" value="#{measurementB.sensorId}" editable="false" update="">
@@ -44,50 +46,33 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-xs-6">
-					<p:outputLabel for="datetimeInitial" value="Data Inicial:" />
-					<p:calendar id="datetimeInitial" value="#{measurementB.initialDate}" pattern="dd/MM/yyyy HH:mm:ss">
-						<p:ajax update="tabela" listener="#{measurementB.listMeasurements}" />
-					</p:calendar>
-				</div>
-				<div class="col-xs-6">
-					<p:outputLabel for="datetimeFinal" value="Data Final:" />
+			<!-- QUANDO RETIRAR A DATA, MUDAR COL-XS-4 PARA COL-XS-6 -->
+			<!-- MUDAR OS ID, LISTENER, VALUE,FOR, TUDO QUE NÃO FOR RELACIONADO -->
+				<div class="col-xs-4">
+					<p:outputLabel for="datetimeFinal" value="Data:" />
 					<p:calendar id="datetimeFinal" value="#{measurementB.finalDate}" pattern="dd/MM/yyyy HH:mm:ss">
 						<p:ajax update="tabela" listener="#{measurementB.listMeasurements}" />
 					</p:calendar>
 				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="local" value="Recurso: "/>
+						<p:selectOneMenu id="local" value="#{measurementB.localName}" editable="false" update="">
+							<p:ajax update="room" listener="#{measurementB.initRoomsMap}" />
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems value="#{measurementB.localsMap}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="localName" value="Descrição:" />
+						<h:inputText styleClass="form-control" id="localN"
+							value="#{localB.local.localName}" />
+					</div>
+				</div>
 			</div>
 		</h:form>
-		
-		<p:dialog header="Modal Dialog" widgetVar="dlg2" modal="true"
-			height="350px" width="1000px">
-			<p:chart id="graph" type="line" model="#{measurementB.lineModel}"
-				style="height:300px;" />
-		</p:dialog>
-
-		<br></br>
-		<h:dataTable id="tabela" value="#{measurementB.measurements}" var="item"
-			styleClass="table table-hover" headerClass="order-table-header"
-			rowClasses="order-table-odd-row,order-table-even-row">
-
-			<h:column>
-				<f:facet name="header">Sensor</f:facet>
-    				#{item.sensorId}
-    			</h:column>
-
-			<h:column>
-				<f:facet name="header">Valor</f:facet>
-    				#{item.value}
-    			</h:column>
-
-			<h:column>
-				<f:facet name="header">Data/Hora</f:facet>
-    				#{item.time.toLocaleString()}
-    				
-    			</h:column>
-		</h:dataTable>
-		
-		
 	</ui:define>
 </ui:decorate>
 

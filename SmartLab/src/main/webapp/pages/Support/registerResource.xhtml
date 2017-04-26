@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:decorate template="/WEB-INF/templates/Template.xhtml">
+	<ui:define name="centro">
+
+		<p:growl id="mensagem" showDetail="true" autoUpdate="true"
+			closable="true" />
+
+		<h:form id="formLocal">
+			<div class="row">
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="localName" value="Nome do Setor ou Predio:" />
+						<h:inputText styleClass="form-control" id="localN"
+							value="#{localB.local.localName}" />
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="" value="Sala/Lab:" />
+						<h:inputText styleClass="form-control" id="localLat"
+							value="#{localB.local.latitude}" />
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="local" value="Categoria do Recurso: "/>
+						<p:selectOneMenu id="sensor" value="#{measurementB.sensorId}" editable="false" update="">
+							<p:ajax  listener="#{measurementB.listMeasurements}" />
+							<f:selectItem itemLabel="Select One" itemValue=""
+								style="width: 30%;" />
+							<f:selectItems value="#{measurementB.sensorsMap}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="localName" value="Recurso:" />
+						<h:inputText styleClass="form-control" id="sensorDescription"
+							value="#{localB.local.localName}" />
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="" value="Descrição:" />
+						<h:inputText styleClass="form-control" id="localLong"
+							value="#{localB.local.latitude}" />
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<p:outputLabel for="datetimeInitial" value="Data da Instalação:" />
+					<p:calendar id="datetimeInitial" value="#{measurementB.initialDate}" pattern="dd/MM/yyyy HH:mm:ss">
+						<p:ajax listener="#{measurementB.listMeasurements}" />
+					</p:calendar>
+				</div>
+			</div>
+			<div>
+				<h:commandButton action="#{localB.saveLocal}"
+					class="button-container" value="Salvar" />
+			</div>
+		</h:form>
+
+		
+	</ui:define>
+</ui:decorate>
+
+</html>
