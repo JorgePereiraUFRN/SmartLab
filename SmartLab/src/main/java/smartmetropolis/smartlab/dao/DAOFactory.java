@@ -40,4 +40,6 @@ public abstract class DAOFactory {
     public abstract UserDaoInterface getUserDao();
     
     public abstract AirConditionerStateDaoInterface getAirStateDao();
+    
+    public abstract ResourceDaoInterface getResourceDao();
 }

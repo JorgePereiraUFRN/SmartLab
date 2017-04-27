@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context displayName="reteste" reloadable="true">
-	<Resource name="jdbc/stripessec" auth="Container" type="javax.sql.DataSource"
+	<Resource name="jdbc/smartplaceDatasource" auth="Container" type="javax.sql.DataSource"
 		maxActive="10" maxIdle="3" username="postgres"
 		password="1234" driverClassName="org.postgresql.Driver"
 		url="jdbc:postgresql://localhost:5432/smartplace" />
 
 	<Realm className="org.apache.catalina.realm.DataSourceRealm"
-		debug="99" dataSourceName="jdbc/stripessec" localDataSource="true"
+		debug="99" dataSourceName="jdbc/smartplaceDatasource" localDataSource="true"
 		userTable="smartplaceuser" userNameCol="user_login" userCredCol="password"
 		userRoleTable="userrole" roleNameCol="role" />
 

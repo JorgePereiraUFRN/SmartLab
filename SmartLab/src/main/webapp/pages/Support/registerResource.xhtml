@@ -12,30 +12,36 @@
 		<p:growl id="mensagem" showDetail="true" autoUpdate="true"
 			closable="true" />
 
-		<h:form id="formLocal">
+		<h:form id="formularioResource">
 			<div class="row">
 				<div class="col-xs-4">
 					<div class="form-group">
-						<h:outputLabel for="localName" value="Nome do Setor ou Predio:" />
-						<h:inputText styleClass="form-control" id="localN"
-							value="#{localB.local.localName}" />
+						<h:outputLabel for="local" value="Predio: "/>
+						<p:selectOneMenu id="local" value="#{resourceMbean.building}" editable="false" update="">
+							<p:ajax update="sala" listener="#{resourceMbean.initRoomsMap}" />
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems value="#{resourceMbean.buildigsMap}" />
+						</p:selectOneMenu>
 					</div>
 				</div>
+				
 				<div class="col-xs-4">
 					<div class="form-group">
-						<h:outputLabel for="" value="Sala/Lab:" />
-						<h:inputText styleClass="form-control" id="localLat"
-							value="#{localB.local.latitude}" />
+						<h:outputLabel for="sala" value="Sala: "/>
+						<p:selectOneMenu id="sala" value="#{resourceMbean.room}" editable="false" update="">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems value="#{resourceMbean.roomsMap}" />
+						</p:selectOneMenu>
 					</div>
 				</div>
+				
 				<div class="col-xs-4">
 					<div class="form-group">
-						<h:outputLabel for="local" value="Categoria do Recurso: "/>
-						<p:selectOneMenu id="sensor" value="#{measurementB.sensorId}" editable="false" update="">
-							<p:ajax  listener="#{measurementB.listMeasurements}" />
+						<h:outputLabel for="resourcecategory" value="Categoria do Recurso: "/>
+						<p:selectOneMenu id="resourcecategory" value="#{resourceMbean.resourceType}" editable="false" update="">
 							<f:selectItem itemLabel="Select One" itemValue=""
 								style="width: 30%;" />
-							<f:selectItems value="#{measurementB.sensorsMap}" />
+							<f:selectItems value="#{resourceMbean.resourceTypeMap}" />
 						</p:selectOneMenu>
 					</div>
 				</div>
@@ -43,27 +49,26 @@
 			<div class="row">
 				<div class="col-xs-4">
 					<div class="form-group">
-						<h:outputLabel for="localName" value="Recurso:" />
-						<h:inputText styleClass="form-control" id="sensorDescription"
-							value="#{localB.local.localName}" />
+						<h:outputLabel for="resourcename" value="Recurso:" />
+						<h:inputText styleClass="form-control" id="resourcename"
+							value="#{resourceMbean.resource.resourceName}" />
 					</div>
 				</div>
 				<div class="col-xs-4">
 					<div class="form-group">
-						<h:outputLabel for="" value="Descrição:" />
-						<h:inputText styleClass="form-control" id="localLong"
-							value="#{localB.local.latitude}" />
+						<h:outputLabel for="description" value="Descrição:" />
+						<h:inputText styleClass="form-control" id="description"
+							value="#{resourceMbean.resource.descrition}" />
 					</div>
 				</div>
 				<div class="col-xs-4">
-					<p:outputLabel for="datetimeInitial" value="Data da Instalação:" />
-					<p:calendar id="datetimeInitial" value="#{measurementB.initialDate}" pattern="dd/MM/yyyy HH:mm:ss">
-						<p:ajax listener="#{measurementB.listMeasurements}" />
+					<p:outputLabel for="date" value="Data da Instalação:" />
+					<p:calendar id="date" value="#{resourceMbean.resource.instalationDate}" pattern="dd/MM/yyyy HH:mm:ss">
 					</p:calendar>
 				</div>
 			</div>
 			<div>
-				<h:commandButton action="#{localB.saveLocal}"
+				<h:commandButton action="#{resourceMbean.save}"
 					class="button-container" value="Salvar" />
 			</div>
 		</h:form>

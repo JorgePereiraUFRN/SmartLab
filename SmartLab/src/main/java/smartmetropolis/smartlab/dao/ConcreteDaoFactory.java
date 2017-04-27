@@ -47,4 +47,9 @@ public class ConcreteDaoFactory extends DAOFactory {
 		return (AirConditionerStateDao) instantiateDAO(AirConditionerStateDao.class);
 	}
 
+	@Override
+	public ResourceDaoInterface getResourceDao() {
+		return (ResourceDaoInterface) instantiateDAO(ResourceDao.class);
+	}
+
 }

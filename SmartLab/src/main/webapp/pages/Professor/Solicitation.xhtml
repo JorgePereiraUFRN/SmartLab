@@ -9,7 +9,7 @@
 <ui:decorate template="/WEB-INF/templates/Template.xhtml">
 	<ui:define name="centro">
 
-		<h:form id="formLocal">
+		<h:form id="formSolicitation">
 			<div class="row">
 				<div class="col-xs-4">
 					<div class="form-group">
@@ -25,39 +25,28 @@
 					<div class="form-group">
 						<h:outputLabel for="room" value="Sala: "/>
 						<p:selectOneMenu id="room" value="#{measurementB.roomName}"  editable="false" update="">
-							<p:ajax update="sensor" listener="#{measurementB.initSensorsMap}" />
+							<p:ajax  listener="#{measurementB.initSensorsMap}" />
 							<f:selectItem itemLabel="Select One" itemValue="" />
 							<f:selectItems value="#{measurementB.roomsMap}" />
 						</p:selectOneMenu>
 					</div>
 				</div>
-				<div class="col-xs-4">
+							
 				
-				<!-- COLOCAR A DATA AQUI AO INVÉS DO SENSOR -->
-					<div class="form-group">
-						<h:outputLabel for="sensor" value="Sensor: "/>
-						<p:selectOneMenu id="sensor" value="#{measurementB.sensorId}" editable="false" update="">
-							<p:ajax update="tabela" listener="#{measurementB.listMeasurements}" />
-							<f:selectItem itemLabel="Select One" itemValue=""
-								style="width: 30%;" />
-							<f:selectItems value="#{measurementB.sensorsMap}" />
-						</p:selectOneMenu>
-					</div>
-				</div>
 			</div>
 			<div class="row">
 			<!-- QUANDO RETIRAR A DATA, MUDAR COL-XS-4 PARA COL-XS-6 -->
 			<!-- MUDAR OS ID, LISTENER, VALUE,FOR, TUDO QUE NÃO FOR RELACIONADO -->
 				<div class="col-xs-4">
-					<p:outputLabel for="datetimeFinal" value="Data:" />
+					<p:outputLabel for="datetimeFinal" value="Prazo:" />
 					<p:calendar id="datetimeFinal" value="#{measurementB.finalDate}" pattern="dd/MM/yyyy HH:mm:ss">
-						<p:ajax update="tabela" listener="#{measurementB.listMeasurements}" />
+						
 					</p:calendar>
 				</div>
 				<div class="col-xs-4">
 					<div class="form-group">
-						<h:outputLabel for="local" value="Recurso: "/>
-						<p:selectOneMenu id="local" value="#{measurementB.localName}" editable="false" update="">
+						<h:outputLabel for="resource" value="Recurso: "/>
+						<p:selectOneMenu id="resource" value="#{measurementB.localName}" editable="false" update="">
 							<p:ajax update="room" listener="#{measurementB.initRoomsMap}" />
 							<f:selectItem itemLabel="Select One" itemValue="" />
 							<f:selectItems value="#{measurementB.localsMap}" />

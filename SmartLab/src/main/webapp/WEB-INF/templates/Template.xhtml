@@ -77,11 +77,22 @@
 			</ui:fragment>
 
 
+			<ui:fragment rendered="#{userMb.professor}">
+				<li class="sidebar-brand">Solicitações</li>
+				<li><h:link value="Realizar Solicitações" outcome="/pages/Professor/Solicitation.xhtml" /></li>
+				<li><h:link value="Status das Solicitações" outcome="/pages/Professor/SolicitationStatus.xhtml"/></li>
+				<li><h:link value="Consultar Recursos" outcome="/pages/Professor/Resources.xhtml"  /></li>
+			</ui:fragment>	
+
+			<ui:fragment rendered="#{userMb.support}">
+				<li class="sidebar-brand">Recursos</li>
+				<li><h:link value="Registrar Recursos" outcome="/pages/Support/registerResource.xhtml" /></li>
+				<li><h:link value="Consultar Recursos" outcome="/pages/Support/ResourcesSupport.xhtml"/></li>
+			</ui:fragment>	
+			
 			<ui:fragment rendered="#{userMb.support}">
 				<li class="sidebar-brand">Solicitações</li>
-				<li><h:link value="Realizar Solicitações" outcome="/pages/Support/Solicitation.xhtml" /></li>
-				<li><h:link value="Status das Solicitações" outcome="/pages/Support/SolicitationStatus.xhtml"/></li>
-				<li><h:link value="Consultar Recursos" outcome="/pages/Support/Resources.xhtml"  /></li>
+				<li><h:link value="Visualizar Solicitações" outcome="/pages/Support/viewRequest.xhtml" /></li>
 			</ui:fragment>	
 
 			</ul>

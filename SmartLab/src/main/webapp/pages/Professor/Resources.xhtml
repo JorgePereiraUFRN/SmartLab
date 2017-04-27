@@ -12,26 +12,26 @@
 		<p:growl id="mensagem" showDetail="true" autoUpdate="true"
 			closable="true" />
 
-		<h:form id="formLocal">
+		<h:form id="formResources">
 			<div class="row">
 				<div class="col-xs-4">
 					<div class="form-group">
 						<h:outputLabel for="localName" value="Nome do Setor ou Predio:" />
 						<h:inputText styleClass="form-control" id="localN"
-							value="#{localB.local.localName}" />
+							value="" />
 					</div>
 				</div>
 				<div class="col-xs-4">
 					<div class="form-group">
 						<h:outputLabel for="" value="Sala/Lab:" />
-						<h:inputText styleClass="form-control" id="localLat"
-							value="#{localB.local.latitude}" />
+						<h:inputText styleClass="form-control" id="sala"
+							value="" />
 					</div>
 				</div>
 				<div class="col-xs-4">
 					<div class="form-group">
-						<h:outputLabel for="local" value="Recurso: "/>
-						<p:selectOneMenu id="local" value="#{measurementB.localName}" editable="false" update="">
+						<h:outputLabel for="recurso" value="Recurso: "/>
+						<p:selectOneMenu id="recurso" value="" editable="false" update="">
 							<p:ajax update="" listener="#{measurementB.initRoomsMap}" />
 							<f:selectItem itemLabel="Select One" itemValue="" />
 							<f:selectItems value="#{measurementB.localsMap}" />
