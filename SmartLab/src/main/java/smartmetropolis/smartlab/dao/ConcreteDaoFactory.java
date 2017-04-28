@@ -52,4 +52,9 @@ public class ConcreteDaoFactory extends DAOFactory {
 		return (ResourceDaoInterface) instantiateDAO(ResourceDao.class);
 	}
 
+	@Override
+	public SolicitationDaoInterface getSolicitationDao() {
+		return (SolicitationDaoInterface) instantiateDAO(SolicitationDao.class);
+	}
+
 }

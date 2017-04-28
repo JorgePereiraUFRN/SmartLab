@@ -58,14 +58,25 @@ public class UserMb implements Serializable{
 		try {
 			USER_CONTROLLER.saveUser(usuario);
 			
+			logIn();
+			
 		} catch (UserAlreadyExistsException e) {
-			// TODO Auto-generated catch block
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro",
+						e.getMessage()));
 			e.printStackTrace();
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro",
+						e.getMessage()));
 			e.printStackTrace();
 		} catch (validateDataException e) {
-			// TODO Auto-generated catch block
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro",
+						e.getMessage()));
 			e.printStackTrace();
 		}
 		
@@ -81,14 +92,13 @@ public class UserMb implements Serializable{
 				.getCurrentInstance().getExternalContext().getRequest();
 		try {
 			request.login(usuario.getLogin(), usuario.getPassword());
-			System.out.println("logado!");
+			
+			usuario = USER_CONTROLLER.findUser(usuario.getLogin());
+			
 			loged = true;
 			return "home";
 		} catch (Exception e) {
-			/*FacesContext.getCurrentInstance().addMessage(
-					"formLogin",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro",
-							"Login ou senha inválidos"));*/
+			
 			return "errorLogin";
 		}
 		

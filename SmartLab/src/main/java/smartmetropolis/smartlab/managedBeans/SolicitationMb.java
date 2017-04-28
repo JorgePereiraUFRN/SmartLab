@@ -1,49 +1,52 @@
 package smartmetropolis.smartlab.managedBeans;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import smartmetropolis.smartlab.controller.LocalController;
-import smartmetropolis.smartlab.controller.ResourceController;
 import smartmetropolis.smartlab.controller.RoomController;
+import smartmetropolis.smartlab.controller.SolicitationController;
 import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.exceptions.validateDataException;
 import smartmetropolis.smartlab.model.Local;
-import smartmetropolis.smartlab.model.Resource;
 import smartmetropolis.smartlab.model.ResourceType;
 import smartmetropolis.smartlab.model.Room;
-
+import smartmetropolis.smartlab.model.Solicitation;
+import smartmetropolis.smartlab.model.SolicitationStatus;
 
 @ManagedBean
 @SessionScoped
-public class ResourceMbean {
+public class SolicitationMb {
 
-	private Resource resource;
+	private Solicitation solicitation;
+	private SolicitationController solicitationController;
+	@ManagedProperty("#{userMb}")
+	private UserMb userMb;
+	private String selectedReource;
+
+	private LocalController localController;
+	private RoomController roomController;
+
 	private String building;
-	private String room;
-	private String resourceType;
+
 	private Map<String, String> buildigsMap;
 	private Map<String, String> roomsMap;
 	private Map<String, String> resourceTypeMap;
-	private List<Resource> resources;
 
-	private LocalController localController;
-	private ResourceController resourceController;
-	private RoomController roomController;
-	
-	
+	private List<Solicitation> solicitations;
 
-	public ResourceMbean() {
-
-		resource = new Resource();
+	public SolicitationMb() {
+		solicitation = new Solicitation();
+		solicitationController = SolicitationController.getInstance();
 		localController = LocalController.getInstance();
-		resourceController = ResourceController.getInstance();
 		roomController = RoomController.getInstance();
 
 		buildigsMap = new HashMap<String, String>();
@@ -52,6 +55,22 @@ public class ResourceMbean {
 
 		initBuildingsMap();
 		initResourcesTypeMap();
+
+	}
+
+	private void initResourcesTypeMap() {
+
+		resourceTypeMap.put(ResourceType.AirConditioner.toString(),
+				ResourceType.AirConditioner.toString());
+		resourceTypeMap.put(ResourceType.Compututer.toString(),
+				ResourceType.Compututer.toString());
+		resourceTypeMap.put(ResourceType.Sensor.toString(),
+				ResourceType.Sensor.toString());
+		resourceTypeMap.put(ResourceType.Software.toString(),
+				ResourceType.Software.toString());
+		resourceTypeMap.put(ResourceType.Other.toString(),
+				ResourceType.Other.toString());
+
 	}
 
 	private void initBuildingsMap() {
@@ -97,99 +116,62 @@ public class ResourceMbean {
 		}
 	}
 
-	private void initResourcesTypeMap() {
-
-		resourceTypeMap.put(ResourceType.AirConditioner.toString(),
-				ResourceType.AirConditioner.toString());
-		resourceTypeMap.put(ResourceType.Compututer.toString(),
-				ResourceType.Compututer.toString());
-		resourceTypeMap.put(ResourceType.Sensor.toString(),
-				ResourceType.Sensor.toString());
-		resourceTypeMap.put(ResourceType.Software.toString(),
-				ResourceType.Software.toString());
-		resourceTypeMap.put(ResourceType.Other.toString(),
-				ResourceType.Other.toString());
-
-	}
-
-	public String save() {
-
-		resource.setRoom(room);
-		resource.setResourceType(getSelectedResourceType());
+	public String saveSolicitation() {
 
 		try {
-			resourceController.saveResource(resource);
-		} catch (DAOException e) {
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR,
-							"Erro ao salvar dados: ", e.getMessage()));
 
-			e.printStackTrace();
+			solicitation.setLastUpdate(new Date());
+			solicitation.setOpenDate(new Date());
+			solicitation.setUser(userMb.getUsuario());
+			solicitation.setStatus(SolicitationStatus.Aguardando);
+			solicitation.setResource(getSelectedResourceType());
 
-			return null;
+			solicitationController.saveSolicitation(solicitation);
 
 		} catch (validateDataException e) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
-							"Dados invalidos: ", e.getMessage()));
-
+							"Dados inválidos: ", e.getMessage()));
 			e.printStackTrace();
 			return null;
-		}
-
-		resource = new Resource();
-
-		FacesContext.getCurrentInstance().addMessage(
-				null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso: ",
-						"Recursos salvo com suceso!"));
-
-		return null;
-
-	}
-
-	public String findResource() {
-
-		try {
-
-			if (getSelectedResourceType() != null) {
-
-				resources = resourceController.findResourcesByRoomAndResourceType(room,
-						getSelectedResourceType());
-			} else {
-				resources = resourceController.findResourcesByRoom(room);
-			}
 		} catch (DAOException e) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
-							"Erro ao consultar: ", e.getMessage()));
-
+							"Erro ao salvar dados: ", e.getMessage()));
+			e.printStackTrace();
+			return null;
 		}
 
-		return null;
+		solicitation = new Solicitation();
 
+		FacesContext.getCurrentInstance().addMessage(
+				null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso: ",
+						"Solicitação registrada com suceso!"));
+
+		return null;
 	}
 
 	private ResourceType getSelectedResourceType() {
 
-		if (resourceType.equalsIgnoreCase(ResourceType.AirConditioner
+		if (selectedReource.equalsIgnoreCase(ResourceType.AirConditioner
 				.toString())) {
 			return ResourceType.AirConditioner;
-		} else if (resourceType.equalsIgnoreCase(ResourceType.Compututer
+		} else if (selectedReource.equalsIgnoreCase(ResourceType.Compututer
 				.toString())) {
 
 			return ResourceType.Compututer;
-		} else if (resourceType.equalsIgnoreCase(ResourceType.Other.toString())) {
+		} else if (selectedReource.equalsIgnoreCase(ResourceType.Other
+				.toString())) {
 
 			return ResourceType.Other;
-		} else if (resourceType
-				.equalsIgnoreCase(ResourceType.Sensor.toString())) {
+		} else if (selectedReource.equalsIgnoreCase(ResourceType.Sensor
+				.toString())) {
 
 			return ResourceType.Sensor;
-		} else if (resourceType.equalsIgnoreCase(ResourceType.Software
+		} else if (selectedReource.equalsIgnoreCase(ResourceType.Software
 				.toString())) {
 
 			return ResourceType.Software;
@@ -198,16 +180,51 @@ public class ResourceMbean {
 		}
 	}
 
-	public void selectedRoom() {
-		System.out.println(room);
+	public String listSolicitationsByUser() {
+
+		try {
+			solicitations = solicitationController
+					.listSoliciationsByUser(userMb.getUsuario().getLogin());
+		} catch (DAOException e) {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Erro ao pesquisar dados: ", e.getMessage()));
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
-	public Resource getResource() {
-		return resource;
+	public String listSolicitations() {
+
+		try {
+			solicitations = solicitationController.findAll();
+		} catch (DAOException e) {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Erro ao pesquisar dados: ", e.getMessage()));
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
-	public void setResource(Resource resource) {
-		this.resource = resource;
+	public Solicitation getSolicitation() {
+		return solicitation;
+	}
+
+	public void setSolicitation(Solicitation solicitation) {
+		this.solicitation = solicitation;
+	}
+
+	public UserMb getUserMb() {
+		return userMb;
+	}
+
+	public void setUserMb(UserMb userMb) {
+		this.userMb = userMb;
 	}
 
 	public String getBuilding() {
@@ -234,20 +251,12 @@ public class ResourceMbean {
 		this.roomsMap = roomsMap;
 	}
 
-	public String getRoom() {
-		return room;
+	public String getSelectedReource() {
+		return selectedReource;
 	}
 
-	public void setRoom(String room) {
-		this.room = room;
-	}
-
-	public String getResourceType() {
-		return resourceType;
-	}
-
-	public void setResourceType(String resourceType) {
-		this.resourceType = resourceType;
+	public void setSelectedReource(String selectedReource) {
+		this.selectedReource = selectedReource;
 	}
 
 	public Map<String, String> getResourceTypeMap() {
@@ -258,15 +267,12 @@ public class ResourceMbean {
 		this.resourceTypeMap = resourceTypeMap;
 	}
 
-	public List<Resource> getResources() {
-		return resources;
+	public List<Solicitation> getSolicitations() {
+		return solicitations;
 	}
 
-	public void setResources(List<Resource> resources) {
-		this.resources = resources;
+	public void setSolicitations(List<Solicitation> solicitations) {
+		this.solicitations = solicitations;
 	}
-
-	
-	
 
 }

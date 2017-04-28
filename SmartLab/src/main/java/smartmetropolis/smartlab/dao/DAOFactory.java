@@ -36,10 +36,11 @@ public abstract class DAOFactory {
     
     public abstract LocalDaoInterface getLocalDao();
     
-    
     public abstract UserDaoInterface getUserDao();
     
     public abstract AirConditionerStateDaoInterface getAirStateDao();
     
     public abstract ResourceDaoInterface getResourceDao();
+    
+    public abstract SolicitationDaoInterface getSolicitationDao();
 }

@@ -14,55 +14,72 @@
 
 		<h:form id="formResources">
 			<div class="row">
+
+
 				<div class="col-xs-4">
 					<div class="form-group">
-						<h:outputLabel for="localName" value="Nome do Setor ou Predio:" />
-						<h:inputText styleClass="form-control" id="localN"
-							value="" />
-					</div>
-				</div>
-				<div class="col-xs-4">
-					<div class="form-group">
-						<h:outputLabel for="" value="Sala/Lab:" />
-						<h:inputText styleClass="form-control" id="sala"
-							value="" />
-					</div>
-				</div>
-				<div class="col-xs-4">
-					<div class="form-group">
-						<h:outputLabel for="recurso" value="Recurso: "/>
-						<p:selectOneMenu id="recurso" value="" editable="false" update="">
-							<p:ajax update="" listener="#{measurementB.initRoomsMap}" />
+						<h:outputLabel for="local" value="Predio: " />
+						<p:selectOneMenu id="local" value="#{resourceMbean.building}"
+							editable="false" update="">
+							<p:ajax update="sala" listener="#{resourceMbean.initRoomsMap}" />
 							<f:selectItem itemLabel="Select One" itemValue="" />
-							<f:selectItems value="#{measurementB.localsMap}" />
+							<f:selectItems value="#{resourceMbean.buildigsMap}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="sala" value="Sala: " />
+						<p:selectOneMenu id="sala" value="#{resourceMbean.room}"
+							editable="false" update="">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems value="#{resourceMbean.roomsMap}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="resourcecategory"
+							value="Categoria do Recurso: " />
+						<p:selectOneMenu id="resourcecategory"
+							value="#{resourceMbean.resourceType}" editable="false" update="">
+							<f:selectItem itemLabel="Todos os recursos" itemValue=""
+								style="width: 30%;" />
+							<f:selectItems value="#{resourceMbean.resourceTypeMap}" />
 						</p:selectOneMenu>
 					</div>
 				</div>
 			</div>
 			<div>
-				<h:commandButton action="#{localB.saveLocal}"
+				<h:commandButton action="#{resourceMbean.findResource}"
 					class="button-container" value="Consultar" update="tabela" />
 			</div>
 		</h:form>
 
 		<br></br>
-		<h:dataTable id="tabela" value="#{localB.locals}" var="item"
+		<h:dataTable id="tabela" value="#{resourceMbean.resources}" var="item"
 			styleClass="table table-hover" headerClass="order-table-header"
 			rowClasses="order-table-odd-row,order-table-even-row">
 
 			<h:column>
-				<f:facet name="header">Predio</f:facet>
-    				#{item.localName}
-    			</h:column>
-
-			<h:column>
 				<f:facet name="header">Sala</f:facet>
-    				#{item.latitude}
+    				#{item.room}
     			</h:column>
 
 			<h:column>
-				<f:facet name="header">Recurso</f:facet>
-    				#{item.longitude}
+				<f:facet name="header">Categoria</f:facet>
+    				#{item.resourceType}
+    			</h:column>
+
+			<h:column>
+				<f:facet name="header">Resurso</f:facet>
+    				#{item.resourceName}
+    			</h:column>
+			<h:column>
+				<f:facet name="header">Data Instlação</f:facet>
+    				#{item.instalationDate}
     			</h:column>
 
 		</h:dataTable>
@@ -80,7 +97,7 @@
 		</script>
 
 
-		
+
 	</ui:define>
 </ui:decorate>
 

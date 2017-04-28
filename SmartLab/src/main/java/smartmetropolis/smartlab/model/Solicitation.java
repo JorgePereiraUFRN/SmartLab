@@ -1,6 +1,8 @@
 package smartmetropolis.smartlab.model;
 
-import java.sql.Date;
+
+
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,13 +16,18 @@ public class Solicitation {
 	@GeneratedValue
 	private Long id;
 	private Date lastUpdate;
+	private Date openDate;
 	@ManyToOne
 	private User user;
 	private SolicitationStatus status;
 	private String description;
+	private Date deadline;
+	private String room;
+	private ResourceType resource;
+	private String observation;
 
 	public Solicitation() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Long getId() {
@@ -62,6 +69,58 @@ public class Solicitation {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public Date getOpenDate() {
+		return openDate;
+	}
+
+	public void setOpenDate(Date openDate) {
+		this.openDate = openDate;
+	}
+
+	public Date getDeadline() {
+		return deadline;
+	}
+
+	public void setDeadline(Date deadline) {
+		this.deadline = deadline;
+	}
+
+	public String getRoom() {
+		return room;
+	}
+
+	public void setRoom(String room) {
+		this.room = room;
+	}
+
+	public ResourceType getResource() {
+		return resource;
+	}
+
+	public void setResource(ResourceType resource) {
+		this.resource = resource;
+	}
+	
+	
+
+	public String getObservation() {
+		return observation;
+	}
+
+	public void setObservation(String observation) {
+		this.observation = observation;
+	}
+
+	@Override
+	public String toString() {
+		return "Solicitation [id=" + id + ", lastUpdate=" + lastUpdate
+				+ ", openDate=" + openDate + ", user=" + user + ", status="
+				+ status + ", description=" + description + ", deadline="
+				+ deadline + ", room=" + room + ", resource=" + resource
+				+ ", observation=" + observation + "]";
+	}
+
 	
 	
 

@@ -3,7 +3,7 @@ package smartmetropolis.smartlab.model;
 public enum SolicitationStatus {
 
 	
-	finalizado("Finalizado"), em_andamento("Em progresso"), aguardando("Aguardando verificação");
+	Finalizado("Finalizado"), Em_Progresso("Em progresso"), Aguardando("Aguardando verificação");
 
 	private final String value;
 

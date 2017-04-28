@@ -11,55 +11,58 @@
 
 		<h:form id="formSolicitation">
 			<div class="row">
+				
 				<div class="col-xs-4">
 					<div class="form-group">
 						<h:outputLabel for="local" value="Predio: "/>
-						<p:selectOneMenu id="local" value="#{measurementB.localName}" editable="false" update="">
-							<p:ajax update="room" listener="#{measurementB.initRoomsMap}" />
+						<p:selectOneMenu id="local" value="#{solicitationMb.building}" editable="false" update="">
+							<p:ajax update="room" listener="#{solicitationMb.initRoomsMap}" />
 							<f:selectItem itemLabel="Select One" itemValue="" />
-							<f:selectItems value="#{measurementB.localsMap}" />
+							<f:selectItems value="#{solicitationMb.buildigsMap}" />
 						</p:selectOneMenu>
 					</div>
 				</div>
+				
 				<div class="col-xs-4">
 					<div class="form-group">
 						<h:outputLabel for="room" value="Sala: "/>
-						<p:selectOneMenu id="room" value="#{measurementB.roomName}"  editable="false" update="">
-							<p:ajax  listener="#{measurementB.initSensorsMap}" />
+						<p:selectOneMenu id="room" value="#{solicitationMb.solicitation.room}"  editable="false">
 							<f:selectItem itemLabel="Select One" itemValue="" />
-							<f:selectItems value="#{measurementB.roomsMap}" />
+							<f:selectItems value="#{solicitationMb.roomsMap}" />
 						</p:selectOneMenu>
 					</div>
 				</div>
 							
-				
 			</div>
 			<div class="row">
 			<!-- QUANDO RETIRAR A DATA, MUDAR COL-XS-4 PARA COL-XS-6 -->
 			<!-- MUDAR OS ID, LISTENER, VALUE,FOR, TUDO QUE NÃO FOR RELACIONADO -->
 				<div class="col-xs-4">
-					<p:outputLabel for="datetimeFinal" value="Prazo:" />
-					<p:calendar id="datetimeFinal" value="#{measurementB.finalDate}" pattern="dd/MM/yyyy HH:mm:ss">
+					<p:outputLabel for="prazo" value="Prazo:" />
+					<p:calendar id="prazo" value="#{solicitationMb.solicitation.deadline}" pattern="dd/MM/yyyy HH:mm:ss">
 						
 					</p:calendar>
 				</div>
 				<div class="col-xs-4">
 					<div class="form-group">
 						<h:outputLabel for="resource" value="Recurso: "/>
-						<p:selectOneMenu id="resource" value="#{measurementB.localName}" editable="false" update="">
-							<p:ajax update="room" listener="#{measurementB.initRoomsMap}" />
+						<p:selectOneMenu id="resource" value="#{solicitationMb.selectedReource}" editable="false">
 							<f:selectItem itemLabel="Select One" itemValue="" />
-							<f:selectItems value="#{measurementB.localsMap}" />
+							<f:selectItems value="#{solicitationMb.resourceTypeMap}" />
 						</p:selectOneMenu>
 					</div>
 				</div>
 				<div class="col-xs-4">
 					<div class="form-group">
-						<h:outputLabel for="localName" value="Descrição:" />
-						<h:inputText styleClass="form-control" id="localN"
-							value="#{localB.local.localName}" />
+						<h:outputLabel for="description" value="Descrição:" />
+						<h:inputText styleClass="form-control" id="description"
+							value="#{solicitationMb.solicitation.description}" />
 					</div>
 				</div>
+			</div>
+			<div>
+				<h:commandButton action="#{solicitationMb.saveSolicitation}"
+					class="button-container" value="Salvar"  />
 			</div>
 		</h:form>
 	</ui:define>
