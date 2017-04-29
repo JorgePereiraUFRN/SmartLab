@@ -10,8 +10,41 @@
 	<ui:define name="centro">
 
 
-		<h1>Pagina Home</h1>
+		<h1>Bem Vindos!</h1>
 
+		<ui:fragment rendered="#{userMb.adminitrator}">
+			<h5>
+				Esta aplicação permite que você registre sensores, atuadores e
+				aparelhos de ar condicionado em prédios, salas e laboratórios de
+				prédios cadastrados. <br /> Além disso, você pode visualizar tabelas
+				e gráficos de registros das medições feitas pelos sensores,
+				visualizar o histórico das ações dos aparelhos de ar condicionado,
+				visualizar o status de lâmpadas e aparelhos de arcondicionado em
+				tempo real, além das notificações providas pelo sistema.
+			</h5>
+		</ui:fragment>
+
+		<ui:fragment rendered="#{userMb.professor}">
+			<h5>
+				Esta aplicação permite que você solicite instalação e/ou manutenção
+				de software e hardware. <br /> Além disso, você pode visualizar os
+				recursos computacionais em cada sala ou laboratório, visualizar o
+				status das solicitações realizadas, e visualizar possíveis
+				notificações sobre o sistema.
+			</h5>
+
+		</ui:fragment>
+
+		<ui:fragment rendered="#{userMb.support}">
+			<h5>
+				Esta aplicação permite que você registre, atualize e remova recursos
+				de salas e/ou laboratórios. <br /> Além disso, você pode visualizar
+				a lista de recursos disponíveis em cada sala, as solicitações de
+				recursos feitas pelos servidores, atualizar o status das
+				solicitações de instalação e/ou manutenção, e visualizar possíveis
+				notificações sobre o sistema.
+			</h5>
+		</ui:fragment>
 		<br></br>
 
 		<ui:fragment rendered="#{!userMb.loged}">
