@@ -18,6 +18,11 @@
 		href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900|RobotoDraft:400,100,300,500,700,900" />
 	<link rel="stylesheet prefetch"
 		href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+		
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+		crossorigin="anonymous" />
 
 	<link href="#{request.contextPath}/css/login.css" rel="stylesheet"
 		type="text/css" media="screen" />
@@ -32,43 +37,35 @@
 		<div class="card">
 			<h1 class="title">Registrar Usuário</h1>
 			<h:form>
-				<div align="center">
-					<h:outputLabel for="login" value="Login: " />
-					<p:inputText id="login" value="#{userMb.usuario.login}" />
+				<div class="input-card">
+					<div class="form-group">
+						<h:outputLabel for="name" value="Nome: " />
+						<h:inputText styleClass="form-control" id="name" value="#{userMb.usuario.name}" />
+					</div>
+					<div class="form-group">
+						<h:outputLabel for="email" value="Email: " />
+						<h:inputText styleClass="form-control" id="email" value="#{userMb.usuario.email}" />
+					</div>
+					<div class="form-group">
+						<h:outputLabel for="login" value="Login:" />
+						<h:inputText styleClass="form-control" id="login" value="#{userMb.usuario.login}" />
+					</div>
+					<div class="form-group">
+						<h:outputLabel for="password" value="Senha: " />
+						<h:inputSecret id="password" class="form-control" value="#{userMb.usuario.password}" feedback="true"/>
+					</div>
+					<div class="form-group">
+						<h:outputLabel for="userType" value="Tipo de Usuário: " />
+						<h:selectOneMenu id="userType" value="#{userMb.selectedRole}"
+							editable="false" class="selectpicker">
+							<f:selectItems value="#{userMb.userRoles}" />
+						</h:selectOneMenu>
+					</div>
 				</div>
-				<br />
-				<div align="center">
-					<h:outputLabel for="password" value="Senha: " />
-					<p:password id="pasword" value="#{userMb.usuario.password}" feedback="true" />
-					
+				<div>
+					<h:commandButton action="#{userMb.saveUser}" value="Registrar" class="button-container" />
 				</div>
-				<br />
-				<div align="center">
-					<h:outputLabel for="name" value="Nome: " />
-					<p:inputText id="name" value="#{userMb.usuario.name}" />
-				</div>
-				<br />
-				<div align="center">
-					<h:outputLabel for="email" value="Email: " />
-					<p:inputText id="email" value="#{userMb.usuario.email}" />
-				</div>
-
-				<br />
-				<div align="center">
-					<h:outputLabel for="userType" value="Tipo de Usuário: " />
-					<h:selectOneMenu id="userType" value="#{userMb.selectedRole}"
-						editable="false" update="">
-						<f:selectItems value="#{userMb.userRoles}" />
-					</h:selectOneMenu>
-				</div>
-				<br />
-
-
-				<div align="center">
 				
-				<h:commandLink action="#{userMb.saveUser}" value="Registrar" />
-				
-				</div>
 
 
 			</h:form>
@@ -76,6 +73,11 @@
 
 
 	</div>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+		crossorigin="anonymous"></script>
+	
 	<script
 		src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"
 		type="text/javascript" xml:space="preserve"></script>

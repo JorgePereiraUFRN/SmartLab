@@ -140,15 +140,15 @@ body {
   -webkit-transition-delay: .3s;
           transition-delay: .3s;
 }
-.container.active .card.alt .input-container {
+.container.active .card.alt .input-card {
   -webkit-transition-delay: .4s;
           transition-delay: .4s;
 }
-.container.active .card.alt .input-container:nth-child(2) {
+.container.active .card.alt .input-card:nth-child(2) {
   -webkit-transition-delay: .5s;
           transition-delay: .5s;
 }
-.container.active .card.alt .input-container:nth-child(3) {
+.container.active .card.alt .input-card:nth-child(3) {
   -webkit-transition-delay: .6s;
           transition-delay: .6s;
 }
@@ -184,27 +184,28 @@ body {
   font-weight: 600;
   text-transform: uppercase;
 }
-.card .input-container {
+
+.card .input-card {
   position: relative;
-  margin: 0 40px 30px;
+  margin: 0 40px 20px;
 }
-.card .input-container input {
+.card .input-card input {
   outline: none;
   z-index: 1;
   position: relative;
   background: none;
   width: 100%;
-  height: 60px;
-  border: 0;
-  color: #212121;
   font-size: 16px;
   font-weight: 400;
 }
-.card .input-container input:focus ~ label {
-  color: #9d9d9d;
+
+/*
+.card .input-card input:focus ~ label{
+  color: #A40707;
   -webkit-transform: translate(-12%, -50%) scale(0.75);
           transform: translate(-12%, -50%) scale(0.75);
 }
+
 .card .input-container input:focus ~ .bar:before, .card .input-container input:focus ~ .bar:after {
   width: 50%;
 }
@@ -247,20 +248,35 @@ body {
 .card .input-container .bar:after {
   right: 50%;
 }
-.card .button-container {
-  margin: 0 60px;
-  text-align: center;
+
+*/
+
+.card.active .button-container {
+  left: 0;
+  opacity: 1;
+  visibility: visible;
+  -webkit-transition: .3s ease;
+  transition: .3s ease;
 }
-.card .button-container button {
+
+.card.active .button-container {
+  -webkit-transition-delay: .7s;
+          transition-delay: .7s;
+}
+
+.card .button-container {
+  margin: 0 125px 0 125px;
+  text-align: center;
   outline: 0;
   cursor: pointer;
   position: relative;
   display: inline-block;
   background: 0;
-  width: 200px;
+  width: 120px;
   border: 2px solid #e3e3e3;
-  padding: 20px 0;
-  font-size: 20px;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #A40707;
   font-weight: 600;
   line-height: 1;
   text-transform: uppercase;
@@ -268,14 +284,8 @@ body {
   -webkit-transition: .3s ease;
   transition: .3s ease;
 }
-.card .button-container button span {
-  position: relative;
-  z-index: 1;
-  color: #ddd;
-  -webkit-transition: .3s ease;
-  transition: .3s ease;
-}
-.card .button-container button:before {
+
+.card .button-container:before {
   content: '';
   position: absolute;
   top: 50%;
@@ -290,24 +300,21 @@ body {
   -webkit-transition: .3s ease;
   transition: .3s ease;
 }
-.card .button-container button:hover, .card .button-container button:active, .card .button-container button:focus {
+.card .button-container:hover, .card .button-container:active, .card .button-container:focus {
   border-color: #A40707;
-}
-.card .button-container button:hover span, .card .button-container button:active span, .card .button-container button:focus span {
   color: #A40707;
 }
-.card .button-container button:active span, .card .button-container button:focus span {
-  color: #ffffff;
-}
-.card .button-container button:active:before, .card .button-container button:focus:before {
+.card .button-container:active:before, .card .button-container:focus:before {
   opacity: 1;
   -webkit-transform: scale(10);
   transform: scale(10);
 }
+
+
 .card .footer {
-  margin: 40px 0 0;
+  margin: 20px 0 0;
   color: #d3d3d3;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 300;
   text-align: center;
 }
@@ -318,8 +325,9 @@ body {
   transition: .3s ease;
 }
 .card .footer a:hover {
-  color: #bababa;
+  color: #9d9d9d;
 }
+
 .card.alt {
   position: absolute;
   top: 40px;
@@ -387,6 +395,8 @@ body {
 .card.alt .title .close:before {
   content: '\00d7';
 }
+
+
 .card.alt .input-container input {
   color: #ffffff;
 }
@@ -405,6 +415,7 @@ body {
 .card.alt .input-container .bar {
   background: rgba(255, 255, 255, 0.8);
 }
+
 .card.alt .button-container button {
   width: 100%;
   background: #ffffff;

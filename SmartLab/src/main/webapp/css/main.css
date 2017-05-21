@@ -109,7 +109,7 @@ nav{
   position: absolute;
   background: #ffffff;
   border-radius: 5px;
-  padding: 40px 30px 40px;
+  padding: 20px 30px 40px;
   box-sizing: border-box;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   -webkit-transition: .3s ease;
@@ -233,3 +233,25 @@ nav{
 .bar_topd {
 	width: 1000px;
 	margin: 0 auto;}
+	
+	
+	
+dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+	position: relative;
+    display: none;
+    background-color: #fff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 20px 40px;
+    margin: 60px 15px 0 0;
+    z-index: 1;
+     border-radius: 5px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}

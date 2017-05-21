@@ -30,7 +30,7 @@
 
 	<div class="bar_top">
 		<div class="perfil">
-		<h:graphicImage styleClass="perfil" value="/icons/fotoperfil.jpeg" />
+		<h:link outcome="/pages/Public/UploadPhoto.xhtml"> <h:graphicImage styleClass="perfil" value="/icons/fotoperfil.jpeg" /> </h:link>
 			
 		</div>
 		<div class="bar_topd">
@@ -38,13 +38,14 @@
 			</ul>
 			<div class="transit">
 			
-				<a href="#" target="_blank"> <h:graphicImage  value="/icons/logout.png" /> </a> 
-					
-					
-					<a href="#" target="_blank"> <h:graphicImage  value="/icons/conf.png" /> 
-					
-					</a> <a href="#"
-					target="_blank"><h:graphicImage  value="/icons/message.png" /> </a>
+				<a href="#" target="_blank"> <h:graphicImage  value="/icons/power-256.png" /> </a> 
+				<h:link outcome="/pages/Public/Settings.xhtml"> <h:graphicImage  value="/icons/settings-4-256.png" /> </h:link>
+				<div class="dropdown" style="float:right;">
+				  <span><h:graphicImage  value="/icons/mail-256.png" /></span>
+				  <div class="dropdown-content">
+				    <p>Aqui entra as notificações</p>
+				  </div>
+				</div>
 			</div>
 		</div>
 

@@ -18,6 +18,10 @@
 	href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900|RobotoDraft:400,100,300,500,700,900" />
 <link rel="stylesheet prefetch"
 	href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+		crossorigin="anonymous" />
 
 <link href="#{request.contextPath}/css/login.css" rel="stylesheet"
 	type="text/css" media="screen" />
@@ -32,40 +36,40 @@
 		<div class="card">
 			<h1 class="title">Login</h1>
 
-			<h:form>
-				<div align="center">
-					<h:outputLabel for="login" value="Login: " />
-					<p:inputText id="login" value="#{userMb.usuario.login}" />
+
+			<h:form id="formLocal">
+			<!--  -->
+				<div class="input-card">
+					<div class="form-group">
+						<h:outputLabel for="login" value="Login:" />
+						<h:inputText styleClass="form-control" id="login" value="#{userMb.usuario.login}" />
+					</div>
+					<div class="form-group">
+						<h:outputLabel for="password" value="Senha: " />
+						<h:inputSecret id="password" class="form-control" value="#{userMb.usuario.password}" required="true"/>
+					</div>
+					<div class="footer"><a href="#">Forgot your password?</a></div>
 				</div>
-				<br />
-
-				<div align="center">
-					<h:outputLabel for="password" value="Senha: " />
-					<p:password id="password" value="#{userMb.usuario.password}"
-						feedback="false" />
-
+				<div>
+					<h:commandButton action="#{userMb.logIn}" class="button-container" value="Entrar" />
 				</div>
-				
-				<br />
-				
-				<div align="center">
-				
-				<h:commandLink action="#{userMb.logIn}" value="Entrar" />
-					
-
-				</div>
-
-
 			</h:form>
 		</div>
-
-
 	</div>
-
+	
 	<script
-		src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+		crossorigin="anonymous"></script>
+	
+	<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+
+    <script src="/js/index.js"></script>
+<!--
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"
 		type="text/javascript" xml:space="preserve"></script>
-	<script src="scripts/index.js" type="text/javascript"
-		xml:space="preserve"></script>
+	<script src="js/index.js" type="text/javascript"
+		xml:space="preserve"></script>   -->
 </body>
 </html>

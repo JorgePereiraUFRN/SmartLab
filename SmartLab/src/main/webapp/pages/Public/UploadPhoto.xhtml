@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:decorate template="/WEB-INF/templates/Template.xhtml">
+	<ui:define name="centro">
+
+		<p:growl id="mensagem" showDetail="true" autoUpdate="true"
+			closable="true" />
+
+		<h4>Alterar Foto</h4>
+		<h:form id="formLocal">
+			<div class="row">
+				<div class="col-xs-8">
+					<div class="form-group">
+						 <h:inputFile id="arquivo" value="#" label="Upload Foto"  
+						 required="true"  requiredMessage="Campo Arquivo Obrigatório"/>
+					</div>
+				</div>
+			</div>
+          	
+			<div>
+            	<h:commandButton action="#" class="button-container" value="Salvar" update="" />
+          	</div>
+          	
+		</h:form>
+
+
+		<br></br>
+
+		
+		
+
+	</ui:define>
+</ui:decorate>
+
+</html>
