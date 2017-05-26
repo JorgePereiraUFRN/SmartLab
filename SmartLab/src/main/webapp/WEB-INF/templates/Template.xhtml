@@ -37,8 +37,9 @@
 			<ul class="menu_barrax">
 			</ul>
 			<div class="transit">
-			
-				<a href="#" target="_blank"> <h:graphicImage  value="/icons/power-256.png" /> </a> 
+			<h:form rendered="#{!userMB.anonymousUser}">
+				<h:commandLink action="#{userMb.logOut()}"> <h:graphicImage  value="/icons/power-256.png" /> </h:commandLink>
+			</h:form> 
 				<h:link outcome="/pages/Public/Settings.xhtml"> <h:graphicImage  value="/icons/settings-4-256.png" /> </h:link>
 				<div class="dropdown" style="float:right;">
 				  <span><h:graphicImage  value="/icons/mail-256.png" /></span>

@@ -38,7 +38,7 @@ public class ReservesSystem {
 				long timeMinutes = TimeUnit.MILLISECONDS.toMinutes(duration);
 
 				if (timeMinutes < time) {
-					System.out.println(r);
+	
 					return true;
 				}
 			}

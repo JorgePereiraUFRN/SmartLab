@@ -15,6 +15,11 @@
 			<to-view-id>/pages/Public/Home.xhtml</to-view-id>
 		</navigation-case>
 		
+		<navigation-case>
+			<from-action>#{userMb.logOut}</from-action>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/pages/Public/Home.xhtml</to-view-id>
+		</navigation-case>
 		
 		<navigation-case>
 			<from-action>#{userMb.saveUser}</from-action>

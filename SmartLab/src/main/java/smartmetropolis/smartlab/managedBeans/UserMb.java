@@ -96,14 +96,21 @@ public class UserMb implements Serializable{
 			usuario = USER_CONTROLLER.findUser(usuario.getLogin());
 			
 			loged = true;
+			
 			return "home";
 		} catch (Exception e) {
 			
 			return "errorLogin";
 		}
-		
-
 	}
+	
+	
+	
+	public String logOut() {
+		getRequest().getSession().invalidate();
+		return "home";
+	}
+
 	
 	private HttpServletRequest getRequest() {
 		return (HttpServletRequest) FacesContext.getCurrentInstance()
