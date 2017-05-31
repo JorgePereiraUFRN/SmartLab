@@ -13,28 +13,35 @@
 			closable="true" />
 
 		<h4>Alterar Foto</h4>
-		<h:form id="formLocal">
-			<div class="row">
-				<div class="col-xs-8">
-					<div class="form-group">
-						 <h:inputFile id="arquivo" value="#" label="Upload Foto"  
-						 required="true"  requiredMessage="Campo Arquivo Obrigatório"/>
+
+
+
+			<h:form id="formLocal" enctype="multipart/form-data">
+				<div class="row">
+					<div class="col-xs-8">
+						<div class="form-group">
+
+							
+
+								<p:fileUpload  mode="simple" value="#{userMb.imageFile}"
+									allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+
+								<div>
+									<h:commandButton action="#{userMb.saveProfilePricture}"
+										class="button-container" value="Salvar" update="" />
+								</div>
+						
+
+
+						</div>
 					</div>
 				</div>
-			</div>
-          	
-			<div>
-            	<h:commandButton action="#" class="button-container" value="Salvar" update="" />
-          	</div>
-          	
-		</h:form>
 
 
-		<br></br>
 
-		
-		
+			</h:form>
 
+			<br></br>
 	</ui:define>
 </ui:decorate>
 

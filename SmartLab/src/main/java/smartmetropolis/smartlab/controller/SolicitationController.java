@@ -8,6 +8,7 @@ import smartmetropolis.smartlab.dao.SolicitationDaoInterface;
 import smartmetropolis.smartlab.exceptions.DAOException;
 import smartmetropolis.smartlab.exceptions.validateDataException;
 import smartmetropolis.smartlab.model.Solicitation;
+import smartmetropolis.smartlab.model.SolicitationStatus;
 
 public class SolicitationController {
 
@@ -82,6 +83,10 @@ public class SolicitationController {
 	
 	public List<Solicitation> listSoliciationsByUser(String userLogin) throws DAOException{
 		return solicitationDao.listSoliciationsByUser(userLogin);
+	}
+	
+	public List<Solicitation> listSolicitationsByState(SolicitationStatus status) throws DAOException{
+		return solicitationDao.listSolicitationsByState(status);
 	}
 
 }

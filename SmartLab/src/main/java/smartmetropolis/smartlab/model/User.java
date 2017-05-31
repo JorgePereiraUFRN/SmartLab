@@ -22,8 +22,13 @@ public class User {
 	@OneToOne(mappedBy="user", cascade = CascadeType.ALL)
 	private UserRole role;
 	
+	private String userPicture;
+	
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Solicitation> solicitations = new ArrayList<Solicitation>();
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Notification> notifications = new ArrayList<Notification>();
 	
 
 	public User() {
@@ -77,14 +82,41 @@ public class User {
 	public void setRole(UserRole role) {
 		this.role = role;
 	}
+	
+
+	public List<Solicitation> getSolicitations() {
+		return solicitations;
+	}
+
+	public void setSolicitations(List<Solicitation> solicitations) {
+		this.solicitations = solicitations;
+	}
+
+	public List<Notification> getNotifications() {
+		return notifications;
+	}
+
+	public void setNotifications(List<Notification> notifications) {
+		this.notifications = notifications;
+	}
+
+	public String getUserPicture() {
+		return userPicture;
+	}
+
+	public void setUserPicture(String userPicture) {
+		this.userPicture = userPicture;
+	}
 
 	@Override
 	public String toString() {
 		return "User [login=" + login + ", password=" + password
 				+ ", preferenceTemperature=" + preferenceTemperature
 				+ ", name=" + name + ", email=" + email + ", role=" + role
-				+ "]";
+				+ ", userPicture=" + userPicture + ", solicitations="
+				+ solicitations + ", notifications=" + notifications + "]";
 	}
+
 	
 	
 

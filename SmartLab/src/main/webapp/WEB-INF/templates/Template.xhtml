@@ -30,82 +30,109 @@
 
 	<div class="bar_top">
 		<div class="perfil">
-		<h:link outcome="/pages/Public/UploadPhoto.xhtml"> <h:graphicImage styleClass="perfil" value="/icons/fotoperfil.jpeg" /> </h:link>
-			
+			<h:link outcome="/pages/Public/UploadPhoto.xhtml">
+				<h:graphicImage styleClass="perfil" value="/icons/fotoperfil.jpeg" />
+			</h:link>
+
 		</div>
 		<div class="bar_topd">
 			<ul class="menu_barrax">
 			</ul>
 			<div class="transit">
-			<h:form rendered="#{!userMB.anonymousUser}">
-				<h:commandLink action="#{userMb.logOut()}"> <h:graphicImage  value="/icons/power-256.png" /> </h:commandLink>
-			</h:form> 
-				<h:link outcome="/pages/Public/Settings.xhtml"> <h:graphicImage  value="/icons/settings-4-256.png" /> </h:link>
-				<div class="dropdown" style="float:right;">
-				  <span><h:graphicImage  value="/icons/mail-256.png" /></span>
-				  <div class="dropdown-content">
-				    <p>Aqui entra as notificações</p>
-				  </div>
+				<h:form rendered="#{!userMB.anonymousUser}">
+					<h:commandLink action="#{userMb.logOut()}">
+						<h:graphicImage value="/icons/power-256.png" />
+					</h:commandLink>
+				</h:form>
+				<h:link outcome="/pages/Public/Settings.xhtml">
+					<h:graphicImage value="/icons/settings-4-256.png" />
+				</h:link>
+				<div class="dropdown" style="float: right;">
+					<span><h:graphicImage value="/icons/mail-256.png" /></span>
+					<div class="dropdown-content">
+
+						<h:form id="form">
+							<p:dataList id="datalist_notifications" value="#{userMb.notifications}" var="notification"
+								>
+								<f:facet name="header">
+      
+        						</f:facet>
+      						  #{notification.message}
+    						</p:dataList>
+						</h:form>
+					</div>
 				</div>
 			</div>
 		</div>
 
 	</div>
-	
+
 	<ui:fragment rendered="#{userMb.loged}">
 
-	<div class="container-menu">
-		<div class="card" >
+		<div class="container-menu">
+			<div class="card">
 
-			<ul class="sidebar-nav">
-			<ui:fragment rendered="#{userMb.adminitrator}">
-				<li class="sidebar-brand">Prédios</li>
-				<li><h:link value="Prédios" outcome="/pages/Admin/Local.xhtml"  /></li>
-				<li><h:link value="Salas" outcome="/pages/Admin/Room.xhtml" /></li>
-			
-			</ui:fragment>
-			
-			<ui:fragment rendered="#{userMb.adminitrator}">
-				<li class="sidebar-brand">Dispositivos</li>
-				<li><h:link value="Sensores" outcome="/pages/Admin/Sensors.xhtml"  /></li>
-				<li><h:link value="Ar-condicionado" outcome="/pages/Admin/AirConditioner.xhtml"  /></li>
-			</ui:fragment>	
+				<ul class="sidebar-nav">
+					<ui:fragment rendered="#{userMb.adminitrator}">
+						<li class="sidebar-brand">Prédios</li>
+						<li><h:link value="Prédios"
+								outcome="/pages/Admin/Local.xhtml" /></li>
+						<li><h:link value="Salas" outcome="/pages/Admin/Room.xhtml" /></li>
 
-			<ui:fragment rendered="#{userMb.adminitrator}">
-				<li class="sidebar-brand">Medições</li>
-				<li><h:link value="Consultar Medições" outcome="/pages/Admin/Measurements.xhtml" /></li>
-				<li><h:link value="Historico do Ar-condicionado" outcome="/pages/Admin/AirConditionerHistorical.xhtml"/></li>
-				<li><h:link value="Graficos" outcome="/pages/Admin/generateGraph.xhtml"/></li>
-			</ui:fragment>
+					</ui:fragment>
+
+					<ui:fragment rendered="#{userMb.adminitrator}">
+						<li class="sidebar-brand">Dispositivos</li>
+						<li><h:link value="Sensores"
+								outcome="/pages/Admin/Sensors.xhtml" /></li>
+						<li><h:link value="Ar-condicionado"
+								outcome="/pages/Admin/AirConditioner.xhtml" /></li>
+					</ui:fragment>
+
+					<ui:fragment rendered="#{userMb.adminitrator}">
+						<li class="sidebar-brand">Medições</li>
+						<li><h:link value="Consultar Medições"
+								outcome="/pages/Admin/Measurements.xhtml" /></li>
+						<li><h:link value="Historico do Ar-condicionado"
+								outcome="/pages/Admin/AirConditionerHistorical.xhtml" /></li>
+						<li><h:link value="Graficos"
+								outcome="/pages/Admin/generateGraph.xhtml" /></li>
+					</ui:fragment>
 
 
-			<ui:fragment rendered="#{userMb.professor}">
-				<li class="sidebar-brand">Solicitações</li>
-				<li><h:link value="Realizar Solicitações" outcome="/pages/Professor/Solicitation.xhtml" /></li>
-				<li><h:link value="Status das Solicitações" outcome="/pages/Professor/SolicitationStatus.xhtml"/></li>
-				
-			</ui:fragment>	
+					<ui:fragment rendered="#{userMb.professor}">
+						<li class="sidebar-brand">Solicitações</li>
+						<li><h:link value="Realizar Solicitações"
+								outcome="/pages/Professor/Solicitation.xhtml" /></li>
+						<li><h:link value="Status das Solicitações"
+								outcome="/pages/Professor/SolicitationStatus.xhtml" /></li>
 
-			<ui:fragment rendered="#{userMb.support}">
-				<li class="sidebar-brand">Recursos</li>
-				<li><h:link value="Registrar Recursos" outcome="/pages/Support/registerResource.xhtml" /></li>
-				<li><h:link value="Consultar Recursos" outcome="/pages/Support/ResourcesSupport.xhtml"/></li>
-			</ui:fragment>	
-			
-			<ui:fragment rendered="#{userMb.support}">
-				<li class="sidebar-brand">Solicitações</li>
-				<li><h:link value="Visualizar Solicitações" outcome="/pages/Support/viewRequest.xhtml" /></li>
-			</ui:fragment>
-			
-			<ui:fragment rendered="#{userMb.professor}">
-				<li class="sidebar-brand">Recursos</li>
-				<li><h:link value="Consultar Recursos" outcome="/pages/Professor/Resources.xhtml"  /></li>
-			</ui:fragment>	
+					</ui:fragment>
 
-			</ul>
+					<ui:fragment rendered="#{userMb.support}">
+						<li class="sidebar-brand">Recursos</li>
+						<li><h:link value="Registrar Recursos"
+								outcome="/pages/Support/registerResource.xhtml" /></li>
+						<li><h:link value="Consultar Recursos"
+								outcome="/pages/Support/ResourcesSupport.xhtml" /></li>
+					</ui:fragment>
+
+					<ui:fragment rendered="#{userMb.support}">
+						<li class="sidebar-brand">Solicitações</li>
+						<li><h:link value="Visualizar Solicitações"
+								outcome="/pages/Support/viewRequest.xhtml" /></li>
+					</ui:fragment>
+
+					<ui:fragment rendered="#{userMb.professor}">
+						<li class="sidebar-brand">Recursos</li>
+						<li><h:link value="Consultar Recursos"
+								outcome="/pages/Professor/Resources.xhtml" /></li>
+					</ui:fragment>
+
+				</ul>
+			</div>
 		</div>
-	</div>
-</ui:fragment>
+	</ui:fragment>
 	<div class="container-main">
 		<ui:insert name="centro">Corpo</ui:insert>
 	</div>
