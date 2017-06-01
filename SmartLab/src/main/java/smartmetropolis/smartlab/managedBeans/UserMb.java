@@ -55,7 +55,7 @@ public class UserMb implements Serializable {
 
 	private List<Notification> notifications = new ArrayList<Notification>();
 
-	private static final String profilesPictureFolder = "/home/jorge/profile_pictures/";
+	private static final String profilesPictureFolder = "/home/jorge/smartplace/profilepictures/";
 	
 	private UploadedFile imageFile;
 
@@ -69,6 +69,12 @@ public class UserMb implements Serializable {
 		userRoles.put(UserRole.ADMININISTRATOR, UserRole.ADMININISTRATOR);
 		userRoles.put(UserRole.PROFESSOR, UserRole.PROFESSOR);
 		userRoles.put(UserRole.SUPPORT, UserRole.SUPPORT);
+		
+		if(usuario == null){
+			usuario = new User();
+			System.out.println(usuario);
+			
+		}
 	}
 
 	public String saveUser() {
@@ -190,11 +196,14 @@ public class UserMb implements Serializable {
 			if (imageFile != null) {
 
 				try {
-
+			
+					String fileName = profilesPictureFolder+usuario.getLogin()+"_"+imageFile.getFileName();
 					
-					String fileName = "/home/jorge/upload/"+imageFile.getFileName();
+					usuario.setProfilePicture(fileName);
 
 					copyFile(fileName, imageFile.getInputstream());
+					
+					USER_CONTROLLER.updateUser(usuario);
 
 					FacesContext.getCurrentInstance().addMessage(
 							null,
@@ -210,6 +219,12 @@ public class UserMb implements Serializable {
 									new FacesMessage(FacesMessage.SEVERITY_ERROR,
 											null,
 											"Desculpe, erro ocorrido ao atualizar a imagem. Tente novamente por favor!"));
+				} catch (validateDataException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (DAOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			} else {
 				FacesContext.getCurrentInstance().addMessage(

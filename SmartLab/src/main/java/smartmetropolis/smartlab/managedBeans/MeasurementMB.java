@@ -91,6 +91,8 @@ public class MeasurementMB {
 
 		roomsMap = new HashMap<String, String>();
 
+		System.out.println("inicializando o selectedonemenu das salas");
+		
 		try {
 			Local l = localController.findLocal(localName);
 

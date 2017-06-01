@@ -21,8 +21,9 @@ public class User {
 	private String email;
 	@OneToOne(mappedBy="user", cascade = CascadeType.ALL)
 	private UserRole role;
+	private String profilePicture;
 	
-	private String userPicture;
+	private String userPicture = "/home/jorge/smartplace/profilepictures/default.jpeg";
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Solicitation> solicitations = new ArrayList<Solicitation>();
@@ -106,6 +107,15 @@ public class User {
 
 	public void setUserPicture(String userPicture) {
 		this.userPicture = userPicture;
+	}
+	
+
+	public String getProfilePicture() {
+		return profilePicture;
+	}
+
+	public void setProfilePicture(String profilePicture) {
+		this.profilePicture = profilePicture;
 	}
 
 	@Override

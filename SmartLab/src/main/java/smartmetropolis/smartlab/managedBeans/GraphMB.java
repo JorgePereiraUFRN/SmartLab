@@ -111,11 +111,15 @@ public class GraphMB {
 
 		try {
 			Local l = localController.findLocal(localName);
+		
+	
 
 			if (l != null) {
 				for (Room r : roomController.findRoomsByBuilding(l
 						.getLocalName())) {
 					roomsMap.put(r.getRoomName(), r.getRoomName());
+					
+					System.out.println(r);
 				}
 			}
 
@@ -412,6 +416,9 @@ public class GraphMB {
 
 	public void generateGraph() throws NumberFormatException, DAOException {
 
+		
+		System.out.println("metodo gerar grafico");
+		
 		graphSize = 900;
 		grahfinalDate = null;
 		graphInitDate = null;

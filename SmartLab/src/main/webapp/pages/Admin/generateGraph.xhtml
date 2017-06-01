@@ -17,8 +17,8 @@
 				<div class="col-xs-6">
 					<div class="form-group">
 						<h:outputLabel for="local" value="Predio: "/>
-						<p:selectOneMenu id="local" value="#{measurementB.localName}" editable="false" update="">
-							<p:ajax update="room" listener="#{measurementB.initRoomsMap}" />
+						<p:selectOneMenu id="local" value="#{graphMB.localName}" editable="false" update="room">
+							<p:ajax update="room" listener="#{graphMB.initRoomsMap}" />
 							<f:selectItem itemLabel="Select One" itemValue="" />
 							<f:selectItems value="#{measurementB.localsMap}" />
 						</p:selectOneMenu>
@@ -29,7 +29,7 @@
 				<div class="col-xs-6">
 					<div class="form-group">
 						<h:outputLabel for="room" value="Sala: "/>
-						<p:selectOneMenu id="room" value="#{graphMB.roomName}" editable="false" update="">
+						<p:selectOneMenu id="room" value="#{graphMB.roomName}" editable="false" >
 							<p:ajax update="room" listener="#{graphMB.selectedRoom()}" />
 							<f:selectItem itemLabel="Select One" itemValue="" />
 							<f:selectItems value="#{graphMB.roomsMap}" />
@@ -87,25 +87,19 @@
 				</div>
 				 
 			</div>
-			<!--
+			
 			<div>
-			<p:commandButton styleClass="button-container" value="Gerar Gráfico" id="graphlabel" action="graph.xhtml"
-				actionListener="#{localB.listAllLocals}" update="tabela" />
+			<p:commandButton styleClass="button-container" value="GerarGráfico" id="graphlabel" action="graph.xhtml"
+				actionListener="#{graphMB.generateGraph}" />
 			</div>
-			 -->
+			
 		</h:form>
 		
 		
 
 
 
-	<!--  Botão antigo
-				<p:outputLabel for="graphlabel" value="Gerar Gráfico:" />
-				<h:commandButton id="graphlabel" action="graph.xhtml"
-					style="width: 60%;" value="Gerar Gráfico">
-					<p:ajax listener="#{graphMB.generateGraph}" />
-				</h:commandButton>
--->
+
 
 
 	</ui:define>
