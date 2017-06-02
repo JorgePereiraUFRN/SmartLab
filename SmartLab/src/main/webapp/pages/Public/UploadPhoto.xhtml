@@ -13,34 +13,20 @@
 			closable="true" />
 
 		<h4>Alterar Foto</h4>
-
-
-
 			<h:form id="formLocal" enctype="multipart/form-data">
 				<div class="row">
 					<div class="col-xs-8">
 						<div class="form-group">
-
-							
-
-								<p:fileUpload  mode="simple" value="#{userMb.imageFile}"
-									allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
-
-								<div>
-									<h:commandButton action="#{userMb.saveProfilePricture}"
-										class="button-container" value="Salvar" update="" />
-								</div>
-						
-
-
+							<p:fileUpload  mode="simple" value="#{userMb.imageFile}"
+								allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+							<div>
+								<h:commandButton action="#{userMb.saveProfilePricture}"
+									class="button-container" value="Salvar" update="" />
+							</div>
 						</div>
 					</div>
 				</div>
-
-
-
 			</h:form>
-
 			<br></br>
 	</ui:define>
 </ui:decorate>

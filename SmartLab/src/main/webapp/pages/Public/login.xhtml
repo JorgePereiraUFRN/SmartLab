@@ -48,10 +48,46 @@
 						<h:outputLabel for="password" value="Senha: " />
 						<h:inputSecret id="password" class="form-control" value="#{userMb.usuario.password}" required="true"/>
 					</div>
-					<div class="footer"><a href="#">Forgot your password?</a></div>
+					<div class="footer"><a href="#">Esqueceu sua Senha?</a></div>
 				</div>
 				<div>
 					<h:commandButton action="#{userMb.logIn}" class="button-container" value="Entrar" />
+				</div>
+			</h:form>
+		</div>
+		<div class="card alt">
+		    <div class="toggle"></div>
+		    <h1 class="title">Registrar
+		      <div class="close"></div>
+		    </h1>
+		    <h:form id="formulario">
+				<div class="input-card">
+					<div class="form-group">
+						<h:outputLabel for="name" value="Nome: " />
+						<h:inputText styleClass="form-control" id="name" value="#{userMb.usuario.name}" />
+					</div>
+					<div class="form-group">
+						<h:outputLabel for="email" value="Email: " />
+						<h:inputText styleClass="form-control" id="email" value="#{userMb.usuario.email}" />
+					</div>
+					<div class="form-group">
+						<h:outputLabel for="login" value="Login:" />
+						<h:inputText styleClass="form-control" id="login" value="#{userMb.usuario.login}" />
+					</div>
+					<div class="form-group">
+						<h:outputLabel for="password" value="Senha: " />
+						<h:inputSecret id="password" class="form-control" value="#{userMb.usuario.password}" feedback="true"/>
+					</div>
+					<div class="form-group">
+						<h:outputLabel for="userType" value="Tipo de Usuário: " />
+						<h:selectOneMenu id="userType" value="#{userMb.selectedRole}"
+							editable="false" class="selectpicker">
+							<f:selectItems value="#{userMb.userRoles}" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+				<div>
+					<h:commandButton action="#{userMb.saveUser}" value="Registrar" class="button-container" />
 				</div>
 			</h:form>
 		</div>
@@ -65,7 +101,17 @@
 	<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 
-    <script src="/js/index.js"></script>
+    <script>
+    	$('.toggle').on('click', function() {
+    	  $('.container').stop().addClass('active');
+    	  $("#formulario").css("visibility","visible");
+    	});
+
+    	$('.close').on('click', function() {
+    	  $('.container').stop().removeClass('active');
+    	  $("#formulario").css("visibility","hidden");
+    	});
+    </script>
 <!--
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"
 		type="text/javascript" xml:space="preserve"></script>

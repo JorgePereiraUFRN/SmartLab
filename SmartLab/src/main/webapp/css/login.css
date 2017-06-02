@@ -348,12 +348,12 @@ body {
 }
 .card.alt .toggle {
   position: relative;
-  background: #A40707;
+  background: #ffffff;
   width: 130px;
   height: 130px;
   border-radius: 100%;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.24);
-  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  color: #A40707;
   font-size: 40px;
   line-height: 140px;
   text-align: center;
@@ -379,25 +379,25 @@ body {
 }
 .card.alt .title {
   position: relative;
-  border-color: #ffffff;
-  color: #ffffff;
+  border-color: #A40707;
+  color: #A40707;
 }
+
 .card.alt .title .close {
   cursor: pointer;
   position: absolute;
   top: 0;
   right: 60px;
   display: inline;
-  color: #ffffff;
-  font-size: 22px;
+  color: #A40707;
+  font-size: 40px;
   font-weight: 400;
 }
 .card.alt .title .close:before {
   content: '\00d7';
 }
 
-
-.card.alt .input-container input {
+/* .card.alt .input-container input {
   color: #ffffff;
 }
 .card.alt .input-container input:focus ~ label {
@@ -414,7 +414,7 @@ body {
 }
 .card.alt .input-container .bar {
   background: rgba(255, 255, 255, 0.8);
-}
+}  */
 
 .card.alt .button-container button {
   width: 100%;
@@ -422,17 +422,17 @@ body {
   border-color: #ffffff;
 }
 .card.alt .button-container button span {
-  color: #A40707;
+  color: #fff;
 }
 .card.alt .button-container button:hover {
   background: rgba(255, 255, 255, 0.9);
 }
 .card.alt .button-container button:active:before, .card.alt .button-container button:focus:before {
-  display: none;
+  display: inline-block;
 }
 
 /* Keyframes */
-@-webkit-keyframes buttonFadeInUp {
+/* @-webkit-keyframes buttonFadeInUp {
   0% {
     bottom: 30px;
     opacity: 0;
@@ -443,4 +443,4 @@ body {
     bottom: 30px;
     opacity: 0;
   }
-}
+} */
