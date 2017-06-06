@@ -74,19 +74,26 @@
 
 				<ul class="sidebar-nav">
 					<ui:fragment rendered="#{userMb.adminitrator}">
-						<li class="sidebar-brand">Prédios</li>
+						<li class="sidebar-brand">Cadastrar</li>
 						<li><h:link value="Prédios"
 								outcome="/pages/Admin/Local.xhtml" /></li>
 						<li><h:link value="Salas" outcome="/pages/Admin/Room.xhtml" /></li>
-
-					</ui:fragment>
-
-					<ui:fragment rendered="#{userMb.adminitrator}">
-						<li class="sidebar-brand">Dispositivos</li>
 						<li><h:link value="Sensores"
 								outcome="/pages/Admin/Sensors.xhtml" /></li>
 						<li><h:link value="Ar-condicionado"
 								outcome="/pages/Admin/AirConditioner.xhtml" /></li>
+
+					</ui:fragment>
+
+					<ui:fragment rendered="#{userMb.adminitrator}">
+						<li class="sidebar-brand">Gerenciar</li>
+						<li><h:link value="Prédios"
+								outcome="/pages/Admin/LocalCons.xhtml" /></li>
+						<li><h:link value="Salas" outcome="/pages/Admin/RoomCons.xhtml" /></li>
+						<li><h:link value="Sensores"
+								outcome="/pages/Admin/SensorsCons.xhtml" /></li>
+						<li><h:link value="Ar-condicionado"
+								outcome="/pages/Admin/AirConditionerCons.xhtml" /></li>
 					</ui:fragment>
 
 					<ui:fragment rendered="#{userMb.adminitrator}">

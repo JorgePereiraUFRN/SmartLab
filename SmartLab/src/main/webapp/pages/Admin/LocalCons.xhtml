@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:decorate template="/WEB-INF/templates/Template.xhtml">
+	<ui:define name="centro">
+
+	<h4>Gerenciar > Prédios</h4>
+		<br></br>
+		<p:growl id="mensagem" showDetail="true" autoUpdate="true"
+			closable="true" />
+
+		<h:dataTable id="tabela" value="#{localB.locals}" var="item"
+			styleClass="table table-hover" headerClass="order-table-header"
+			rowClasses="order-table-odd-row,order-table-even-row">
+
+			<h:column>
+				<f:facet name="header">Predio</f:facet>
+    				#{item.localName}
+    			</h:column>
+
+			<h:column>
+				<f:facet name="header">Latitude</f:facet>
+    				#{item.latitude}
+    			</h:column>
+
+			<h:column>
+				<f:facet name="header">Longitude</f:facet>
+    				#{item.longitude}
+    			</h:column>
+
+			<h:column>
+				<f:facet name="header">Editar</f:facet>
+					<h:commandButton image="/images/application_form_edit.png" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">Deletar</f:facet>
+					<h:commandButton image="/images/delete.png" />
+    			</h:column>
+
+		</h:dataTable>
+
+
+		<div>
+			<h:commandButton styleClass="button-container" value="Listar" id="listLocals2" 
+				actionListener="#{localB.listAllLocals}" update="tabela" />
+		</div>
+
+		<script type="text/javascript">
+			function hideOrShow(show) {
+				// Get the panel using its ID
+				var obj = document.getElementById("myForm:myPanel");
+				if (show) {
+					obj.style.display = "block";
+				} else {
+					obj.style.display = "none";
+				}
+			}
+		</script>
+
+
+
+	</ui:define>
+</ui:decorate>
+
+</html>

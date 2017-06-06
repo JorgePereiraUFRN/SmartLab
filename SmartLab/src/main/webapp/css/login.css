@@ -109,7 +109,7 @@ body {
   min-width: 100%;
   height: auto;
   border-radius: 5px;
-  padding: 60px 0 40px;
+  padding: 60px 0 40px 0;
   overflow: hidden;
 }
 .container.active .card.alt .toggle {
@@ -360,6 +360,7 @@ body {
   cursor: pointer;
 }
 .card.alt form{
+	width: 100%;
 	display: none;
 	visibility: hidden;
 }
@@ -373,6 +374,26 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-transform: translate(0, 0);
           transform: translate(0, 0);
+}
+.card.alt .button-container {
+  margin: 0 140px 0 140px;
+  text-align: center;
+  outline: 0;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  background: 0;
+  width: 120px;
+  border: 2px solid #e3e3e3;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #A40707;
+  font-weight: 600;
+  line-height: 1;
+  text-transform: uppercase;
+  overflow: hidden;
+  -webkit-transition: .3s ease;
+  transition: .3s ease;
 }
 .card.alt .title,
 .card.alt .input-container,
