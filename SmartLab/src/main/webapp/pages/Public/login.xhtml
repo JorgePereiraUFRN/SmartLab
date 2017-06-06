@@ -105,11 +105,13 @@
     	$('.toggle').on('click', function() {
     	  $('.container').stop().addClass('active');
     	  $("#formulario").css("visibility","visible");
+    	  $("#formulario").css("display","inline-block");
     	});
 
     	$('.close').on('click', function() {
     	  $('.container').stop().removeClass('active');
     	  $("#formulario").css("visibility","hidden");
+    	  $("#formulario").css("display","none");
     	});
     </script>
 <!--

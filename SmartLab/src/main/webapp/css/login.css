@@ -359,6 +359,10 @@ body {
   text-align: center;
   cursor: pointer;
 }
+.card.alt form{
+	display: none;
+	visibility: hidden;
+}
 .card.alt .toggle:before {
   content: '\f007';
   display: inline-block;
