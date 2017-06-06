@@ -23,20 +23,6 @@
 							value="#{localB.local.localName}" />
 					</div>
 				</div>
-				<div class="col-xs-4">
-					<div class="form-group">
-						<h:outputLabel for="LocalLatituide" value="Latitude:" />
-						<h:inputText styleClass="form-control" id="localLat"
-							value="#{localB.local.latitude}" />
-					</div>
-				</div>
-				<div class="col-xs-4">
-					<div class="form-group">
-						<h:outputLabel for="LocalLongotude" value="Longitude:" />
-						<h:inputText styleClass="form-control" id="localLong"
-							value="#{localB.local.longitude}" />
-					</div>
-				</div>
 			</div>
 			<div>
 				<h:commandButton action="#{localB.saveLocal}"
@@ -55,8 +41,6 @@
 				}
 			}
 		</script>
-
-
 
 	</ui:define>
 </ui:decorate>

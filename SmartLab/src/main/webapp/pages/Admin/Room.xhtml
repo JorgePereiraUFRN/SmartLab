@@ -19,13 +19,13 @@
 				<div class="col-xs-6">
 					<div class="form-group">
 						<h:outputLabel for="RoomName" value="Nome da Sala:" />
-						<h:inputText class="form-control" id="roomN" value="#{roomB.room.roomName}" />
+						<h:inputText class="form-control" id="roomName" value="#{roomB.room.roomName}" />
 					</div>
 				</div>
 				<div class="col-xs-6">
 					<div class="form-group">
 						<h:outputLabel for="roomLocal" value="Setor de aula / Predio:" />
-						<p:selectOneMenu id="roomL" value="#{roomB.room.predio}" editable="false" update="">
+						<p:selectOneMenu id="roomLocal" value="#{roomB.room.predio}" editable="false" update="">
 							<f:selectItem itemLabel="Select One" itemValue="" />
 							<f:selectItems value="#{roomB.localsMap}" />
 						</p:selectOneMenu>
@@ -33,7 +33,7 @@
 				</div>
 			</div>
 			<div>
-            	<h:commandButton action="#{roomB.saveRoom}" class="button-container" value="Salvar" update="tabela" />
+            	<p:commandButton action="#{roomB.saveRoom}" class="button-container" value="Salvar" />
           	</div>
 		</h:form>
 

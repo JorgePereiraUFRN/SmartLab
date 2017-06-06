@@ -16,8 +16,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.tomcat.util.http.fileupload.IOUtils;
+//import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.UploadedFile;
 
@@ -121,7 +120,8 @@ public class UserMb implements Serializable {
 				.getCurrentInstance().getExternalContext().getRequest();
 		try {
 			request.login(usuario.getLogin(), usuario.getPassword());
-
+			 
+			
 			usuario = USER_CONTROLLER.findUser(usuario.getLogin());
 
 			loged = true;

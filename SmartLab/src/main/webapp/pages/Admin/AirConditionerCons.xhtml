@@ -12,9 +12,46 @@
 		<h4>Gerenciar > Ar-Condicionado</h4>
 		<p:growl id="mensagem" showDetail="true" autoUpdate="true"
 			closable="true" />
-
+<h:form id="formLocal">
+			<div class="row">
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="LocalS" value="Prédio: " />
+						<p:selectOneMenu id="LocalS" value="#{sensorB.predio}"
+							editable="false" update="">
+							<p:ajax update="RoomS" listener="#{sensorB.initRoomsMap}" />
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems value="#{sensorB.localsMap}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="RoomS" value="Sala: " />
+						<p:selectOneMenu id="RoomS" value="#{sensorB.sensor.roomName}"
+							editable="false" update="">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems value="#{sensorB.roomsMap}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<h:outputLabel for="AirIp" value="IP do Controlador:" />
+						<h:inputText styleClass="form-control" id="sensorDescription" />
+					</div>
+				</div>
+			</div>
+		<div>
+			<p:commandButton styleClass="button-container" value="Filtrar" 
+				id="listAirC" action="#{airConditionerB.listAirConditioners}"
+				update="tabela" />
+		</div>
+		</h:form>
 		<br></br>
-
+		<hr></hr>
+		<br></br>
+		
 		<h:dataTable id="tabela" value="#{airConditionerB.airConditioners}"
 			var="item" styleClass="table table-hover"
 			headerClass="order-table-header"
@@ -46,14 +83,6 @@
 			</h:column>
 
 		</h:dataTable>
-
-
-		<div>
-			<h:commandButton styleClass="button-container" value="Listar"
-				id="listAirC"
-				actionListener="#{airConditionerB.listAirConditioners}"
-				update="tabela" />
-		</div>
 
 	</ui:define>
 </ui:decorate>
