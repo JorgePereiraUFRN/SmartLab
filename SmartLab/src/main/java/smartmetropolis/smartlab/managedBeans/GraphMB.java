@@ -525,7 +525,7 @@ public class GraphMB {
 			}
 
 			lineModel.setSeriesColors(seriesColors);
-			lineModel.setLegendPosition("e");
+			lineModel.setLegendPosition("nw");
 
 			setGhrapStyle("width:" + graphSize + "px;height:400px");
 
