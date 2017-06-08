@@ -286,7 +286,7 @@ public class AirControl implements AirControlInterface {
 			AirConditioner airConditioner, String command)
 			throws ComunicationException {
 		try {
-			
+			/*
 			webServiceClient = Client.create();
 
 			String uri = "http://" + airConditioner.getIpAddressAirControl()
@@ -295,7 +295,7 @@ public class AirControl implements AirControlInterface {
 
 			logger.info("enviando requisição: " + uri + command);
 			resource.put();
-			
+			*/
 			
 		} catch (Exception e) {
 			logger.error("erro ao enviar requisição para o controlador do condicionado: "

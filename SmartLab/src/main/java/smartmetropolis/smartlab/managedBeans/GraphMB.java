@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
@@ -56,7 +57,7 @@ public class GraphMB {
 	private LineChartModel lineModel;
 	private Date initialDate;
 	private Date grahfinalDate, graphInitDate;
-	SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
+	private SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
 
 	private Map<String, String> localsMap;
 	private Map<String, String> roomsMap;
@@ -299,6 +300,7 @@ public class GraphMB {
 			List<Sensor> sensorsRoom = sensorController.findSensorsByRoom(roomName);
 			
 			if(sensorsRoom == null){
+				
 				return null;
 			}
 
@@ -343,8 +345,11 @@ public class GraphMB {
 			List<Measurement> measurements = measurementController
 					.listMeasurementsBySensorAndDate(initialDate, finalDate,
 							sensor.getId());
+			
+			System.out.println("QTD medições encontradas: "+measurements.size());
 
 			if (measurements == null || measurements.size() == 0) {
+				System.out.println("nenhuma medicao encontrada");
 				return null;
 			}
 
@@ -361,6 +366,7 @@ public class GraphMB {
 			} else {
 				if (sensorType.ordinal() == SensorType.PRESENCE.ordinal()) {
 					measurements = avgPresenceMeasurements(measurements, 5 * 60);
+					System.out.println("QTD medições aopos processamento: "+measurements.size());
 				}
 			}
 
@@ -415,9 +421,6 @@ public class GraphMB {
 	}
 
 	public void generateGraph() throws NumberFormatException, DAOException {
-
-		
-		System.out.println("metodo gerar grafico");
 		
 		graphSize = 900;
 		grahfinalDate = null;
@@ -448,6 +451,7 @@ public class GraphMB {
 
 					series.add(serie);
 					label1 = "presença";
+					serie.setLabel(label1);
 					seriesColors += "58BA27,";
 				}
 			}
@@ -458,6 +462,7 @@ public class GraphMB {
 
 					series.add(serie);
 					label2 = "temperatura";
+					serie.setLabel(label2);
 					seriesColors += "FFCC33,";
 				}
 			}
@@ -468,14 +473,25 @@ public class GraphMB {
 
 					series.add(serie);
 					label3 = "umidade";
+					serie.setLabel(label3);
 
 					seriesColors += "F74A4A";
 				}
+			}
+			
+			if(series.size() == 0){
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR,
+								"Erro ","Nenhum dado encontrado!") );
+				
+				return;
 			}
 
 			DateAxis axis = new DateAxis("Date");
 			axis.setTickAngle(-50);
 
+			
 			axis.setMin(df.format(graphInitDate));
 			axis.setMax(df.format(grahfinalDate));
 
@@ -509,6 +525,7 @@ public class GraphMB {
 			}
 
 			lineModel.setSeriesColors(seriesColors);
+			lineModel.setLegendPosition("e");
 
 			setGhrapStyle("width:" + graphSize + "px;height:400px");
 
