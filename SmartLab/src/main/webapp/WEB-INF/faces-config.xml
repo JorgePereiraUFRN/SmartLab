@@ -8,7 +8,7 @@
 	<navigation-rule>
 	
 		<from-view-id>/*</from-view-id>
-		
+		<!--  
 		<navigation-case>
 			<from-action>#{userMb.logIn}</from-action>
 			<from-outcome>home</from-outcome>
@@ -17,10 +17,10 @@
 		
 		<navigation-case>
 			<from-action>#{userMb.logOut}</from-action>
-			<from-outcome>home</from-outcome>
+			<from-outcome>login</from-outcome>
 			<to-view-id>/pages/Public/login.xhtml</to-view-id>
 		</navigation-case>
-		
+		-->
 		<navigation-case>
 			<from-action>#{userMb.saveUser}</from-action>
 			<from-outcome>home</from-outcome>

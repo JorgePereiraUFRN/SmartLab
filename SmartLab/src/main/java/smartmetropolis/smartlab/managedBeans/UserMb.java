@@ -69,11 +69,7 @@ public class UserMb implements Serializable {
 		userRoles.put(UserRole.PROFESSOR, UserRole.PROFESSOR);
 		userRoles.put(UserRole.SUPPORT, UserRole.SUPPORT);
 		
-		if(usuario == null){
-			usuario = new User();
-			System.out.println(usuario);
-			
-		}
+		
 	}
 
 	public String saveUser() {
@@ -131,7 +127,7 @@ public class UserMb implements Serializable {
 			RequestContext.getCurrentInstance()
 					.update("datalist_notifications");
 
-			return "home";
+			return "/pages/Public/Home.xhtml?faces-redirect=true";
 		} catch (Exception e) {
 
 			return "errorLogin";
@@ -258,7 +254,7 @@ public class UserMb implements Serializable {
 
 	public String logOut() {
 		getRequest().getSession().invalidate();
-		return "home";
+		return "/pages/Public/login.xhtml?faces-redirect=true";
 	}
 
 	private HttpServletRequest getRequest() {
