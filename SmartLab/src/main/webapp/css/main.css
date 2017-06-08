@@ -13,11 +13,11 @@ body {
 /* Pen Title */
 .pen-title {
   text-align: left;
-  letter-spacing: 2px;
-  margin: 10px 10px;
+  letter-spacing: 1px;
+  margin: 0 0px 0 300px;
 }
-.pen-title h1 {
-  font-size: 48px;
+.pen-title h1{
+  font-size: 16px;
   font-weight: 300;
 }
 
