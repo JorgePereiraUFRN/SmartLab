@@ -11,17 +11,18 @@
 
 	<ui:define name="centro">
 	
-	<h4>Medições > Gráficos</h4>
-		<br></br>
-	<!--  
-	<h:outputText style="color:green;font-size:20px;" value="#{graphMB.label1}"/><br />
-	<h:outputText style="color:yellow;font-size:20px;" value="#{graphMB.label2}"/><br />
-	<h:outputText style="color:red;font-size:20px;" value="#{graphMB.label3}"/>
--->
+	<h5 style = "color:orange;"> Temperatura</h5>
+	<h5 style = "color:red;"> Umidade</h5>
+	<h5 style = "color:green;"> Presença</h5>
+		<!--  
+		<h:outputText style="color:green;font-size:20px;" value="#{graphMB.label1}"/><br />
+		<h:outputText style="color:yellow;font-size:20px;" value="#{graphMB.label2}"/><br />
+		<h:outputText style="color:red;font-size:20px;" value="#{graphMB.label3}"/>
+	-->
 		<p:scrollPanel mode="native" >
 		
 			<p:chart id="graph" type="line" model="#{graphMB.lineModel}"
-				style="#{graphMB.ghrapStyle}" responsive="true"/>
+				style="#{graphMB.ghrapStyle}" responsive="true" legendPosition="e"/>
 				
 		</p:scrollPanel>
 
