@@ -1,148 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://java.sun.com/xml/ns/javaee"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	version="2.5">
-	<display-name>SmartLab</display-name>
-
-	<welcome-file-list>
-		<welcome-file>pages/Public/login.xhtml</welcome-file>
-	</welcome-file-list>
-
-	<servlet>
-		<servlet-name>Faces Servlet</servlet-name>
-		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>/faces/*</url-pattern>
-		<url-pattern>*.jsf</url-pattern>
-		<url-pattern>*.xhtml</url-pattern>
-	</servlet-mapping>
-
-
-	<!-- Error pages -->
-	<error-page>
-		<error-code>400</error-code>
-		<location>/pages/Public/DefaultErrorPage.xhtml</location>
-	</error-page>
-	<error-page>
-		<error-code>404</error-code>
-		<location>/pages/Public/DefaultErrorPage.xhtml</location>
-	</error-page>
-	<error-page>
-		<error-code>500</error-code>
-		<location>/pages/Public/DefaultErrorPage.xhtml</location>
-	</error-page>
-
-
-	<resource-ref>
-		<description>Web Database</description>
-		<res-ref-name>jdbc/smartplacedatasource</res-ref-name>
-		<res-type>javax.sql.DataSource</res-type>
-		<res-auth>Container</res-auth>
-	</resource-ref>
-
-
-	<!-- Primefaces -->
-	<context-param>
-		<param-name>primefaces.THEME</param-name>
-		<param-value>none</param-value>
-	</context-param>
-
-
-	<context-param>
-		<param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
-		<param-value>true</param-value>
-	</context-param>
-
-<!--
-	<filter>
-		<filter-name>PrimeFaces FileUpload Filter</filter-name>
-		<filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>PrimeFaces FileUpload Filter</filter-name>
-		<servlet-name>Faces Servlet</servlet-name>
-	</filter-mapping>
--->
-	<servlet>
-		<servlet-name>ServletAdaptor</servlet-name>
-		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
-		<init-param>
-			<description>Multiple packages, separated by semicolon(;), can be specified in param-value</description>
-			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>smartmetropolis.smartlab.resources</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>ServletAdaptor</servlet-name>
-		<url-pattern>/ws/*</url-pattern>
-	</servlet-mapping>
-
-	<listener>
-		<listener-class>smartmetropolis.smartlab.MeasurementBlackBoard.MyServletContextListener</listener-class>
-	</listener>
-
-	<login-config>
-		<auth-method>FORM</auth-method>
-		<realm-name>SmartPlaceRealm</realm-name>
-		<form-login-config>
-			<form-login-page>/pages/Public/login.xhtml</form-login-page>
-			<form-error-page>/pages/Public/loginError.xhtml</form-error-page>
-		</form-login-config>
-	</login-config>
-
-
-	<resource-ref>
-		<description>Web Database</description>
-		<res-ref-name>jdbc/smartplaceDatasource</res-ref-name>
-		<res-type>javax.sql.DataSource</res-type>
-		<res-auth>Container</res-auth>
-	</resource-ref>
-
-	<security-role>
-		<role-name>Administrador</role-name>
-	</security-role>
-	<security-role>
-		<role-name>Suporte</role-name>
-	</security-role>
-	<security-role>
-		<role-name>Professor</role-name>
-	</security-role>
-
-	<!-- Protected area definition -->
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>Restricted Area - Administrador Only</web-resource-name>
-			<url-pattern>/pages/Admin/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>Administrador</role-name>
-		</auth-constraint>
-	</security-constraint>
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>Restricted Area - Suporte Only</web-resource-name>
-			<url-pattern>/pages/Support/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>Suporte</role-name>
-		</auth-constraint>
-	</security-constraint>
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>Restricted Area - professor Only</web-resource-name>
-			<url-pattern>/pages/Professor/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>Professor</role-name>
-		</auth-constraint>
-	</security-constraint>
-
-
-
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+  <display-name>SmartPlace</display-name>
+  <welcome-file-list>
+    <welcome-file>pages/Public/login.xhtml</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <servlet-name>Faces Servlet</servlet-name>
+    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Faces Servlet</servlet-name>
+    <url-pattern>/faces/*</url-pattern>
+    <url-pattern>*.jsf</url-pattern>
+    <url-pattern>*.xhtml</url-pattern>
+  </servlet-mapping>
+  <error-page>
+    <error-code>400</error-code>
+    <location>/pages/Public/DefaultErrorPage.xhtml</location>
+  </error-page>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/pages/Public/DefaultErrorPage.xhtml</location>
+  </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/pages/Public/DefaultErrorPage.xhtml</location>
+  </error-page>
+  <resource-ref>
+    <description>Web Database</description>
+    <res-ref-name>jdbc/smartplacedatasource</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref>
+  <context-param>
+    <param-name>primefaces.THEME</param-name>
+    <param-value>bootstrap</param-value>
+  </context-param>
+  <context-param>
+    <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  <servlet>
+    <servlet-name>ServletAdaptor</servlet-name>
+    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <description>Multiple packages, separated by semicolon(;), can be specified in param-value</description>
+      <param-name>com.sun.jersey.config.property.packages</param-name>
+      <param-value>smartmetropolis.smartlab.resources</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServletAdaptor</servlet-name>
+    <url-pattern>/ws/*</url-pattern>
+  </servlet-mapping>
+  <listener>
+    <listener-class>smartmetropolis.smartlab.MeasurementBlackBoard.MyServletContextListener</listener-class>
+  </listener>
+  <login-config>
+    <auth-method>FORM</auth-method>
+    <realm-name>SmartPlaceRealm</realm-name>
+    <form-login-config>
+      <form-login-page>/pages/Public/login.xhtml</form-login-page>
+      <form-error-page>/pages/Public/loginError.xhtml</form-error-page>
+    </form-login-config>
+  </login-config>
+  <resource-ref>
+    <description>Web Database</description>
+    <res-ref-name>jdbc/smartplaceDatasource</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref>
+  <security-role>
+    <role-name>Administrador</role-name>
+  </security-role>
+  <security-role>
+    <role-name>Suporte</role-name>
+  </security-role>
+  <security-role>
+    <role-name>Professor</role-name>
+  </security-role>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Restricted Area - Administrador Only</web-resource-name>
+      <url-pattern>/pages/Admin/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>Administrador</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Restricted Area - Suporte Only</web-resource-name>
+      <url-pattern>/pages/Support/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>Suporte</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Restricted Area - professor Only</web-resource-name>
+      <url-pattern>/pages/Professor/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>Professor</role-name>
+    </auth-constraint>
+  </security-constraint>
 </web-app>
