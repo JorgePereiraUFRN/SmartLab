@@ -31,15 +31,15 @@
 	<div class="bar_top">
 		<div class="perfil">
 			<h:link outcome="/pages/Public/UploadPhoto.xhtml">
-				<h:graphicImage styleClass="perfil" value="/icons/fotoperfil.jpeg" />
+				<h:graphicImage styleClass="perfil" value="#{userMb.profilePicture}" />
 			</h:link>
 		</div>
 		
 		<div class="bar_topd">
 			<ul class="menu_barrax">
 				<li>
-					<div>Thais Batista</div>
-					<div>Administrador (a)</div>
+					<div><h:outputText value="#{userMb.usuario.name}" /></div>
+					<div><h:outputText value="#{userMb.usuario.role.role} (a)" /></div>
 				</li>
 			</ul>
 			<div class="transit">

@@ -54,8 +54,8 @@ public class UserMb implements Serializable {
 
 	private List<Notification> notifications = new ArrayList<Notification>();
 
-	private static final String profilesPictureFolder = "/home/jorge/smartplace/profilepictures/";
-	
+	private static final String profilesPictureFolder = "/home/jorge/servers/apache-tomcat-8.0.43/webapps/profile_pictures";
+
 	private UploadedFile imageFile;
 
 	public UserMb() {
@@ -68,8 +68,7 @@ public class UserMb implements Serializable {
 		userRoles.put(UserRole.ADMININISTRATOR, UserRole.ADMININISTRATOR);
 		userRoles.put(UserRole.PROFESSOR, UserRole.PROFESSOR);
 		userRoles.put(UserRole.SUPPORT, UserRole.SUPPORT);
-		
-		
+
 	}
 
 	public String saveUser() {
@@ -116,8 +115,7 @@ public class UserMb implements Serializable {
 				.getCurrentInstance().getExternalContext().getRequest();
 		try {
 			request.login(usuario.getLogin(), usuario.getPassword());
-			 
-			
+
 			usuario = USER_CONTROLLER.findUser(usuario.getLogin());
 
 			loged = true;
@@ -182,75 +180,88 @@ public class UserMb implements Serializable {
 			n2.setMessage("Existem " + waiting.size()
 					+ " novas solicitações em aberto.");
 			notifications.add(n2);
-		
+
 		}
 		return notifications;
 	}
 
-	public void saveProfilePricture()  {
+	public void saveProfilePricture() {
 
-			if (imageFile != null) {
+		if (imageFile != null) {
 
-				try {
-			
-					String fileName = profilesPictureFolder+usuario.getLogin()+"_"+imageFile.getFileName();
-					
-					usuario.setProfilePicture(fileName);
+			try {
 
-					copyFile(fileName, imageFile.getInputstream());
-					
-					USER_CONTROLLER.updateUser(usuario);
+				String fileName = profilesPictureFolder + usuario.getLogin()
+						+ "_" + imageFile.getFileName();
 
-					FacesContext.getCurrentInstance().addMessage(
-							null,
-							new FacesMessage(FacesMessage.SEVERITY_INFO, null,
-									"Imagem do perfil atualizada com sucesso!"));
+				usuario.setProfilePicture(fileName);
 
-				} catch (IOException e) {
-					System.out.println(e.getMessage());
-					FacesContext
-							.getCurrentInstance()
-							.addMessage(
-									null,
-									new FacesMessage(FacesMessage.SEVERITY_ERROR,
-											null,
-											"Desculpe, erro ocorrido ao atualizar a imagem. Tente novamente por favor!"));
-				} catch (validateDataException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (DAOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} else {
+				copyFile(fileName, imageFile.getInputstream());
+
+				USER_CONTROLLER.updateUser(usuario);
+
 				FacesContext.getCurrentInstance().addMessage(
 						null,
-						new FacesMessage(FacesMessage.SEVERITY_ERROR, null,
-								"Selecione uma imagempara upload!"));
+						new FacesMessage(FacesMessage.SEVERITY_INFO, null,
+								"Imagem do perfil atualizada com sucesso!"));
+
+			} catch (IOException e) {
+				System.out.println(e.getMessage());
+				FacesContext
+						.getCurrentInstance()
+						.addMessage(
+								null,
+								new FacesMessage(FacesMessage.SEVERITY_ERROR,
+										null,
+										"Desculpe, erro ocorrido ao atualizar a imagem. Tente novamente por favor!"));
+			} catch (validateDataException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (DAOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-
+		} else {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, null,
+							"Selecione uma imagempara upload!"));
 		}
 
-		public void copyFile(String fileName, InputStream in) throws IOException {
-			
+	}
 
-				OutputStream out = new FileOutputStream(new File(fileName));
+	public String getProfilePicture() {
 
-				int read = 0;
-				byte[] bytes = new byte[1024];
+		HttpServletRequest request = getRequest();
+		String serverPath = request.getScheme() + "://"
+				+ request.getServerName() + ":" + request.getServerPort();
 
-				while ((read = in.read(bytes)) != -1) {
-					out.write(bytes, 0, read);
-				}
+		if (usuario == null || usuario.getProfilePicture() == null
+				|| usuario.getProfilePicture().equals("")) {
+			return serverPath + "/profile_pictures/default.jpeg";
+		} else {
 
-				in.close();
-				out.flush();
-				out.close();
-			
+			return serverPath + "/profile_pictures/"
+					+ usuario.getProfilePicture();
+		}
+	}
+
+	public void copyFile(String fileName, InputStream in) throws IOException {
+
+		OutputStream out = new FileOutputStream(new File(fileName));
+
+		int read = 0;
+		byte[] bytes = new byte[1024];
+
+		while ((read = in.read(bytes)) != -1) {
+			out.write(bytes, 0, read);
 		}
 
-		
+		in.close();
+		out.flush();
+		out.close();
 
+	}
 
 	public String logOut() {
 		getRequest().getSession().invalidate();
@@ -316,7 +327,6 @@ public class UserMb implements Serializable {
 	public void setLoged(boolean loged) {
 		this.loged = loged;
 	}
-
 
 	public List<Notification> getNotifications() {
 		return notifications;

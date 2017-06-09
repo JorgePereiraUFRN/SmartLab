@@ -10,15 +10,15 @@
 <ui:decorate template="/WEB-INF/templates/Template.xhtml">
 
 	<ui:define name="centro">
-	
+	<!-- 
 	<h5 style = "color:orange;"> Temperatura</h5>
 	<h5 style = "color:red;"> Umidade</h5>
 	<h5 style = "color:green;"> Presença</h5>
-		<!--  
+   -->
 		<h:outputText style="color:green;font-size:20px;" value="#{graphMB.label1}"/><br />
-		<h:outputText style="color:yellow;font-size:20px;" value="#{graphMB.label2}"/><br />
+		<h:outputText style="color:orange;font-size:20px;" value="#{graphMB.label2}"/><br />
 		<h:outputText style="color:red;font-size:20px;" value="#{graphMB.label3}"/>
-	-->
+	
 		<p:scrollPanel mode="native" >
 		
 			<p:chart id="graph" type="line" model="#{graphMB.lineModel}"
